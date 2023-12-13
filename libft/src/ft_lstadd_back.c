@@ -1,13 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/13 16:20:31 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/13 16:20:33 by ilymegy          ###   ########.fr       */
+/*   Created: 2023/05/09 14:38:42 by ilymegy           #+#    #+#             */
+/*   Updated: 2023/05/09 14:38:44 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/libft.h"
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*tmp;
+
+	if (new == NULL || lst == NULL)
+		return ;
+	if (!(*lst))
+	{
+		*lst = new;
+		return ;
+	}
+	tmp = ft_lstlast(*(lst));
+	tmp->next = new;
+}
