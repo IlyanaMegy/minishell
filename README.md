@@ -1,2 +1,5 @@
-# minishell
-42 project - Minishell
+## Projet MINISHELL
+
+<p align="center">
+  <img src="https://cdn.discordapp.com/attachments/889061317321838627/1184481193010405466/image.png?ex=658c2113&is=6579ac13&hm=57c03cb656f36977b37f654c80ff5ac05da4c33232d56226b0164af415fd28ec&" alt="mandatory"/>
+</p>
