@@ -1,3 +1,6 @@
+## DOCUMENTATION
+
+-> some tuto :
 http://i.paysdu42.fr/?page=minishell.c
 
 https://m4nnb3ll.medium.com/minishell-building-a-mini-bash-a-42-project-b55a10598218
@@ -10,7 +13,14 @@ https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-Writing
 
 https://brennan.io/2015/01/16/write-a-shell-in-c/
 
-ex:
+---
+
+-> exit codes :
+https://www.geeksforgeeks.org/exit-codes-in-c-c-with-examples/
+
+---
+
+-> github ex:
 https://github.com/mcombeau/minishell/blob/main/sources/main.c
 
-https://cdn.discordapp.com/attachments/889061317321838627/1184481193010405466/image.png?ex=658c2113&is=6579ac13&hm=57c03cb656f36977b37f654c80ff5ac05da4c33232d56226b0164af415fd28ec&
+---
