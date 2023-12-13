@@ -14,13 +14,13 @@ https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-Writing
 https://brennan.io/2015/01/16/write-a-shell-in-c/
 
 ---
-
 -> exit codes :
 https://www.geeksforgeeks.org/exit-codes-in-c-c-with-examples/
 
 ---
-
 -> github ex:
 https://github.com/mcombeau/minishell/blob/main/sources/main.c
 
 ---
+-> some tests and behaviors :
+https://docs.google.com/spreadsheets/d/1uJHQu0VPsjjBkR4hxOeCMEt3AOM1Hp_SmUzPFhAH-nA/edit?pli=1#gid=0
