@@ -14,4 +14,11 @@
 # define MINISHELL_H
 # include "libft.h"
 
+typedef struct s_minishell
+{
+	
+}	t_minishell;
+
+extern t_minishell g_minishell;
+
 #endif
