@@ -17,6 +17,7 @@ CFLAGS			=	-Wall -Wextra -Werror -g3
 
 INC				=	-I ./inc/\
 					-I ./libft/
+INCS			= ./inc/*.h
 
 BUILTINS		=	builtins/cd.c \
 					builtins/echo.c \
@@ -51,23 +52,19 @@ READLINE_PATH	=	/goinfre/homebrew/opt/readline
 
 all:			$(LIBFT) $(NAME)
 
-$(OBJ_PATH)%.o: $(SRC_PATH)%.c 
+$(OBJ_PATH)%.o: $(SRC_PATH)%.c
+				@mkdir -p $(OBJ_PATH)
+				@mkdir -p $(OBJ_PATH)/clean
+				@mkdir -p $(OBJ_PATH)/builtins
+				@mkdir -p $(OBJ_PATH)/exec
+				@mkdir -p $(OBJ_PATH)/parsing
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include
-
-$(OBJS): 		$(OBJ_PATH)
-
-$(OBJ_PATH): 
-				@mkdir $(OBJ_PATH)
-				@mkdir $(OBJ_PATH)/clean
-				@mkdir $(OBJ_PATH)/builtins
-				@mkdir $(OBJ_PATH)/exec
-				@mkdir $(OBJ_PATH)/parsing
 
 $(LIBFT):
 				@make -sC $(LIBFT_PATH) --no-print-directory
 				@echo "Libft \033[1;32mOK\033[m"
 
-$(NAME):		$(OBJS)
+$(NAME):		$(OBJS) $(SRCS) $(INCS)
 				@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(INC) -L$(READLINE_PATH)/lib -lreadline
 				@echo "minishell \033[1;32mOK\033[m"
 
