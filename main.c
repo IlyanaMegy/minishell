@@ -12,9 +12,12 @@
 
 #include "./inc/minishell.h"
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **arg_env)
 {
+	t_env	env;
+
 	if (ac > 1)
-		ft_printf("argv = %s\n", av[0]);
+		ft_printf("argv = %s\narg_env[0] = %s\n", av[0], arg_env[0]);
+	get_env(arg_env, &env);
 	return (0);
 }
