@@ -11,6 +11,7 @@ https://github.com/iciamyplant/Minishell
 https://segfault42.github.io/posts/minishell/
 https://github.com/vportens/minishell
 https://github.com/Swoorup/mysh/tree/master
+https://github.com/maiadegraaf/minishell/tree/main?tab=readme-ov-file#builtins
 
 ---
 -> exit codes : 🤔
