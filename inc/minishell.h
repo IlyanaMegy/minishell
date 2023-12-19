@@ -54,6 +54,7 @@ extern t_minishell		g_minishell;
 //  --------------------------------------------------------------------------------
 
 // builtins/env.c
+void					ft_env(t_env *env);
 void					get_env(char **arg_env, t_env *env);
 
 #endif
