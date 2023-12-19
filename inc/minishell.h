@@ -14,4 +14,46 @@
 # define MINISHELL_H
 # include "libft.h"
 
+//  --------------------------------------------------------------------------------
+// |									ENV											|
+//  --------------------------------------------------------------------------------
+
+/**
+ * @brief  char *name, char *content, int print_it, t_env_var *next
+ * @note   return var name, var content, do print it ?, next var
+*/
+typedef struct s_env_var
+{
+	char			*name;
+	char			*content;
+	int				print_it;
+	t_env_var		*next;
+}					t_env_var;
+
+/**
+ * @brief  t_env_var *first_var
+ * @note   t_env *env is a pointer to the first element of env
+*/
+typedef struct s_env
+{
+	t_env_var		*f_var;
+}					t_env;
+
+//  --------------------------------------------------------------------------------
+// |								MINISHELL										|
+//  --------------------------------------------------------------------------------
+
+typedef struct s_minishell
+{
+}					t_minishell;
+
+extern t_minishell	g_minishell;
+
+//  --------------------------------------------------------------------------------
+// |								BUILTINS										|
+//  --------------------------------------------------------------------------------
+
+// builtins/env.c
+void				get_env(char **arg_env, t_env *env);
+
 #endif

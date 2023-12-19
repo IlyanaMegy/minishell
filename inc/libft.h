@@ -90,6 +90,7 @@ size_t				ft_strclen(const char *s, const char *charset);
 int					ft_strcmp(const char *s1, const char *s2);
 char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strdup(const char *s1);
+char				*ft_strndup(const char *s1, int n);
 char				*ft_strjoin(char const *s1, char const *s2);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 size_t				ft_strlcpy(char *dst, const char *src, size_t size);
