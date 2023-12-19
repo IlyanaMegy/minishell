@@ -12,6 +12,32 @@
 
 #include "../inc/minishell.h"
 
+void	ft_env(t_env *env)
+{
+	t_env_var	*tmp;
+	char		*shlvl;
+
+	tmp = env->f_var;
+	while (tmp)
+	{
+		if (tmp->print_it == 1)
+		{
+			write(1, tmp->name, ft_strlen(tmp->name));
+			write(1, "=", 1);
+			if (!ft_strcmp(tmp->name, "SHLVL"))
+			{
+				shlvl = ft_itoa(ft_atoi(tmp->content) - 1);
+				write(1, shlvl, ft_strlen(shlvl));
+				free(shlvl);
+			}
+			else
+				write(1, tmp->content, ft_strlen(tmp->content));
+			write(1, "\n", 1);
+		}
+		tmp = tmp->next;
+	}
+}
+
 /**
  * @note   create a new var
  * @param  char* name: 
