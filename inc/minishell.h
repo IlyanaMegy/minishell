@@ -19,13 +19,14 @@
 //  --------------------------------------------------------------------------------
 
 /**
- * @brief  char *name, char *content, t_env_var *next
- * @note   return var name, var content, next var
+ * @brief  char *name, char *content, int print_it, t_env_var *next
+ * @note   return var name, var content, do print it ?, next var
 */
 typedef struct s_env_var
 {
 	char			*name;
 	char			*content;
+	int				print_it;
 	t_env_var		*next;
 }					t_env_var;
 
@@ -47,5 +48,12 @@ typedef struct s_minishell
 }					t_minishell;
 
 extern t_minishell	g_minishell;
+
+//  --------------------------------------------------------------------------------
+// |								BUILTINS										|
+//  --------------------------------------------------------------------------------
+
+// builtins/env.c
+void				get_env(char **arg_env, t_env *env);
 
 #endif
