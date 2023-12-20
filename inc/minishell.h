@@ -55,8 +55,13 @@ extern t_minishell		g_minishell;
 
 // builtins/env.c
 void					ft_env(t_env *env);
+void					add_var_to_env(t_env *env, char *name, char *content,
+							int print_it);
 void					get_env(char **arg_env, t_env *env);
 
 // builtins/export.c
-void					ft_export(t_env *env);
+int						ft_export(t_env *env, char **av);
+
+// builtins/export_utils.c
+void					get_sorted_env(t_env_var **head);
 #endif

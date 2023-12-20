@@ -12,46 +12,32 @@
 
 #include "../inc/minishell.h"
 
-/**
- * @note   get next sorted var
- * @param  **head: 
- * @param  *node: 
- * @retval None
-*/
-void	sorted_var(t_env_var **head, t_env_var *node)
+int	print_export_err_msg(char *arg)
 {
-	t_env_var	tmp;
-	t_env_var	*curr;
-
-	curr = &tmp;
-	tmp.next = *head;
-	while (curr->next != NULL && ft_strcmp(curr->next->name, node->name) < 0)
-		curr = curr->next;
-	node->next = curr->next;
-	curr->next = node;
-	*head = tmp.next;
+	printf("err export\n");
+	return (1);
 }
 
-/** 
- * @note   get a alphabetically sorted env
- * @param  t_env** head: 
- * @retval 
-*/
-void	get_sorted_env(t_env_var **head)
-{
-	t_env_var	*res;
-	t_env_var	*tmp;
-	t_env_var	*curr;
 
-	curr = *head;
-	res = NULL;
-	while (curr != NULL)
+/**
+ * @note   check if the argument is correct
+ * @param  *arg: 
+ * @retval 1 is ok, 0 is an err
+*/
+int	check_export_arg(char *arg)
+{
+	int	i;
+
+	i = 1;
+	if (!ft_isalpha(*arg) && *arg != '_')
+		return (0);
+	while (arg[i] && arg[i] != '=')
 	{
-		tmp = curr->next;
-		sorted_var(&res, curr);
-		curr = tmp;
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (0);
+		i++;
 	}
-	*head = res;
+	return (1);
 }
 
 /**
@@ -77,7 +63,19 @@ void	display_export(t_env *env)
 	}
 }
 
-void	ft_export(t_env *env)
+int	ft_export(t_env *env, char **av)
 {
-	display_export(env);
+	int i;
+	int exit_status;
+
+	if (!av[1])
+		return (display_export(env), 0);
+	i = 1;
+	while (av[i])
+	{
+		if (!check_exp_arg(av[i]))
+			exit_status = print_export_err_msg(av[i]);
+		i++;
+	}
+	return (exit_status);
 }
