@@ -12,6 +12,11 @@
 
 #include "../inc/minishell.h"
 
+/**
+ * @note   do display the environment
+ * @param  t_env* env: 
+ * @retval None
+*/
 void	ft_env(t_env *env)
 {
 	t_env_var	*tmp;
