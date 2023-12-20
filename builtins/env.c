@@ -19,27 +19,16 @@
 */
 void	ft_env(t_env *env)
 {
-	t_env_var	*tmp;
-	char		*shlvl;
+	t_env_var	*e;
 
-	tmp = env->f_var;
-	while (tmp)
+	e = env->f_var;
+	while (e)
 	{
-		if (tmp->print_it == 1)
-		{
-			write(1, tmp->name, ft_strlen(tmp->name));
-			write(1, "=", 1);
-			if (!ft_strcmp(tmp->name, "SHLVL"))
-			{
-				shlvl = ft_itoa(ft_atoi(tmp->content) - 1);
-				write(1, shlvl, ft_strlen(shlvl));
-				free(shlvl);
-			}
-			else
-				write(1, tmp->content, ft_strlen(tmp->content));
-			write(1, "\n", 1);
-		}
-		tmp = tmp->next;
+		if (!ft_strcmp(e->name, "SHLVL") && e->print_it == 1)
+			ft_printf("%s=\"%s\"\n", e->name, ft_itoa(ft_atoi(e->content) - 1));
+		else if (e->print_it == 1)
+			ft_printf("%s=\"%s\"\n", e->name, e->content);
+		e = e->next;
 	}
 }
 
@@ -75,16 +64,16 @@ t_env_var	*create_var(char *name, char *content, int print_it)
 void	add_var_to_env(t_env *env, char *name, char *content, int print_it)
 {
 	t_env_var	*var;
-	t_env_var	*tmp;
+	t_env_var	*e;
 
 	var = create_var(name, content, print_it);
 	// var->next = NULL;
-	tmp = env->f_var;
+	e = env->f_var;
 	if (env->f_var)
 	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = var;
+		while (e->next)
+			e = e->next;
+		e->next = var;
 	}
 	else
 		env->f_var = var;
