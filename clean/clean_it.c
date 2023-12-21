@@ -1,5 +1,10 @@
 #include "../inc/minishell.h"
 
+/**
+ * @note   clean the env list
+ * @param  env: environment list
+ * @retval None
+*/
 void	clean_env(t_env *env)
 {
 	t_env_var	*e;
@@ -16,6 +21,5 @@ void	clean_env(t_env *env)
 		free(e);
 		e = temp;
 	}
-	// free(env);
 	env = NULL;
 }
