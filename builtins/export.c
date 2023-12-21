@@ -14,7 +14,7 @@
 
 int	print_export_err_msg(char *arg)
 {
-	printf("err export\n");
+	ft_printf("err export %s\n", arg);
 	return (1);
 }
 
@@ -24,11 +24,12 @@ int	print_export_err_msg(char *arg)
  * @param  *arg: 
  * @retval 1 is ok, 0 is an err
 */
-int	check_export_arg(char *arg)
+int	check_export_var_name(char *arg)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
+	ft_printf("av[0] = %s\n", arg);
 	if (!ft_isalpha(*arg) && *arg != '_')
 		return (0);
 	while (arg[i] && arg[i] != '=')
@@ -63,18 +64,20 @@ void	display_export(t_env *env)
 	}
 }
 
-int	ft_export(t_env *env, char **av)
+int	ft_export(t_env *env, char **cmd)
 {
 	int i;
 	int exit_status;
+	
 
-	if (!av[1])
+	// ft_printf("av[0] = %s\n", av[0]);
+	if (!cmd[1])
 		return (display_export(env), 0);
 	i = 1;
-	while (av[i])
+	while (cmd[i])
 	{
-		if (!check_exp_arg(av[i]))
-			exit_status = print_export_err_msg(av[i]);
+		if (!check_export_var_name(cmd[i]))
+			exit_status = print_export_err_msg(cmd[i]);
 		i++;
 	}
 	return (exit_status);
