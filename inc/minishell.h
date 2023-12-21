@@ -69,4 +69,6 @@ void					replace_var_in_env(t_env *env, char *name,
 							char *content, int *append);
 int						var_is_in_env(t_env *env, char *var_name);
 void					get_sorted_env(t_env_var **head);
+
+void					clean_env(t_env *env);
 #endif

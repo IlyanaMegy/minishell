@@ -24,5 +24,6 @@ int	main(int ac, char **av, char **arg_env)
 	// ft_printf("av[0] = %s\n", av[0]);
 	// display_export(&env);
 	ft_env(&env);
+	clean_env(&env);
 	return (0);
 }
