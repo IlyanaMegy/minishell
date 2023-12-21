@@ -16,6 +16,7 @@ CC				=	cc
 CFLAGS			=	-Wall -Wextra -Werror -g3
 
 INC				=	-I ./inc/\
+					-I ./pipex/\
 					-I ./libft/
 INCS			= ./inc/*.h
 
@@ -33,10 +34,15 @@ EXEC			=	exec/exec.c
 
 PARSING			=	parsing/parser.c
 
+pipex			=	pipex/pipex.c\
+					pipex/pipex_utils.c\
+					pipex/open_close.c
+
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
 					$(EXEC)\
 					$(PARSING)\
+					$(PIPEX)\
 					main.c
 
 LIBFT_PATH 		=	libft/
@@ -58,6 +64,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)/builtins
 				@mkdir -p $(OBJ_PATH)/exec
 				@mkdir -p $(OBJ_PATH)/parsing
+				@mkdir -p $(OBJ_PATH)/pipex
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include
 
 $(LIBFT):
