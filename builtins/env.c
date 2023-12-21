@@ -25,9 +25,9 @@ void	ft_env(t_env *env)
 	while (e)
 	{
 		if (!ft_strcmp(e->name, "SHLVL") && e->print_it == 1)
-			ft_printf("%s=\"%s\"\n", e->name, ft_itoa(ft_atoi(e->content) - 1));
+			ft_printf("%s=%s\n", e->name, ft_itoa(ft_atoi(e->content) - 1));
 		else if (e->print_it == 1)
-			ft_printf("%s=\"%s\"\n", e->name, e->content);
+			ft_printf("%s=%s\n", e->name, e->content);
 		e = e->next;
 	}
 }
