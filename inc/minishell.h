@@ -61,6 +61,7 @@ void					get_env(char **arg_env, t_env *env);
 
 // builtins/export.c
 int						ft_export(t_env *env, char **av);
+int						check_var_name(char *arg, int *append);
 void					display_export(t_env *env);
 
 // builtins/export_utils.c
