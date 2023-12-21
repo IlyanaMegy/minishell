@@ -14,29 +14,34 @@
 
 /**
  * @note   do display the environment
- * @param  t_env* env: 
+ * @param  env: environment list
  * @retval None
 */
 void	ft_env(t_env *env)
 {
 	t_env_var	*e;
+	char *shlvl;
 
 	e = env->f_var;
 	while (e)
 	{
 		if (!ft_strcmp(e->name, "SHLVL") && e->print_it == 1)
-			ft_printf("%s=\"%s\"\n", e->name, ft_itoa(ft_atoi(e->content) - 1));
+		{
+			shlvl = ft_itoa(ft_atoi(e->content) - 1);
+			ft_printf("%s=%s\n", e->name, shlvl);
+			free(shlvl);
+		}			
 		else if (e->print_it == 1)
-			ft_printf("%s=\"%s\"\n", e->name, e->content);
+			ft_printf("%s=%s\n", e->name, e->content);
 		e = e->next;
 	}
 }
 
 /**
  * @note   create a new var
- * @param  char* name: 
- * @param  char* content: 
- * @param  int print_it: 
+ * @param  name: variable name
+ * @param  content: variable content
+ * @param  print_it: do we print it or not ?
  * @retval new variable just created
 */
 t_env_var	*create_var(char *name, char *content, int print_it)
@@ -55,10 +60,10 @@ t_env_var	*create_var(char *name, char *content, int print_it)
 
 /**
  * @note   add a new var to env list
- * @param  t_env* env: 
- * @param  char* name: 
- * @param  char* content: 
- * @param  int print_it: 
+ * @param  env: environment list
+ * @param  name: variable name
+ * @param  content: variable content
+ * @param  print_it: do we print it or not ?
  * @retval None
 */
 void	add_var_to_env(t_env *env, char *name, char *content, int print_it)
@@ -81,8 +86,8 @@ void	add_var_to_env(t_env *env, char *name, char *content, int print_it)
 
 /**
  * @note   get environment from arg_env and stock to env list
- * @param  char** arg_env: 
- * @param  t_env* env: 
+ * @param  arg_env: environment origin from minishell argument
+ * @param  env: environment list
  * @retval None
 */
 void	get_env(char **arg_env, t_env *env)

@@ -15,7 +15,6 @@
 int	main(int ac, char **av, char **arg_env)
 {
 	t_env	env;
-
 	if (ac > 1)
 		ft_printf("argv = %s\n", av[0]);
 	get_env(arg_env, &env);

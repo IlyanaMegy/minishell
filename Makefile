@@ -25,6 +25,7 @@ BUILTINS		=	builtins/cd.c \
 					builtins/env.c \
 					builtins/exit.c \
 					builtins/export.c \
+					builtins/export_utils.c \
 					builtins/pwd.c \
 					builtins/unset.c
 
