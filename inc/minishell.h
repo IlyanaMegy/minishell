@@ -82,6 +82,8 @@ void					get_sorted_env(t_env_var **head);
 // builtins/unset.c
 int						ft_unset(t_env *env, char **args);
 
+// builtins/cd.c
+int						ft_cd(t_env *env, char **cmd);
 //  --------------------------------------------------------------------------------
 // |									CLEAN										|
 //  --------------------------------------------------------------------------------
