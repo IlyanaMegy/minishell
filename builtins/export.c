@@ -142,7 +142,10 @@ int	ft_export(t_env *env, char **cmd)
 	{
 		append = 0;
 		if (!check_var_name(cmd[i], &append))
-			exit_status = print_export_err_msg(cmd[i]);
+		{
+			exit_status = 1;
+			err_handler(ERR_EXPORT, cmd[i]);
+		}
 		else
 			exit_status = extract_var(cmd[i], &append, env);
 		i++;

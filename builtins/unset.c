@@ -41,7 +41,7 @@ void	remove_var_from_env(t_env *env, char *var_name)
 }
 
 /**
- * @note   
+ * @note   unset a variable from the environment
  * @param  *env: 
  * @param  **args: 
  * @retval exit status
@@ -59,9 +59,7 @@ int	ft_unset(t_env *env, char **args)
 	{
 		if (!check_var_name(args[i], 0))
 		{
-			ft_putstr_fd("minishell: unset: `", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
+			err_handler(ERR_UNSET, args[i]);
 			exit_status = 1;
 		}
 		else if (var_is_in_env(env, args[i]))

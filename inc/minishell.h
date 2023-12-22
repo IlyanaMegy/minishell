@@ -14,6 +14,12 @@
 # define MINISHELL_H
 # include "libft.h"
 
+# define ERR_ARGS 2
+# define ERR_PATH 3
+# define ERR_NOFILEDIR 4
+# define ERR_EXPORT 5
+# define ERR_UNSET 6
+
 //  --------------------------------------------------------------------------------
 // |									ENV											|
 //  --------------------------------------------------------------------------------
@@ -69,6 +75,7 @@ void					display_export(t_env *env);
 int						print_export_err_msg(char *arg);
 void					replace_var_in_env(t_env *env, char *name,
 							char *content, int *append);
+char					*get_var_content_from_env(t_env *env, char *var_name);
 int						var_is_in_env(t_env *env, char *var_name);
 void					get_sorted_env(t_env_var **head);
 
@@ -81,4 +88,10 @@ int						ft_unset(t_env *env, char **args);
 
 // clean/clean_it.c
 void					clean_env(t_env *env);
+
+//  --------------------------------------------------------------------------------
+// |								ERROR_HANDLER									|
+//  --------------------------------------------------------------------------------
+void					err_handler(int err, char *s);
+char					*complexe_err_msg(int err, char *cmd);
 #endif
