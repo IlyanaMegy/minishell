@@ -27,7 +27,9 @@ int	main(int ac, char **av, char **arg_env)
 	ft_printf("\n\n----------------------------------\n\n");
 	++(av);
 	ft_cd(&env, av);
-	ft_env(&env);
+	display_export(&env);
+	ft_printf("\n\n----------------------------------\n\n");
+	ft_pwd();
 	clean_env(&env);
 	return (0);
 }
