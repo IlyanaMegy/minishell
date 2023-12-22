@@ -8,18 +8,19 @@
 void	clean_env(t_env *env)
 {
 	t_env_var	*e;
-	t_env_var	*temp;
+	t_env_var	*tmp;
 
 	e = env->f_var;
 	if (e == NULL)
 		return ;
 	while (e != NULL)
 	{
-		temp = e->next;
-		free(e->content);
+		tmp = e->next;
+		if (e->content != NULL)
+			free(e->content);
 		free(e->name);
 		free(e);
-		e = temp;
+		e = tmp;
 	}
 	env = NULL;
 }
