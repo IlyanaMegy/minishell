@@ -32,12 +32,15 @@ CLEANING		=	clean/clean_it.c
 
 EXEC			=	exec/exec.c
 
+ERROR			=	err_handler/error_handler.c
+
 PARSING			=	parsing/parser.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
 					$(EXEC)\
 					$(PARSING)\
+					$(ERROR)\
 					main.c
 
 LIBFT_PATH 		=	libft/
@@ -59,6 +62,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)/builtins
 				@mkdir -p $(OBJ_PATH)/exec
 				@mkdir -p $(OBJ_PATH)/parsing
+				@mkdir -p $(OBJ_PATH)/err_handler
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include
 
 $(LIBFT):
