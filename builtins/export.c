@@ -100,6 +100,7 @@ int	check_var_name(char *arg, int *append)
 void	display_export(t_env *env)
 {
 	t_env_var	*e;
+	char		*shlvl;
 
 	e = env->f_var;
 	get_sorted_env(&e);
@@ -108,7 +109,14 @@ void	display_export(t_env *env)
 		if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
 			ft_printf("");
 		else if (!ft_strcmp(e->name, "SHLVL"))
-			ft_printf("%s=\"%s\"\n", e->name, ft_itoa(ft_atoi(e->content) - 1));
+		{
+			shlvl = ft_itoa(ft_atoi(e->content) - 1);
+			if (shlvl)
+			{
+				ft_printf("%s=\"%s\"\n", e->name, shlvl);
+				free(shlvl);
+			}
+		}
 		else
 			ft_printf("%s=\"%s\"\n", e->name, e->content);
 		e = e->next;
