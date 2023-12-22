@@ -15,21 +15,7 @@
 int	main(int ac, char **av, char **arg_env)
 {
 	t_env	env;
-	char *unset_me[3];
-
-	unset_me[0] = "hello";
-	unset_me[1] = "toto";
 	if (ac > 1)
 		ft_printf("argv = %s\n", av[0]);
-	if (get_env(arg_env, &env))
-		return (1);
-	ft_env(&env);
-	ft_printf("\n\n----------------------------------\n\n");
-	++(av);
-	ft_cd(&env, av);
-	display_export(&env);
-	ft_printf("\n\n----------------------------------\n\n");
-	ft_pwd();
-	clean_env(&env);
 	return (0);
 }
