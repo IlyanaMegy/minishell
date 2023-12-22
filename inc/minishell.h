@@ -28,6 +28,7 @@ typedef struct s_env_var
 	char				*content;
 	int					print_it;
 	struct s_env_var	*next;
+	struct s_env_var	*prev;
 }						t_env_var;
 
 /**
@@ -55,9 +56,9 @@ extern t_minishell		g_minishell;
 
 // builtins/env.c
 void					ft_env(t_env *env);
-void					add_var_to_env(t_env *env, char *name, char *content,
+int						add_var_to_env(t_env *env, char *name, char *content,
 							int print_it);
-void					get_env(char **arg_env, t_env *env);
+int						get_env(char **arg_env, t_env *env);
 
 // builtins/export.c
 int						ft_export(t_env *env, char **av);
@@ -71,5 +72,13 @@ void					replace_var_in_env(t_env *env, char *name,
 int						var_is_in_env(t_env *env, char *var_name);
 void					get_sorted_env(t_env_var **head);
 
+// builtins/unset.c
+int						ft_unset(t_env *env, char **args);
+
+//  --------------------------------------------------------------------------------
+// |									CLEAN										|
+//  --------------------------------------------------------------------------------
+
+// clean/clean_it.c
 void					clean_env(t_env *env);
 #endif
