@@ -1,17 +1,6 @@
 #include "../inc/minishell.h"
 
 /**
- * @note   print in fd_out export error
- * @param  arg: shitty argument
- * @retval exit error
-*/
-int	print_export_err_msg(char *arg)
-{
-	ft_printf("err export %s\n", arg);
-	return (1);
-}
-
-/**
  * @note   replace content of existing var in environment
  * @param  env: environment list
  * @param  name: variable name
@@ -44,7 +33,27 @@ void	replace_var_in_env(t_env *env, char *name, char *content, int *append)
 }
 
 /**
- * @note   is this var already in the environment ?
+ * @note   get variable content from the environment
+ * @param  env: environment list
+ * @param  var_name: variable name
+ * @retval content is yes, NULL is no variable with that name
+*/
+char	*get_var_content_from_env(t_env *env, char *var_name)
+{
+	t_env_var	*e;
+
+	e = env->f_var;
+	while (e)
+	{
+		if (!ft_strcmp(e->name, var_name))
+			return (e->content);
+		e = e->next;
+	}
+	return (NULL);
+}
+
+/**
+ * @note   is this variable already in the environment ?
  * @param  env: environment list
  * @param  var_name: variable name
  * @retval 1 is yes, 0 is no
