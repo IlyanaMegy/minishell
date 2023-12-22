@@ -20,11 +20,13 @@
 int	change_pwd(t_env *env)
 {
 	char	*cwd;
+	int		i;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (1);
-	return (replace_var_in_env(env, "PWD", cwd, 0), 0);
+	i = 0;
+	return (replace_var_in_env(env, "PWD", cwd, &i), 0);
 }
 
 /**
@@ -35,13 +37,15 @@ int	change_pwd(t_env *env)
 int	cd_home(t_env *env)
 {
 	char	*home;
+	int		i;
 
-	replace_var_in_env(env, "OLDPWD", get_var_content_from_env(env, "PWD"), 0);
+	i = 0;
+	replace_var_in_env(env, "OLDPWD", get_var_content_from_env(env, "PWD"), &i);
 	home = get_var_content_from_env(env, "HOME");
 	if (!home)
 		return (err_handler(ERR_PATH, "cd"), 1);
 	if (chdir(home) == 0)
-		return (replace_var_in_env(env, "PWD", home, 0), 0);
+		return (replace_var_in_env(env, "PWD", home, &i), 0);
 	return (1);
 }
 
@@ -54,12 +58,18 @@ int	cd_home(t_env *env)
 */
 int	ft_cd(t_env *env, char **cmd)
 {
-	if (cmd[2])
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+		i++;
+	if (i > 2)
 		return (err_handler(ERR_ARGS, "cd"), 1);
 	if (!cmd[1])
 		return (cd_home(env));
 	if (chdir(cmd[1]) != 0)
 		return (err_handler(ERR_NOFILEDIR, "cd"), 1);
-	replace_var_in_env(env, "OLDPWD", get_var_content_from_env(env, "PWD"), 0);
+	i = 0;
+	replace_var_in_env(env, "OLDPWD", get_var_content_from_env(env, "PWD"), &i);
 	return (change_pwd(env));
 }
