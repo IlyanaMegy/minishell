@@ -5,12 +5,12 @@
  * @param  env: environment list
  * @retval None
 */
-void	clean_env(t_env *env)
+void	clean_env()
 {
-	t_env_var	*e;
-	t_env_var	*tmp;
+	t_env	*e;
+	t_env	*tmp;
 
-	e = env->f_var;
+	e = g_minishell.env;
 	if (e == NULL)
 		return ;
 	while (e != NULL)
@@ -22,5 +22,5 @@ void	clean_env(t_env *env)
 		free(e);
 		e = tmp;
 	}
-	env = NULL;
+	g_minishell.env = NULL;
 }
