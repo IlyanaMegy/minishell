@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/13 16:30:30 by ilymegy           #+#    #+#              #
-#    Updated: 2023/12/13 16:30:31 by ilymegy          ###   ########.fr        #
+#    Updated: 2023/12/27 20:43:25 by ilymegy          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ BUILTINS		=	builtins/cd.c \
 
 CLEANING		=	clean/clean_it.c
 
-EXEC			=	exec/exec.c
+EXEC			=	exec/exec.c \
+					exec/exec_builtin.c
 
 ERROR			=	err_handler/error_handler.c
 

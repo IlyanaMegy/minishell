@@ -2,16 +2,15 @@
 
 /**
  * @note   replace content of existing var in environment
- * @param  env: environment list
  * @param  name: variable name
  * @param  content: variable content
-*/
-void	replace_var_in_env(t_env *env, char *name, char *content, int *append)
+ */
+void	replace_var_in_env(char *name, char *content, int *append)
 {
-	t_env_var	*e;
-	char		*tmp;
+	t_env	*e;
+	char	*tmp;
 
-	e = env->f_var;
+	e = g_minishell.env;
 	while (ft_strcmp(e->name, name))
 		e = e->next;
 	if (e && e->content && *append)
@@ -34,15 +33,14 @@ void	replace_var_in_env(t_env *env, char *name, char *content, int *append)
 
 /**
  * @note   get variable content from the environment
- * @param  env: environment list
  * @param  var_name: variable name
  * @retval content is yes, NULL is no variable with that name
-*/
-char	*get_var_content_from_env(t_env *env, char *var_name)
+ */
+char	*get_var_content_from_env(char *var_name)
 {
-	t_env_var	*e;
+	t_env	*e;
 
-	e = env->f_var;
+	e = g_minishell.env;
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
@@ -54,15 +52,14 @@ char	*get_var_content_from_env(t_env *env, char *var_name)
 
 /**
  * @note   is this variable already in the environment ?
- * @param  env: environment list
  * @param  var_name: variable name
  * @retval 1 is yes, 0 is no
-*/
-int	var_is_in_env(t_env *env, char *var_name)
+ */
+int	var_is_in_env(char *var_name)
 {
-	t_env_var	*e;
+	t_env	*e;
 
-	e = env->f_var;
+	e = g_minishell.env;
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
@@ -77,11 +74,11 @@ int	var_is_in_env(t_env *env, char *var_name)
  * @param  head: pointer to first element of the list
  * @param  node: element to compare to
  * @retval None
-*/
-void	sorted_var(t_env_var **head, t_env_var *node)
+ */
+void	sorted_var(t_env **head, t_env *node)
 {
-	t_env_var	tmp;
-	t_env_var	*curr;
+	t_env	tmp;
+	t_env	*curr;
 
 	curr = &tmp;
 	tmp.next = *head;
@@ -92,16 +89,16 @@ void	sorted_var(t_env_var **head, t_env_var *node)
 	*head = tmp.next;
 }
 
-/** 
+/**
  * @note   get a alphabetically sorted env
  * @param  head: pointer to first element of the list
  * @retval None
-*/
-void	get_sorted_env(t_env_var **head)
+ */
+void	get_sorted_env(t_env **head)
 {
-	t_env_var	*res;
-	t_env_var	*tmp;
-	t_env_var	*curr;
+	t_env	*res;
+	t_env	*tmp;
+	t_env	*curr;
 
 	curr = *head;
 	res = NULL;
