@@ -3,43 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:21:31 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/13 16:21:33 by ilymegy          ###   ########.fr       */
+/*   Updated: 2023/12/27 20:35:01 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+t_minishell	g_minishell;
+
 /**
  * @note   will add/replace variable to environment
- * @param  env: environment list
  * @param  var: variable name and content
  * @param  print_it: do we print it or not ?
  * @retval None
 */
-void	add_var_to_env_list(t_env *env, char **var, int print_it, int *append)
+void	add_var_to_env_list(char **var, int print_it, int *append)
 {
-	if (var_is_in_env(env, var[0]) && print_it)
+	if (var_is_in_env(var[0]) && print_it)
 	{
-		replace_var_in_env(env, var[0], var[1], append);
+		replace_var_in_env(var[0], var[1], append);
 		return ;
 	}
 	if (ft_strcmp(var[1], ""))
-		add_var_to_env(env, var[0], var[1], print_it);
+		add_var_to_env(var[0], var[1], print_it);
 	else
-		add_var_to_env(env, var[0], "", print_it);
+		add_var_to_env(var[0], "", print_it);
 }
 
 /**
  * @note   get name and content of the var then add it to the environment
  * @param  arg: variable
  * @param  append: += or not ?
- * @param  env: environment list
  * @retval 0 no error
 */
-int	extract_var(char *arg, int *append, t_env *env)
+int	extract_var(char *arg, int *append)
 {
 	int		i;
 	char	*var[2];
@@ -54,13 +54,13 @@ int	extract_var(char *arg, int *append, t_env *env)
 			var[1] = ft_strdup("");
 		else
 			var[1] = ft_strdup(arg + i + 1);
-		add_var_to_env_list(env, var, 1, append);
+		add_var_to_env_list(var, 1, append);
 	}
 	else if (!arg[i])
 	{
 		var[0] = ft_strdup(arg);
 		var[1] = ft_strdup("");
-		add_var_to_env_list(env, var, 0, append);
+		add_var_to_env_list(var, 0, append);
 	}
 	free(var[0]);
 	free(var[1]);
@@ -94,15 +94,14 @@ int	check_var_name(char *arg, int *append)
 
 /**
  * @note   simply display environment, print_it == 0 vars included
- * @param  env: environment list
  * @retval None
  */
-void	display_export(t_env *env)
+void	display_export(void)
 {
-	t_env_var	*e;
+	t_env	*e;
 	char		*shlvl;
 
-	e = env->f_var;
+	e = g_minishell.env;
 	get_sorted_env(&e);
 	while (e)
 	{
@@ -125,18 +124,17 @@ void	display_export(t_env *env)
 
 /**
  * @note   export a var in environment or display environment with tmp vars
- * @param  env: environment list
  * @param  cmd: export cmd and all args
  * @retval exit status
 */
-int	ft_export(t_env *env, char **cmd)
+int	ft_export(char **cmd)
 {
 	int	i;
 	int	exit_status;
 	int	append;
 
 	if (!cmd[1])
-		return (display_export(env), 0);
+		return (display_export(), 0);
 	i = 1;
 	while (cmd[i])
 	{
@@ -147,7 +145,7 @@ int	ft_export(t_env *env, char **cmd)
 			err_handler(ERR_EXPORT, cmd[i]);
 		}
 		else
-			exit_status = extract_var(cmd[i], &append, env);
+			exit_status = extract_var(cmd[i], &append);
 		i++;
 	}
 	return (exit_status);

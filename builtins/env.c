@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:21:04 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/13 16:21:06 by ilymegy          ###   ########.fr       */
+/*   Updated: 2023/12/27 21:25:51 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 /**
  * @note   do display the environment
- * @param  env: environment list
  * @retval None
-*/
-void	ft_env(t_env *env)
+ */
+void	ft_env(void)
 {
-	t_env_var	*e;
-	char		*shlvl;
+	t_env	*e;
+	char	*shlvl;
 
-	e = env->f_var;
+	e = g_minishell.env;
 	while (e)
 	{
 		if (!ft_strcmp(e->name, "SHLVL") && e->print_it == 1)
@@ -48,12 +47,12 @@ void	ft_env(t_env *env)
  * @param  content: variable content
  * @param  print_it: do we print it or not ?
  * @retval new variable just created
-*/
-t_env_var	*create_var(char *name, char *content, int print_it)
+ */
+t_env	*create_var(char *name, char *content, int print_it)
 {
-	t_env_var	*new;
+	t_env	*new;
 
-	new = malloc(sizeof(t_env_var));
+	new = malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
 	new->name = ft_strdup(name);
@@ -70,22 +69,21 @@ t_env_var	*create_var(char *name, char *content, int print_it)
 
 /**
  * @note   add a new var to env list
- * @param  env: environment list
  * @param  name: variable name
  * @param  content: variable content
  * @param  print_it: do we print it or not ?
  * @retval 0 is ok, 1 is err malloc
-*/
-int	add_var_to_env(t_env *env, char *name, char *content, int print_it)
+ */
+int	add_var_to_env(char *name, char *content, int print_it)
 {
-	t_env_var	*var;
-	t_env_var	*e;
+	t_env	*var;
+	t_env	*e;
 
 	var = create_var(name, content, print_it);
 	if (var == NULL)
-		return (1);
-	e = env->f_var;
-	if (env->f_var)
+		return (free(name), free(content), 1);
+	e = g_minishell.env;
+	if (g_minishell.env)
 	{
 		while (e->next)
 			e = e->next;
@@ -93,8 +91,8 @@ int	add_var_to_env(t_env *env, char *name, char *content, int print_it)
 		var->prev = e;
 	}
 	else
-		env->f_var = var;
-	return (0);
+		g_minishell.env = var;
+	return (free(name), free(content), 0);
 }
 
 /**
@@ -104,7 +102,7 @@ int	add_var_to_env(t_env *env, char *name, char *content, int print_it)
  * @param  arg: current argument from environment
  * @param  i: index
  * @retval 1 is err malloc, 0 is ok
-*/
+ */
 int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 {
 	char	*shlvl;
@@ -133,10 +131,9 @@ int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 /**
  * @note   get environment from arg_env and stock to env list
  * @param  arg_env: environment origin from minishell argument
- * @param  env: environment list
  * @retval 1 is err malloc, 0 is ok
-*/
-int	get_env(char **arg_env, t_env *env)
+ */
+int	get_env(char **arg_env)
 {
 	int		i[2];
 	char	**tmp_env;
@@ -144,7 +141,7 @@ int	get_env(char **arg_env, t_env *env)
 
 	i[0] = 0;
 	err_malloc = 0;
-	env->f_var = NULL;
+	g_minishell.env = NULL;
 	tmp_env = malloc(sizeof(char *) * 3);
 	if (!tmp_env)
 		return (1);
@@ -156,9 +153,7 @@ int	get_env(char **arg_env, t_env *env)
 		err_malloc = get_var(&tmp_env[0], &tmp_env[1], arg_env[i[0]], i[1]);
 		if (err_malloc)
 			break ;
-		err_malloc = add_var_to_env(env, tmp_env[0], tmp_env[1], 1);
-		free(tmp_env[1]);
-		free(tmp_env[0]);
+		err_malloc = add_var_to_env(tmp_env[0], tmp_env[1], 1);
 		if (err_malloc)
 			break ;
 		i[0]++;

@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/27 17:53:19 by ilymegy          ###   ########.fr       */
+/*   Updated: 2023/12/27 21:18:43 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,14 @@
  * @brief  char *name, char *content, int print_it, t_env_var *next
  * @note   return var name, var content, do print it ?, next var
  */
-typedef struct s_env_var
-{
-	char				*name;
-	char				*content;
-	int					print_it;
-	struct s_env_var	*next;
-	struct s_env_var	*prev;
-}						t_env_var;
-
-/**
- * @brief  t_env_var *first_var
- * @note   t_env *env is a pointer to the first element of env
- */
 typedef struct s_env
 {
-	t_env_var			*f_var;
-}						t_env;
+	char			*name;
+	char			*content;
+	int				print_it;
+	struct s_env	*next;
+	struct s_env	*prev;
+}					t_env;
 
 //  --------------------------------------------------------------------------------
 // |								MINISHELL										|
@@ -54,53 +45,58 @@ typedef struct s_env
 
 typedef struct s_minishell
 {
-	char				*line;
-	t_env				*env;
-}						t_minishell;
+	char			*line;
+	t_env			*env;
+}					t_minishell;
 
-extern t_minishell		g_minishell;
+extern t_minishell	g_minishell;
 
 //  --------------------------------------------------------------------------------
 // |								BUILTINS										|
 //  --------------------------------------------------------------------------------
 
 // builtins/env.c
-void					ft_env(t_env *env);
-int						add_var_to_env(t_env *env, char *name, char *content,
-							int print_it);
-int						get_env(char **arg_env, t_env *env);
+void				ft_env(void);
+int					add_var_to_env(char *name, char *content, int print_it);
+int					get_env(char **arg_env);
 
 // builtins/export.c
-int						ft_export(t_env *env, char **av);
-int						check_var_name(char *arg, int *append);
-void					display_export(t_env *env);
+int					ft_export(char **av);
+int					check_var_name(char *arg, int *append);
+void				display_export(void);
 
 // builtins/export_utils.c
-int						print_export_err_msg(char *arg);
-void					replace_var_in_env(t_env *env, char *name,
-							char *content, int *append);
-char					*get_var_content_from_env(t_env *env, char *var_name);
-int						var_is_in_env(t_env *env, char *var_name);
-void					get_sorted_env(t_env_var **head);
+void				replace_var_in_env(char *name, char *content, int *append);
+char				*get_var_content_from_env(char *var_name);
+int					var_is_in_env(char *var_name);
+void				get_sorted_env(t_env **head);
 
 // builtins/unset.c
-int						ft_unset(t_env *env, char **args);
+int					ft_unset(char **args);
 
 // builtins/cd.c
-int						ft_cd(t_env *env, char **cmd);
+int					ft_cd(char **cmd);
 
 // builtins/pwd.c
-int						ft_pwd(void);
+int					ft_pwd(void);
 //  --------------------------------------------------------------------------------
 // |									CLEAN										|
 //  --------------------------------------------------------------------------------
 
 // clean/clean_it.c
-void					clean_env(t_env *env);
+void				clean_env();
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
 //  --------------------------------------------------------------------------------
-void					err_handler(int err, char *s);
-char					*complexe_err_msg(int err, char *cmd);
+void				err_handler(int err, char *s);
+char				*complexe_err_msg(int err, char *cmd);
+
+//  --------------------------------------------------------------------------------
+// |								EXECUTION										|
+//  --------------------------------------------------------------------------------
+
+// exec/exec_builtin.c
+int					is_builtin(char *arg);
+int					exec_builtin(char **args);
 #endif
