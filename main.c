@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/27 21:00:18 by ilymegy          ###   ########.fr       */
+/*   Updated: 2023/12/27 23:37:13 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ int	main(int ac, char **av, char **arg_env)
 				exec_builtin(av);
 		}
 	}
-	clean_env(&env);
+	clean_env();
 	return (0);
 }
