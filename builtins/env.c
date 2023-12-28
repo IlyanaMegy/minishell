@@ -21,7 +21,7 @@ void	ft_env(void)
 	t_env	*e;
 	char	*shlvl;
 
-	e = g_minishell.env;
+	e = single_env(NULL, 0);
 	while (e)
 	{
 		if (!ft_strcmp(e->name, "SHLVL") && e->print_it == 1)
@@ -81,18 +81,19 @@ int	add_var_to_env(char *name, char *content, int print_it)
 
 	var = create_var(name, content, print_it);
 	if (var == NULL)
-		return (free(name), free(content), 1);
-	e = g_minishell.env;
-	if (g_minishell.env)
+		return (1);
+	var->next = NULL;
+	e = single_env(NULL, 0);
+	if (e)
 	{
 		while (e->next)
 			e = e->next;
-		e->next = var;
 		var->prev = e;
+		e->next = var;
 	}
 	else
-		g_minishell.env = var;
-	return (free(name), free(content), 0);
+		single_env(var, ADD);
+	return (0);
 }
 
 /**
@@ -107,6 +108,7 @@ int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 {
 	char	*shlvl;
 
+	shlvl = NULL;
 	*tmp_name = ft_strndup(arg, i);
 	if (*tmp_name == NULL)
 		return (1);
@@ -121,10 +123,7 @@ int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 	else
 		*tmp_content = ft_strdup(arg + i + 1);
 	if (*tmp_content == NULL)
-	{
-		free(*tmp_name);
-		return (1);
-	}
+		return (free(*tmp_name), 1);
 	return (0);
 }
 
@@ -137,11 +136,8 @@ int	get_env(char **arg_env)
 {
 	int		i[2];
 	char	**tmp_env;
-	int		err_malloc;
 
 	i[0] = 0;
-	err_malloc = 0;
-	g_minishell.env = NULL;
 	tmp_env = malloc(sizeof(char *) * 3);
 	if (!tmp_env)
 		return (1);
@@ -150,14 +146,13 @@ int	get_env(char **arg_env)
 		i[1] = 0;
 		while (arg_env[i[0]][i[1]] != '=')
 			i[1]++;
-		err_malloc = get_var(&tmp_env[0], &tmp_env[1], arg_env[i[0]], i[1]);
-		if (err_malloc)
-			break ;
-		err_malloc = add_var_to_env(tmp_env[0], tmp_env[1], 1);
-		if (err_malloc)
-			break ;
+		if (get_var(&tmp_env[0], &tmp_env[1], arg_env[i[0]], i[1]))
+			return (free(tmp_env), 1);
+		if (add_var_to_env(tmp_env[0], tmp_env[1], 1))
+			return (free(tmp_env[0]), free(tmp_env[1]), free(tmp_env), 1);
+		free(tmp_env[0]);
+		free(tmp_env[1]);
 		i[0]++;
 	}
-	free(tmp_env);
-	return (err_malloc);
+	return (free(tmp_env), 0);
 }

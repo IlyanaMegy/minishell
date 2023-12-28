@@ -10,7 +10,7 @@ void	replace_var_in_env(char *name, char *content, int *append)
 	t_env	*e;
 	char	*tmp;
 
-	e = g_minishell.env;
+	e = single_env(NULL, 0);
 	while (ft_strcmp(e->name, name))
 		e = e->next;
 	if (e && e->content && *append)
@@ -20,6 +20,7 @@ void	replace_var_in_env(char *name, char *content, int *append)
 		e->content = ft_strdup(tmp);
 		free(tmp);
 		e->print_it = 1;
+		single_env(e, ADD);
 		return ;
 	}
 	if (e && e->content)
@@ -29,6 +30,7 @@ void	replace_var_in_env(char *name, char *content, int *append)
 	else if (e)
 		e->content = ft_strdup("");
 	e->print_it = 1;
+	single_env(e, ADD);
 }
 
 /**
@@ -40,7 +42,7 @@ char	*get_var_content_from_env(char *var_name)
 {
 	t_env	*e;
 
-	e = g_minishell.env;
+	e = single_env(NULL, 0);
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
@@ -59,10 +61,10 @@ int	var_is_in_env(char *var_name)
 {
 	t_env	*e;
 
-	e = g_minishell.env;
+	e = single_env(NULL, 0);
 	while (e)
 	{
-		if (!ft_strcmp(e->name, var_name))
+		if (e->name && var_name && !ft_strcmp(e->name, var_name))
 			return (1);
 		e = e->next;
 	}
@@ -94,13 +96,13 @@ void	sorted_var(t_env **head, t_env *node)
  * @param  head: pointer to first element of the list
  * @retval None
  */
-void	get_sorted_env(t_env **head)
+t_env	*get_sorted_env(t_env *head)
 {
 	t_env	*res;
 	t_env	*tmp;
 	t_env	*curr;
 
-	curr = *head;
+	curr = head;
 	res = NULL;
 	while (curr != NULL)
 	{
@@ -108,5 +110,5 @@ void	get_sorted_env(t_env **head)
 		sorted_var(&res, curr);
 		curr = tmp;
 	}
-	*head = res;
+	return (res);
 }

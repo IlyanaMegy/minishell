@@ -2,17 +2,15 @@
 
 /**
  * @note   clean the env list
- * @param  env: environment list
- * @retval None
+ * @param  e:	environment list to clear
+ * @retval NULL env
 */
-void	clean_env()
+t_env	*clean_env(t_env *e)
 {
-	t_env	*e;
 	t_env	*tmp;
 
-	e = g_minishell.env;
 	if (e == NULL)
-		return ;
+		return (NULL);
 	while (e != NULL)
 	{
 		tmp = e->next;
@@ -22,5 +20,5 @@ void	clean_env()
 		free(e);
 		e = tmp;
 	}
-	g_minishell.env = NULL;
+	return ( NULL);
 }

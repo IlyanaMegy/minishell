@@ -28,7 +28,8 @@ BUILTINS		=	builtins/cd.c \
 					builtins/pwd.c \
 					builtins/unset.c
 
-CLEANING		=	clean/clean_it.c
+CLEANING		=	clean/clean_it.c \
+					clean/singletons.c
 
 EXEC			=	exec/exec.c \
 					exec/exec_builtin.c

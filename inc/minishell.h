@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/27 21:18:43 by ilymegy          ###   ########.fr       */
+/*   Updated: 2023/12/27 23:34:02 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 # include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+
+# define ADD 1
+# define RM 2
 
 # define ERR_ARGS 2
 # define ERR_PATH 3
@@ -39,6 +42,11 @@ typedef struct s_env
 	struct s_env	*prev;
 }					t_env;
 
+typedef struct s_envlst
+{
+	t_env			*first;
+}					t_envlst;
+
 //  --------------------------------------------------------------------------------
 // |								MINISHELL										|
 //  --------------------------------------------------------------------------------
@@ -46,10 +54,10 @@ typedef struct s_env
 typedef struct s_minishell
 {
 	char			*line;
-	t_env			*env;
+	// t_env			*env;
 }					t_minishell;
 
-extern t_minishell	g_minishell;
+// extern t_minishell	g_minishell;
 
 //  --------------------------------------------------------------------------------
 // |								BUILTINS										|
@@ -57,6 +65,7 @@ extern t_minishell	g_minishell;
 
 // builtins/env.c
 void				ft_env(void);
+t_env				*create_var(char *name, char *content, int print_it);
 int					add_var_to_env(char *name, char *content, int print_it);
 int					get_env(char **arg_env);
 
@@ -69,7 +78,7 @@ void				display_export(void);
 void				replace_var_in_env(char *name, char *content, int *append);
 char				*get_var_content_from_env(char *var_name);
 int					var_is_in_env(char *var_name);
-void				get_sorted_env(t_env **head);
+t_env				*get_sorted_env(t_env *head);
 
 // builtins/unset.c
 int					ft_unset(char **args);
@@ -79,12 +88,18 @@ int					ft_cd(char **cmd);
 
 // builtins/pwd.c
 int					ft_pwd(void);
+
+// builtins/echo.c
+int					ft_echo(char **args);
 //  --------------------------------------------------------------------------------
 // |									CLEAN										|
 //  --------------------------------------------------------------------------------
 
 // clean/clean_it.c
-void				clean_env();
+t_env				*clean_env(t_env *e);
+// clean/singletons.c
+t_env				*single_env(t_env *env, int mode);
+t_env				*copy_my_lst(t_env *src);
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
