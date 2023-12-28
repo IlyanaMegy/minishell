@@ -16,6 +16,9 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+# define ADD 1
+# define RM 2
+
 # define ERR_ARGS 2
 # define ERR_PATH 3
 # define ERR_NOFILEDIR 4
@@ -39,6 +42,11 @@ typedef struct s_env
 	struct s_env	*prev;
 }					t_env;
 
+typedef struct s_envlst
+{
+	t_env			*first;
+}					t_envlst;
+
 //  --------------------------------------------------------------------------------
 // |								MINISHELL										|
 //  --------------------------------------------------------------------------------
@@ -46,10 +54,10 @@ typedef struct s_env
 typedef struct s_minishell
 {
 	char			*line;
-	t_env			*env;
+	// t_env			*env;
 }					t_minishell;
 
-extern t_minishell	g_minishell;
+// extern t_minishell	g_minishell;
 
 //  --------------------------------------------------------------------------------
 // |								BUILTINS										|
@@ -69,7 +77,7 @@ void				display_export(void);
 void				replace_var_in_env(char *name, char *content, int *append);
 char				*get_var_content_from_env(char *var_name);
 int					var_is_in_env(char *var_name);
-void				get_sorted_env(t_env **head);
+t_env				*get_sorted_env(t_env *head);
 
 // builtins/unset.c
 int					ft_unset(char **args);
@@ -87,7 +95,10 @@ int					ft_echo(char **args);
 //  --------------------------------------------------------------------------------
 
 // clean/clean_it.c
-void				clean_env(void);
+t_env				*clean_env(void);
+
+// clean/singletons.c
+t_env				*single_env(t_env *env, int mode);
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|

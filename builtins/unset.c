@@ -21,7 +21,7 @@ void	remove_var_from_env(char *var_name)
 {
 	t_env	*e;
 
-	e = g_minishell.env;
+	e = single_env(NULL, 0);
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
@@ -46,8 +46,8 @@ void	remove_var_from_env(char *var_name)
 */
 int	ft_unset(char **args)
 {
-	int i;
-	int exit_status;
+	int	i;
+	int	exit_status;
 
 	if (!args[1])
 		return (0);

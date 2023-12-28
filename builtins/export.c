@@ -12,8 +12,6 @@
 
 #include "../inc/minishell.h"
 
-t_minishell	g_minishell;
-
 /**
  * @note   will add/replace variable to environment
  * @param  var: variable name and content
@@ -27,7 +25,7 @@ void	add_var_to_env_list(char **var, int print_it, int *append)
 		replace_var_in_env(var[0], var[1], append);
 		return ;
 	}
-	if (ft_strcmp(var[1], ""))
+	if (var[1] && ft_strcmp(var[1], ""))
 		add_var_to_env(var[0], var[1], print_it);
 	else
 		add_var_to_env(var[0], "", print_it);
@@ -50,6 +48,8 @@ int	extract_var(char *arg, int *append)
 	if (arg[i] && arg[i] == '=')
 	{
 		var[0] = ft_strndup(arg, i - *append);
+		if (!var[0])
+			return (1);
 		if (!arg[i + 1])
 			var[1] = ft_strdup("");
 		else
@@ -59,12 +59,14 @@ int	extract_var(char *arg, int *append)
 	else if (!arg[i])
 	{
 		var[0] = ft_strdup(arg);
+		if (!var[0])
+			return (1);
 		var[1] = ft_strdup("");
+		if (!var[1])
+			return (free(var[0]), 1);
 		add_var_to_env_list(var, 0, append);
 	}
-	free(var[0]);
-	free(var[1]);
-	return (0);
+	return (free(var[0]), free(var[1]), 0);
 }
 
 /**
@@ -99,10 +101,11 @@ int	check_var_name(char *arg, int *append)
 void	display_export(void)
 {
 	t_env	*e;
-	char		*shlvl;
+	t_env	*dirty_e;
+	char	*shlvl;
 
-	e = g_minishell.env;
-	get_sorted_env(&e);
+	dirty_e = single_env(NULL, 0);
+	e = get_sorted_env(dirty_e);
 	while (e)
 	{
 		if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)

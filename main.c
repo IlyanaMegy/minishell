@@ -14,21 +14,27 @@
 
 int	main(int ac, char **av, char **arg_env)
 {
-	t_env	env;
-
-	if (ac > 1 && av)
+	if (ac > 0 && av)
 	{
-		ft_memset(&g_minishell, 0, sizeof(t_minishell));
+		// ft_memset(&g_minishell, 0, sizeof(t_minishell));
 		get_env(arg_env);
-		while (1)
-		{
-			g_minishell.line = readline("minishell$ ");
-			if (!g_minishell.line)
-				break ;
-			if (is_builtin(g_minishell.line))
-				exec_builtin(av);
-		}
+		ft_env();
+		// display_export();
+		ft_printf("\n\n______________________________________\n\n");
+
+		ft_unset(av);
+		// ft_env();
+		display_export();
+		// while (1)
+		// {
+		// 	t_minishell.line = readline("minishell$ ");
+		// 	if (!g_minishell.line)
+		// 		break ;
+		// 	if (is_builtin(g_minishell.line))
+		// 		exec_builtin(av);
+		// }
+		single_env(NULL, RM);
 	}
-	clean_env();
+	
 	return (0);
 }
