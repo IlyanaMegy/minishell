@@ -118,10 +118,7 @@ int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 		if (!shlvl)
 			*tmp_content = ft_strdup(arg + i + 1);
 		else
-		{
 			*tmp_content = shlvl;
-			// free(shlvl);
-		}
 	}
 	else
 		*tmp_content = ft_strdup(arg + i + 1);

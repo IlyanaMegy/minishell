@@ -104,7 +104,7 @@ void	display_export(void)
 	t_env	*dirty_e;
 	char	*shlvl;
 
-	dirty_e = single_env(NULL, 0);
+	dirty_e = copy_my_lst(single_env(NULL, 0));
 	e = get_sorted_env(dirty_e);
 	while (e)
 	{
@@ -123,6 +123,7 @@ void	display_export(void)
 			ft_printf("%s=\"%s\"\n", e->name, e->content);
 		e = e->next;
 	}
+	clean_env(dirty_e);
 }
 
 /**

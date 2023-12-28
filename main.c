@@ -14,15 +14,24 @@
 
 int	main(int ac, char **av, char **arg_env)
 {
+	// t_envlst envlst;
 	if (ac > 0 && av)
 	{
-		// ft_memset(&g_minishell, 0, sizeof(t_minishell));
+		// ft_memset(&envlst, 0, sizeof(t_envlst));
+		// envlst.first = single_env(NULL, 0);
 		get_env(arg_env);
 		ft_env();
-		// display_export();
+
+
 		ft_printf("\n\n______________________________________\n\n");
 
-		ft_unset(av);
+		// ft_unset(av);
+		// ft_env();
+		display_export();
+
+		ft_printf("\n\n______________________________________\n\n");
+
+		// ft_unset(av);
 		// ft_env();
 		display_export();
 		// while (1)
@@ -33,7 +42,7 @@ int	main(int ac, char **av, char **arg_env)
 		// 	if (is_builtin(g_minishell.line))
 		// 		exec_builtin(av);
 		// }
-		single_env(NULL, RM);
+		clean_env(single_env(NULL, 0));
 	}
 	
 	return (0);

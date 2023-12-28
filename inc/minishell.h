@@ -65,6 +65,7 @@ typedef struct s_minishell
 
 // builtins/env.c
 void				ft_env(void);
+t_env				*create_var(char *name, char *content, int print_it);
 int					add_var_to_env(char *name, char *content, int print_it);
 int					get_env(char **arg_env);
 
@@ -95,10 +96,10 @@ int					ft_echo(char **args);
 //  --------------------------------------------------------------------------------
 
 // clean/clean_it.c
-t_env				*clean_env(void);
-
+t_env				*clean_env(t_env *e);
 // clean/singletons.c
 t_env				*single_env(t_env *env, int mode);
+t_env				*copy_my_lst(t_env *src);
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|

@@ -2,30 +2,26 @@
 
 t_env	*single_env(t_env *env, int mode)
 {
-	static t_env *single_env = NULL;
+	static t_env	*single_env = NULL;
 	if (mode == ADD)
 		single_env = env;
 	else if (mode == RM)
-		single_env = clean_env();
+		single_env = clean_env(env);
 	return (single_env);
 }
 
-// char **single_env(char **env, int mode)
-// {
-// 	static t_env *single_env = NULL;
+t_env	*copy_my_lst(t_env *src)
+{
+	t_env	*copy;
 
-// 	if (mode == ADD)
-// 	{
-// 		single_env = env;
-// 		return single_env;
-// 	}
-// 	return single_env;
-// }
-
-// int var1;
-// int	main(int ac, char **av, char **env)
-// {
-// 	int var2;
-// 	single_env(env, ADD);
-// 	single_env(NULL, 0);
-// }
+	if (src == NULL)
+		return (NULL);
+	else
+	{
+		copy = create_var(src->name, src->content, src->print_it);
+		if (copy == NULL)
+			return (NULL);
+		copy->next = copy_my_lst(src->next);
+		return (copy);
+	}
+}
