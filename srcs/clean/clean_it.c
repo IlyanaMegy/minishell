@@ -22,3 +22,17 @@ t_env	*clean_env(t_env *e)
 	}
 	return ( NULL);
 }
+
+void	free_tab(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
+	return ;
+}
