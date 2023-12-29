@@ -42,17 +42,13 @@ typedef struct s_env
 	struct s_env	*prev;
 }					t_env;
 
-
 //  --------------------------------------------------------------------------------
 // |								MINISHELL										|
 //  --------------------------------------------------------------------------------
 
 typedef struct s_minishell
 {
-	char			*line;
-	// t_env			*env;
 }					t_minishell;
-
 
 //  --------------------------------------------------------------------------------
 // |								BUILTINS										|
@@ -92,6 +88,7 @@ int					ft_echo(char **args);
 
 // clean/clean_it.c
 t_env				*clean_env(t_env *e);
+void				free_tab(char **map);
 
 // clean/singletons.c
 t_env				*single_env(t_env *env, int mode);
@@ -118,4 +115,11 @@ int					exec_builtin(char **args);
 
 // utils/lst_functions.c
 int					ms_lstsize(t_env *lst);
+
+//  --------------------------------------------------------------------------------
+// |									PARSING										|
+//  --------------------------------------------------------------------------------
+
+// parsing/parse.c
+void				new_command(char *line);
 #endif
