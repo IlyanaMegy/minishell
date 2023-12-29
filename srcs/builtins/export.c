@@ -132,7 +132,7 @@ int	ft_export(char **cmd)
 			err_handler(ERR_EXPORT, cmd[i]);
 		}
 		else
-			exit_status = extract_var(cmd[i], &append);
+			extract_var(cmd[i], &append);
 		i++;
 	}
 	return (exit_status);
