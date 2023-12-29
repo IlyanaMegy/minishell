@@ -7,7 +7,7 @@ int	exec_builtin(char **args)
 	if (ft_strcmp(args[0], "cd") == 0)
 		return (ft_cd(args));
 	if (ft_strcmp(args[0], "env") == 0)
-		ft_env();
+		return (ft_env(), 0);
 	if (ft_strcmp(args[0], "pwd") == 0)
 		return (ft_pwd());
 	if (ft_strcmp(args[0], "export") == 0)

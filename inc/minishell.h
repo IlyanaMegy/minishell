@@ -18,6 +18,7 @@
 
 # define ADD 1
 # define RM 2
+# define GET 3
 
 # define ERR_ARGS 2
 # define ERR_PATH 3
@@ -66,13 +67,13 @@ int					check_var_name(char *arg, int *append);
 void				display_export(void);
 
 // builtins/export_utils.c
-void				replace_var_in_env(char *name, char *content, int *append);
+int					replace_var_in_env(char *name, char *content, int *append);
 char				*get_var_content_from_env(char *var_name);
-int					var_is_in_env(char *var_name);
 t_env				*get_sorted_env(t_env **head);
 
 // builtins/unset.c
 int					ft_unset(char **args);
+int					var_is_in_env(char *var_name);
 
 // builtins/cd.c
 int					ft_cd(char **cmd);
@@ -89,10 +90,6 @@ int					ft_echo(char **args);
 // clean/clean_it.c
 t_env				*clean_env(t_env *e);
 void				free_tab(char **map);
-
-// clean/singletons.c
-t_env				*single_env(t_env *env, int mode);
-t_env				*copy_my_lst(t_env *src);
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
@@ -115,6 +112,11 @@ int					exec_builtin(char **args);
 
 // utils/lst_functions.c
 int					ms_lstsize(t_env *lst);
+
+// utils/singletons.c
+t_env				*single_env(t_env *env, int mode);
+int					single_exit_s(int exit_s, int mode);
+t_env				*copy_my_lst(t_env *src);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|

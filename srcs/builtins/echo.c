@@ -12,6 +12,11 @@
 
 #include "../../inc/minishell.h"
 
+/**
+ * @note   check if there's a -n option for echo builtin
+ * @param  s: option
+ * @retval 1 all is good, 0 not an option
+*/
 int	check_option(char *s)
 {
 	int	i;

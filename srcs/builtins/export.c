@@ -16,19 +16,39 @@
  * @note   will add/replace variable to environment
  * @param  var: variable name and content
  * @param  print_it: do we print it or not ?
- * @retval None
+ * @retval exit status 0 is ok, 1 not ok
 */
-void	add_var_to_env_list(char **var, int print_it, int *append)
+int	add_var_to_env_list(char **var, int print_it, int *append)
 {
+	int	exit_s;
+
+	exit_s = 0;
 	if (var_is_in_env(var[0]) && print_it)
 	{
-		replace_var_in_env(var[0], var[1], append);
-		return ;
+		exit_s = replace_var_in_env(var[0], var[1], append);
+		return (free(var[0]), free(var[1]), exit_s);
 	}
-	if (var[1] && ft_strcmp(var[1], ""))
-		add_var_to_env(var[0], var[1], print_it);
-	else
-		add_var_to_env(var[0], "", print_it);
+	exit_s = add_var_to_env(var[0], var[1], print_it);
+	return (free(var[0]), free(var[1]), exit_s);
+}
+
+/**
+ * @note   get name and content of the var then add it to the environment
+ * @param  name: variable name
+ * @param  content: variable content
+ * @retval 1 case strdup or strndup failed, 0 is ok
+*/
+int	extract_var_no_content(char *arg, int *append)
+{
+	char	*var[2];
+
+	var[0] = ft_strdup(arg);
+	if (!(var[0]))
+		return (1);
+	var[1] = ft_strdup("");
+	if (!(var[1]))
+		return (free(var[0]), 1);
+	return (add_var_to_env_list(var, 0, append));
 }
 
 /**
@@ -54,18 +74,12 @@ int	extract_var(char *arg, int *append)
 			var[1] = ft_strdup("");
 		else
 			var[1] = ft_strdup(arg + i + 1);
-		add_var_to_env_list(var, 1, append);
-	}
-	else if (!arg[i])
-	{
-		var[0] = ft_strdup(arg);
-		if (!var[0])
-			return (1);
-		var[1] = ft_strdup("");
 		if (!var[1])
 			return (free(var[0]), 1);
-		add_var_to_env_list(var, 0, append);
+		return (add_var_to_env_list(var, 1, append));
 	}
+	else if (!arg[i])
+		return (extract_var_no_content(arg, append));
 	return (free(var[0]), free(var[1]), 0);
 }
 
@@ -93,31 +107,6 @@ int	check_var_name(char *arg, int *append)
 		i++;
 	}
 	return (1);
-}
-
-/**
- * @note   simply display environment, print_it == 0 vars included
- * @retval None
- */
-void	display_export(void)
-{
-	t_env	*e;
-	t_env	*dirty_e;
-
-	dirty_e = copy_my_lst(single_env(NULL, 0));
-	if (dirty_e != NULL && ms_lstsize(dirty_e) == ms_lstsize(single_env(NULL, 0)))
-	{
-		e = get_sorted_env(&dirty_e);
-		while (e)
-		{
-			if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
-				ft_printf("");
-			else
-				ft_printf("export %s=\"%s\"\n", e->name, e->content);
-			e = e->next;
-		}
-		clean_env(dirty_e);
-	}
 }
 
 /**

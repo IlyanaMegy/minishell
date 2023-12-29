@@ -4,33 +4,31 @@
  * @note   replace content of existing var in environment
  * @param  name: variable name
  * @param  content: variable content
+ * @param  append: is there += ?
+ * @retval 1 is err malloc, 0 is ok
  */
-void	replace_var_in_env(char *name, char *content, int *append)
+int	replace_var_in_env(char *name, char *content, int *append)
 {
 	t_env	*e;
 	char	*tmp;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (ft_strcmp(e->name, name))
 		e = e->next;
-	if (e && e->content && *append)
-	{
-		tmp = ft_strjoin(e->content, content);
-		free(e->content);
-		e->content = ft_strdup(tmp);
-		free(tmp);
-		e->print_it = 1;
-		single_env(e, ADD);
-		return ;
-	}
+	tmp = ft_strjoin(e->content, content);
+	if (!tmp)
+		return (1);
 	if (e && e->content)
 		free(e->content);
-	if (e && content)
+	if (e && e->content && *append)
+		e->content = ft_strdup(tmp);
+	else if (e && e->content && !(*append))
 		e->content = ft_strdup(content);
-	else if (e)
-		e->content = ft_strdup("");
+	free(tmp);
+	if (!e->content)
+		return (1);
 	e->print_it = 1;
-	single_env(e, ADD);
+	return (0);
 }
 
 /**
@@ -42,7 +40,7 @@ char	*get_var_content_from_env(char *var_name)
 {
 	t_env	*e;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
@@ -53,22 +51,28 @@ char	*get_var_content_from_env(char *var_name)
 }
 
 /**
- * @note   is this variable already in the environment ?
- * @param  var_name: variable name
- * @retval 1 is yes, 0 is no
+ * @note   simply display environment, print_it == 0 vars included
+ * @retval None
  */
-int	var_is_in_env(char *var_name)
+void	display_export(void)
 {
 	t_env	*e;
+	t_env	*dirty_e;
 
-	e = single_env(NULL, 0);
-	while (e)
+	dirty_e = copy_my_lst(single_env(NULL, GET));
+	if (dirty_e != NULL)
 	{
-		if (e->name && var_name && !ft_strcmp(e->name, var_name))
-			return (1);
-		e = e->next;
+		e = get_sorted_env(&dirty_e);
+		while (e)
+		{
+			if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
+				ft_printf("");
+			else
+				ft_printf("export %s=\"%s\"\n", e->name, e->content);
+			e = e->next;
+		}
+		clean_env(dirty_e);
 	}
-	return (0);
 }
 
 /**
