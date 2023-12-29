@@ -15,6 +15,7 @@
 int	main(int ac, char **av, char **arg_env)
 {
 	char	*cmd_line;
+	char **cmd;
 
 	(void)ac;
 	(void)av;
@@ -24,14 +25,12 @@ int	main(int ac, char **av, char **arg_env)
 		cmd_line = readline("minishell$ ");
 		if (!cmd_line || !ft_strcmp(cmd_line, "exit"))
 			break ;
-		ft_printf("you said : \"%s\"\n", cmd_line);
+		cmd = ft_split(cmd_line, ' ');
+		if (is_builtin(cmd[0]))
+			exec_builtin(cmd);
 		free(cmd_line);
-		// if (is_builtin(g_minishell.line))
-		// 	exec_builtin(av);
+		free_tab(cmd);
 	}
-	// display_export();
-	// ft_printf("\n\n");
-	// ft_env();
 	clean_env(single_env(NULL, 0));
 	return (0);
 }
