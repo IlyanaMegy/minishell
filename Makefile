@@ -17,35 +17,43 @@ CFLAGS			=	-Wall -Wextra -Werror -g3
 
 INC				=	-I ./inc/\
 					-I ./libft/
-INCS			= ./inc/*.h
+INCS			=	./inc/*.h
 
-BUILTINS		=	builtins/cd.c \
-					builtins/echo.c \
-					builtins/env.c \
-					builtins/exit.c \
-					builtins/export.c \
-					builtins/export_utils.c \
-					builtins/pwd.c \
-					builtins/unset.c
+BUILTINS		=	srcs/builtins/cd.c \
+					srcs/builtins/echo.c \
+					srcs/builtins/env.c \
+					srcs/builtins/exit.c \
+					srcs/builtins/export.c \
+					srcs/builtins/export_utils.c \
+					srcs/builtins/pwd.c \
+					srcs/builtins/unset.c
 
-CLEANING		=	clean/clean_it.c \
-					clean/singletons.c
+CLEANING		=	srcs/clean/clean_it.c \
+					srcs/clean/singletons.c
 
-EXEC			=	exec/exec.c \
-					exec/exec_builtin.c
+EXEC			=	srcs/exec/exec.c \
+					srcs/exec/exec_builtin.c
 
-ERROR			=	err_handler/error_handler.c
+ERROR			=	srcs/err_handler/error_handler.c
 
-PARSING			=	parsing/parser.c
+PARSING			=	srcs/parsing/parser.c
+
+PIPEX			=	srcs/pipex/open_close.c \
+					srcs/pipex/pipex_utils.c \
+					srcs/pipex/pipex.c
+
+UTILS			=	srcs/utils/ms_lstsize.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
 					$(EXEC)\
 					$(PARSING)\
+					$(PIPEX)\
+					$(UTILS)\
 					$(ERROR)\
-					main.c
+					srcs/main.c
 
-LIBFT_PATH 		=	libft/
+LIBFT_PATH 		=	srcs/libft/
 LIBFT_NAME		=	libft
 LIBFT			=	$(LIBFT_PATH)$(LIBFT_NAME)
 
@@ -60,11 +68,14 @@ all:			$(LIBFT) $(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)
-				@mkdir -p $(OBJ_PATH)/clean
-				@mkdir -p $(OBJ_PATH)/builtins
-				@mkdir -p $(OBJ_PATH)/exec
-				@mkdir -p $(OBJ_PATH)/parsing
-				@mkdir -p $(OBJ_PATH)/err_handler
+				@mkdir -p $(OBJ_PATH)/srcs
+				@mkdir -p $(OBJ_PATH)/srcs/clean
+				@mkdir -p $(OBJ_PATH)/srcs/builtins
+				@mkdir -p $(OBJ_PATH)/srcs/exec
+				@mkdir -p $(OBJ_PATH)/srcs/parsing
+				@mkdir -p $(OBJ_PATH)/srcs/pipex
+				@mkdir -p $(OBJ_PATH)/srcs/utils
+				@mkdir -p $(OBJ_PATH)/srcs/err_handler
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include
 
 $(LIBFT):
