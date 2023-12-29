@@ -2,8 +2,8 @@
 
 int	exec_builtin(char **args)
 {
-	// if (ft_strcmp(args[0], "echo") == 0)
-	// 	return (ft_echo(args));
+	if (ft_strcmp(args[0], "echo") == 0)
+		return (ft_echo(args));
 	if (ft_strcmp(args[0], "cd") == 0)
 		return (ft_cd(args));
 	if (ft_strcmp(args[0], "env") == 0)

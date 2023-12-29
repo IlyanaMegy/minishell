@@ -3,14 +3,13 @@
 t_env	*single_env(t_env *env, int mode)
 {
 	static t_env	*single_env = NULL;
+	
 	if (mode == ADD)
 		single_env = env;
 	else if (mode == RM)
 		single_env = clean_env(env);
 	return (single_env);
 }
-
-
 
 t_env	*copy_my_lst(t_env *src)
 {

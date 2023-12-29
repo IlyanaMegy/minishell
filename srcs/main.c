@@ -14,10 +14,23 @@
 
 int	main(int ac, char **av, char **arg_env)
 {
-	if (ac > 0 && av)
+	char	*cmd_line;
+	char	**cmd;
+
+	(void)ac;
+	(void)av;
+	get_env(arg_env);
+	while (1)
 	{
-		get_env(arg_env);
-		clean_env(single_env(NULL, 0));
+		cmd_line = readline("minishell$ ");
+		if (!cmd_line || !ft_strcmp(cmd_line, "exit"))
+			break ;
+		cmd = ft_split(cmd_line, ' ');
+		if (is_builtin(cmd[0]))
+			exec_builtin(cmd);
+		free(cmd_line);
+		free_tab(cmd);
 	}
+	clean_env(single_env(NULL, 0));
 	return (0);
 }
