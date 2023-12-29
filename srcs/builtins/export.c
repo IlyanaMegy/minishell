@@ -20,22 +20,16 @@
 */
 int	add_var_to_env_list(char **var, int print_it, int *append)
 {
-	int i;
+	int	exit_s;
 
-	i = 1;
-	if (var_is_in_env(var[0]) && !ft_strcmp(var[1], "")){
-		replace_var_in_env(var[0], var[1], &i);
-		return 0;
-	}
+	exit_s = 0;
 	if (var_is_in_env(var[0]) && print_it)
 	{
-		replace_var_in_env(var[0], var[1], append);
-		return (0);
+		exit_s = replace_var_in_env(var[0], var[1], append);
+		return (free(var[0]), free(var[1]), exit_s);
 	}
-	if (var[1] && ft_strcmp(var[1], ""))
-		return (add_var_to_env(var[0], var[1], print_it));
-	else
-		return (add_var_to_env(var[0], "", print_it));
+	exit_s = add_var_to_env(var[0], var[1], print_it);
+	return (free(var[0]), free(var[1]), exit_s);
 }
 
 /**
@@ -44,15 +38,17 @@ int	add_var_to_env_list(char **var, int print_it, int *append)
  * @param  content: variable content
  * @retval 1 case strdup or strndup failed, 0 is ok
 */
-int	extract_var_no_content(char **name, char **content, char *arg)
+int	extract_var_no_content(char *arg, int *append)
 {
-	*name = ft_strdup(arg);
-	if (!(*name))
+	char	*var[2];
+
+	var[0] = ft_strdup(arg);
+	if (!(var[0]))
 		return (1);
-	*content = ft_strdup("");
-	if (!(*content))
-		return (free(*name), 1);
-	return (0);
+	var[1] = ft_strdup("");
+	if (!(var[1]))
+		return (free(var[0]), 1);
+	return (add_var_to_env_list(var, 0, append));
 }
 
 /**
@@ -78,14 +74,12 @@ int	extract_var(char *arg, int *append)
 			var[1] = ft_strdup("");
 		else
 			var[1] = ft_strdup(arg + i + 1);
-		add_var_to_env_list(var, 1, append);
+		if (!var[1])
+			return (free(var[0]), 1);
+		return (add_var_to_env_list(var, 1, append));
 	}
 	else if (!arg[i])
-	{
-		if (extract_var_no_content(&var[0], &var[1], arg))
-			return (1);
-		add_var_to_env_list(var, 0, append);
-	}
+		return (extract_var_no_content(arg, append));
 	return (free(var[0]), free(var[1]), 0);
 }
 

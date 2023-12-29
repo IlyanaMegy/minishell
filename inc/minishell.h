@@ -67,7 +67,7 @@ int					check_var_name(char *arg, int *append);
 void				display_export(void);
 
 // builtins/export_utils.c
-void				replace_var_in_env(char *name, char *content, int *append);
+int					replace_var_in_env(char *name, char *content, int *append);
 char				*get_var_content_from_env(char *var_name);
 t_env				*get_sorted_env(t_env **head);
 

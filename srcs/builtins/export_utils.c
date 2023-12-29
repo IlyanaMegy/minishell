@@ -4,8 +4,9 @@
  * @note   replace content of existing var in environment
  * @param  name: variable name
  * @param  content: variable content
+ * @retval 1 is err malloc, 0 is ok
  */
-void	replace_var_in_env(char *name, char *content, int *append)
+int	replace_var_in_env(char *name, char *content, int *append)
 {
 	t_env	*e;
 	char	*tmp;
@@ -13,20 +14,20 @@ void	replace_var_in_env(char *name, char *content, int *append)
 	e = single_env(NULL, GET);
 	while (ft_strcmp(e->name, name))
 		e = e->next;
-	if (e && e->content && *append)
-	{
-		tmp = ft_strjoin(e->content, content);
-		free(e->content);
-		e->content = ft_strdup(tmp);
-		free(tmp);
-		e->print_it = 1;
-		return ;
-	}
+	tmp = ft_strjoin(e->content, content);
+	if (!tmp)
+		return (1);
 	if (e && e->content)
 		free(e->content);
-	if (e && content)
+	if (e && e->content && *append)
+		e->content = ft_strdup(tmp);
+	else if (e && e->content && !(*append))
 		e->content = ft_strdup(content);
+	free(tmp);
+	if (!e->content)
+		return (1);
 	e->print_it = 1;
+	return (0);
 }
 
 /**
