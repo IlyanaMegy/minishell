@@ -10,7 +10,7 @@ void	replace_var_in_env(char *name, char *content, int *append)
 	t_env	*e;
 	char	*tmp;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (ft_strcmp(e->name, name))
 		e = e->next;
 	if (e && e->content && *append)
@@ -42,7 +42,7 @@ char	*get_var_content_from_env(char *var_name)
 {
 	t_env	*e;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
@@ -61,7 +61,7 @@ int	var_is_in_env(char *var_name)
 {
 	t_env	*e;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (e)
 	{
 		if (e->name && var_name && !ft_strcmp(e->name, var_name))

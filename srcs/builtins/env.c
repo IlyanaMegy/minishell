@@ -13,14 +13,14 @@
 #include "../../inc/minishell.h"
 
 /**
- * @note   do display the environment
+ * @note   do display the environment from t_env linked list
  * @retval None
  */
 void	ft_env(void)
 {
 	t_env	*e;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (e)
 	{
 		if (e->print_it == 1)
@@ -71,7 +71,7 @@ int	add_var_to_env(char *name, char *content, int print_it)
 	if (var == NULL)
 		return (1);
 	var->next = NULL;
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	if (e)
 	{
 		while (e->next)

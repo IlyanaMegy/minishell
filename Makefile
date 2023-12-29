@@ -28,8 +28,7 @@ BUILTINS		=	srcs/builtins/cd.c \
 					srcs/builtins/pwd.c \
 					srcs/builtins/unset.c
 
-CLEANING		=	srcs/clean/clean_it.c \
-					srcs/clean/singletons.c
+CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_builtin.c
@@ -42,7 +41,8 @@ PIPEX			=	srcs/pipex/open_close.c \
 					srcs/pipex/pipex_utils.c \
 					srcs/pipex/pipex.c
 
-UTILS			=	srcs/utils/ms_lstsize.c
+UTILS			=	srcs/utils/ms_lstsize.c \
+					srcs/utils/singletons.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\

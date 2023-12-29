@@ -18,6 +18,7 @@
 
 # define ADD 1
 # define RM 2
+# define GET 3
 
 # define ERR_ARGS 2
 # define ERR_PATH 3
@@ -90,10 +91,6 @@ int					ft_echo(char **args);
 t_env				*clean_env(t_env *e);
 void				free_tab(char **map);
 
-// clean/singletons.c
-t_env				*single_env(t_env *env, int mode);
-t_env				*copy_my_lst(t_env *src);
-
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
 //  --------------------------------------------------------------------------------
@@ -115,6 +112,11 @@ int					exec_builtin(char **args);
 
 // utils/lst_functions.c
 int					ms_lstsize(t_env *lst);
+
+// utils/singletons.c
+t_env				*single_env(t_env *env, int mode);
+int					single_exit_s(int exit_s, int mode);
+t_env				*copy_my_lst(t_env *src);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|

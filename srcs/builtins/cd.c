@@ -13,7 +13,7 @@
 #include "../../inc/minishell.h"
 
 /**
- * @note   changing variable pwd content by currend pwd
+ * @note   changing environment's variable pwd content by the current pwd
  * @retval 1 is err getcwd, 0 is ok
 */
 int	change_pwd()
@@ -30,7 +30,7 @@ int	change_pwd()
 
 /**
  * @note   go to $HOME directory
- * @retval 1 if no path for $HOME, 0 is ok
+ * @retval 1 if no path for $HOME or failed when chdir, 0 is ok
 */
 int	cd_home()
 {

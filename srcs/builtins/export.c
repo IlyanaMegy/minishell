@@ -104,8 +104,8 @@ void	display_export(void)
 	t_env	*e;
 	t_env	*dirty_e;
 
-	dirty_e = copy_my_lst(single_env(NULL, 0));
-	if (dirty_e != NULL && ms_lstsize(dirty_e) == ms_lstsize(single_env(NULL, 0)))
+	dirty_e = copy_my_lst(single_env(NULL, GET));
+	if (dirty_e != NULL)
 	{
 		e = get_sorted_env(&dirty_e);
 		while (e)

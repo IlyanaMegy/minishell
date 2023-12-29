@@ -21,7 +21,7 @@ void	remove_var_from_env(char *var_name)
 {
 	t_env	*e;
 
-	e = single_env(NULL, 0);
+	e = single_env(NULL, GET);
 	while (e)
 	{
 		if (!ft_strcmp(e->name, var_name))
