@@ -36,7 +36,7 @@ int	single_exit_s(int exit_s, int mode)
 		single_exit_s = exit_s;
 	if (mode == GET)
 		return (single_exit_s);
-	return (single_env);
+	return (single_exit_s);
 }
 
 /**

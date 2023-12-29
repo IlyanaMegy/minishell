@@ -61,7 +61,7 @@ t_env	*create_var(char *name, char *content, int print_it)
  * @param  content: variable content
  * @param  print_it: do we print it or not ?
  * @retval 0 is ok, 1 is err malloc
- */
+*/
 int	add_var_to_env(char *name, char *content, int print_it)
 {
 	t_env	*var;

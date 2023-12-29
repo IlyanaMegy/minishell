@@ -13,7 +13,26 @@
 #include "../../inc/minishell.h"
 
 /**
- * @note   remove a variable from the environment ?
+ * @note   is this variable already in the environment ?
+ * @param  var_name: variable name
+ * @retval 1 is yes, 0 is no
+ */
+int	var_is_in_env(char *var_name)
+{
+	t_env	*e;
+
+	e = single_env(NULL, GET);
+	while (e)
+	{
+		if (e->name && var_name && !ft_strcmp(e->name, var_name))
+			return (1);
+		e = e->next;
+	}
+	return (0);
+}
+
+/**
+ * @note   remove a variable from the environment i guess
  * @param  var_name: variable name
  * @retval None
 */

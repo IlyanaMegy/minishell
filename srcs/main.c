@@ -15,12 +15,11 @@
 int	main(int ac, char **av, char **arg_env)
 {
 	char	*cmd_line;
-	char **cmd;
-	int	exit_s;
+	char	**cmd;
+	int		exit_s;
 
 	(void)ac;
 	(void)av;
-
 	// ?	stock environment into the linked list t_env thanks to single_env function
 	// TODO	use that single_env function to get, update or clear t_env list
 	get_env(arg_env);
@@ -42,6 +41,7 @@ int	main(int ac, char **av, char **arg_env)
 		// ?	then executing the builtin if so and save exit status
 		if (is_builtin(cmd[0]))
 			single_exit_s(exec_builtin(cmd), ADD);
+
 		free(cmd_line);
 		free_tab(cmd);
 	}

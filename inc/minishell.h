@@ -69,11 +69,11 @@ void				display_export(void);
 // builtins/export_utils.c
 void				replace_var_in_env(char *name, char *content, int *append);
 char				*get_var_content_from_env(char *var_name);
-int					var_is_in_env(char *var_name);
 t_env				*get_sorted_env(t_env **head);
 
 // builtins/unset.c
 int					ft_unset(char **args);
+int					var_is_in_env(char *var_name);
 
 // builtins/cd.c
 int					ft_cd(char **cmd);
