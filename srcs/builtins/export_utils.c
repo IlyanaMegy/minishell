@@ -4,6 +4,7 @@
  * @note   replace content of existing var in environment
  * @param  name: variable name
  * @param  content: variable content
+ * @param  append: is there += ?
  * @retval 1 is err malloc, 0 is ok
  */
 int	replace_var_in_env(char *name, char *content, int *append)
