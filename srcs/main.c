@@ -16,6 +16,7 @@ int	main(int ac, char **av, char **arg_env)
 {
 	char	*cmd_line;
 	char **cmd;
+	int exit_s;
 
 	(void)ac;
 	(void)av;
