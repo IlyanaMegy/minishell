@@ -35,7 +35,7 @@ void	add_var_to_env_list(char **var, int print_it, int *append)
  * @note   get name and content of the var then add it to the environment
  * @param  arg: variable
  * @param  append: += or not ?
- * @retval 0 no error
+ * @retval 1 case strdup or strndup failed, 0 is ok
 */
 int	extract_var(char *arg, int *append)
 {
@@ -72,6 +72,7 @@ int	extract_var(char *arg, int *append)
 /**
  * @note   check if the argument is correct
  * @param  arg: variable
+ * @param  append: is it += ?
  * @retval 1 is ok, 0 is an err
 */
 int	check_var_name(char *arg, int *append)
@@ -112,12 +113,11 @@ void	display_export(void)
 			if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
 				ft_printf("");
 			else
-				ft_printf("%s=\"%s\"\n", e->name, e->content);
+				ft_printf("export %s=\"%s\"\n", e->name, e->content);
 			e = e->next;
 		}
 		clean_env(dirty_e);
 	}
-	// clean_env(e);
 }
 
 /**
