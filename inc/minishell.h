@@ -25,6 +25,7 @@
 # define ERR_NOFILEDIR 4
 # define ERR_EXPORT 5
 # define ERR_UNSET 6
+# define ERR_EXIT_NB 7
 
 //  --------------------------------------------------------------------------------
 // |									ENV											|
@@ -90,6 +91,7 @@ int					ft_echo(char **args);
 // clean/clean_it.c
 t_env				*clean_env(t_env *e);
 void				free_tab(char **map);
+void				clean_program(char **cmd);
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|

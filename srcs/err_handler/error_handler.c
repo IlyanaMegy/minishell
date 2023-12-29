@@ -28,7 +28,7 @@ void	err_handler(int err, char *s)
 	err_msg = NULL;
 	if (err == ERR_ARGS)
 		err_msg = ft_strjoin(s, ": too many arguments\n");
-	else if (err == ERR_EXPORT || err == ERR_UNSET)
+	else if (err == ERR_EXPORT || err == ERR_UNSET || err == ERR_EXIT_NB)
 		err_msg = complexe_err_msg(err, s);
 	else if (err == ERR_PATH)
 		err_msg = ft_strjoin(s, ": HOME not set\n");
@@ -61,6 +61,11 @@ char	*complexe_err_msg(int err, char *cmd)
 			res = ft_strjoin("export: `", tmp);
 		else if (err == ERR_UNSET)
 			res = ft_strjoin("unset: `", tmp);
+	}
+	else if (err == ERR_EXIT_NB)
+	{
+		tmp = ft_strjoin(cmd, ": numeric argument required\n");
+		res = ft_strjoin("exit: ", tmp);
 	}
 	free(tmp);
 	return (res);
