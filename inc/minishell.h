@@ -78,7 +78,7 @@ void				display_export(void);
 void				replace_var_in_env(char *name, char *content, int *append);
 char				*get_var_content_from_env(char *var_name);
 int					var_is_in_env(char *var_name);
-t_env				*get_sorted_env(t_env *head);
+t_env				*get_sorted_env(t_env **head);
 
 // builtins/unset.c
 int					ft_unset(char **args);
@@ -112,6 +112,14 @@ char				*complexe_err_msg(int err, char *cmd);
 //  --------------------------------------------------------------------------------
 
 // exec/exec_builtin.c
+
 int					is_builtin(char *arg);
 int					exec_builtin(char **args);
+
+//  --------------------------------------------------------------------------------
+// |									UTILS										|
+//  --------------------------------------------------------------------------------
+
+// utils/lst_functions.c
+int					ms_lstsize(t_env *lst);
 #endif
