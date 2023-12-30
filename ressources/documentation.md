@@ -16,6 +16,8 @@ https://github.com/maiadegraaf/minishell/tree/main?tab=readme-ov-file#builtins
 ---
 -> exit codes : 🤔
 https://www.geeksforgeeks.org/exit-codes-in-c-c-with-examples/
+https://tldp.org/LDP/abs/html/exitcodes.html
+https://www.cyberciti.biz/faq/linux-bash-exit-status-set-exit-statusin-bash/
 
 ---
 -> github ex : 😶‍🌫️

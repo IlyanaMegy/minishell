@@ -63,13 +63,13 @@ int	calcul_exit_status(char *number, char **args)
 	sign = 1;
 	skip_spaces_get_sign(number, &i, &sign);
 	if (!ft_isnumber(number + i))
-		clean_exit_exit(255, ERR_EXIT_NB, number, args);
+		clean_exit_exit(2, ERR_EXIT_NB, number, args);
 	res = 0;
 	while (number[i])
 	{
 		res = (res * 10) + (number[i] - '0');
 		if (res > LONG_MAX)
-			clean_exit_exit(255, ERR_EXIT_NB, number, args);
+			clean_exit_exit(2, ERR_EXIT_NB, number, args);
 		i++;
 	}
 	return ((res * sign) % 256);
