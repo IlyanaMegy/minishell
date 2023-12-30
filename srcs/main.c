@@ -23,27 +23,30 @@ int	main(int ac, char **av, char **arg_env)
 	// ?	stock environment into the linked list t_env thanks to single_env function
 	// TODO	use that single_env function to get, update or clear t_env list
 	get_env(arg_env);
-
 	// ?	init of exit status to 0 and save it in single_exit_s function
 	// TODO	use that single_exit_s function to get or update exit_s value
 	exit_s = single_exit_s(0, ADD);
 	while (1)
 	{
-		// ?	stocking the freshly entered input into cmd_line and verify it's not null
-		cmd_line = readline("minishell$ ");
+		// ?	stocking the freshly entered input into cmd_line and verify it's not null then add to history
+		cmd_line = readline(PROMPT);
+		add_history(cmd_line);
 		if (!cmd_line)
-			break ;
+			break ;		
+		if (cmd_line[0] != '\0')
+		{
+			// ?	spliting cmd_line each ' ' and stocking it into char** cmd
+			cmd = ft_split(cmd_line, ' ');
+			free(cmd_line);
 
-		// ?	spliting cmd_line each ' ' and stocking it into char** cmd
-		cmd = ft_split(cmd_line, ' ');
+			// ?	checking if cmd[0] which is the command is a builtin
+			// ?	then executing the builtin if so and save exit status
+			if (is_builtin(cmd[0]))
+				single_exit_s(exec_builtin(cmd), ADD);
+
+			free_tab(cmd);
+		}
 		free(cmd_line);
-
-		// ?	checking if cmd[0] which is the command is a builtin
-		// ?	then executing the builtin if so and save exit status
-		if (is_builtin(cmd[0]))
-			single_exit_s(exec_builtin(cmd), ADD);
-
-		free_tab(cmd);
 	}
 	clean_env(single_env(NULL, 0));
 	return (single_exit_s(0, 0));

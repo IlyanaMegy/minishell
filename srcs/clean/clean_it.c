@@ -20,7 +20,8 @@ t_env	*clean_env(t_env *e)
 		free(e);
 		e = tmp;
 	}
-	return (NULL);
+	e = NULL;
+	return (e);
 }
 
 void	free_tab(char **map)
@@ -41,5 +42,6 @@ void	clean_program(char **cmd)
 {
 	free_tab(cmd);
 	clean_env(single_env(NULL, GET));
-	// !	clear also history and everything malloc
+	rl_clear_history();
+	// !	clear everything malloc
 }
