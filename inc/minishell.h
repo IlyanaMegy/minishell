@@ -84,6 +84,10 @@ int					ft_pwd(void);
 
 // builtins/echo.c
 int					ft_echo(char **args);
+
+// builtins/exit.c
+void				ft_exit(char **args);
+
 //  --------------------------------------------------------------------------------
 // |									CLEAN										|
 //  --------------------------------------------------------------------------------
@@ -124,6 +128,4 @@ t_env				*copy_my_lst(t_env *src);
 // |									PARSING										|
 //  --------------------------------------------------------------------------------
 
-// parsing/parse.c
-void				new_command(char *line);
 #endif
