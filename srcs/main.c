@@ -37,12 +37,12 @@ int	main(int ac, char **av, char **arg_env)
 		// ?	spliting cmd_line each ' ' and stocking it into char** cmd
 		cmd = ft_split(cmd_line, ' ');
 		free(cmd_line);
+
 		// ?	checking if cmd[0] which is the command is a builtin
 		// ?	then executing the builtin if so and save exit status
 		if (is_builtin(cmd[0]))
 			single_exit_s(exec_builtin(cmd), ADD);
 
-		
 		free_tab(cmd);
 	}
 	clean_env(single_env(NULL, 0));
