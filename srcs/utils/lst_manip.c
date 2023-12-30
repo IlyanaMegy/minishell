@@ -40,3 +40,8 @@ t_env	*copy_my_lst(t_env *src)
 		return (copy);
 	}
 }
+
+char **env_to_tab(t_env *env)
+{
+	
+}
