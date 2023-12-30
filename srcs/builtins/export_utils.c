@@ -57,12 +57,14 @@ char	*get_var_content_from_env(char *var_name)
 void	display_export(void)
 {
 	t_env	*e;
+	t_env	*tmp;
 	t_env	*dirty_e;
 
 	dirty_e = copy_my_lst(single_env(NULL, GET));
 	if (dirty_e != NULL)
 	{
 		e = get_sorted_env(&dirty_e);
+		tmp = e;
 		while (e)
 		{
 			if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
@@ -71,7 +73,7 @@ void	display_export(void)
 				ft_printf("export %s=\"%s\"\n", e->name, e->content);
 			e = e->next;
 		}
-		clean_env(dirty_e);
+		clean_env(tmp);
 	}
 }
 
