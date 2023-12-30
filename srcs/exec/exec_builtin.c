@@ -14,7 +14,7 @@ int	exec_builtin(char **args)
 		return (ft_export(args));
 	if (ft_strcmp(args[0], "unset") == 0)
 		return (ft_unset(args));
-	// ft_exit(args);
+	ft_exit(args);
 	return (0);
 }
 
