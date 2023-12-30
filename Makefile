@@ -41,7 +41,7 @@ PIPEX			=	srcs/pipex/open_close.c \
 					srcs/pipex/pipex_utils.c \
 					srcs/pipex/pipex.c
 
-UTILS			=	srcs/utils/ms_lstsize.c \
+UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c
 
 SRCS			=	$(BUILTINS)\

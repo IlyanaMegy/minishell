@@ -16,6 +16,8 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+# define PROMPT "minishell$ "
+
 # define ADD 1
 # define RM 2
 # define GET 3
@@ -116,13 +118,13 @@ int					exec_builtin(char **args);
 // |									UTILS										|
 //  --------------------------------------------------------------------------------
 
-// utils/lst_functions.c
+// utils/lst_manip.c
 int					ms_lstsize(t_env *lst);
+t_env				*copy_my_lst(t_env *src);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);
 int					single_exit_s(int exit_s, int mode);
-t_env				*copy_my_lst(t_env *src);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|
