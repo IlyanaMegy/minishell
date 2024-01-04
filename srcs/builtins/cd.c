@@ -16,7 +16,7 @@
  * @note   changing environment's variable pwd content by the current pwd
  * @retval 1 is err getcwd, 0 is ok
 */
-int	change_pwd()
+int	change_pwd(void)
 {
 	char	*cwd;
 	int		i;
@@ -25,6 +25,8 @@ int	change_pwd()
 	if (!cwd)
 		return (1);
 	i = 0;
+	replace_var_in_env("OLDPWD", get_var_content_from_env("PWD"), &i);
+	i = 0;
 	return (replace_var_in_env("PWD", cwd, &i), 0);
 }
 
@@ -32,26 +34,28 @@ int	change_pwd()
  * @note   go to $HOME directory
  * @retval 1 if no path for $HOME or failed when chdir, 0 is ok
 */
-int	cd_home()
+int	cd_home(void)
 {
 	char	*home;
 	int		i;
 
 	i = 0;
-	replace_var_in_env("OLDPWD", get_var_content_from_env("PWD"), &i);
 	home = get_var_content_from_env("HOME");
 	if (!home)
 		return (err_handler(ERR_PATH, "cd"), 1);
 	if (chdir(home) == 0)
+	{
+		replace_var_in_env("OLDPWD", get_var_content_from_env("PWD"), &i);
+		i = 0;
 		return (replace_var_in_env("PWD", home, &i), 0);
+	}
 	return (1);
 }
 
 /**
  * @note   change directory
  * @param  cmd: path of destination directory
- * @retval 1 is err getcd or get home path or too much args or not found path,
-	0 is ok
+ * @retval 1 is err getcd or home path or too much args or no path, 0 is ok
 */
 int	ft_cd(char **cmd)
 {
@@ -65,8 +69,6 @@ int	ft_cd(char **cmd)
 	if (!cmd[1])
 		return (cd_home());
 	if (chdir(cmd[1]) != 0)
-		return (err_handler(ERR_NOFILEDIR, "cd"), 1);
-	i = 0;
-	replace_var_in_env("OLDPWD", get_var_content_from_env("PWD"), &i);
+		return (err_handler(ERR_NOFILEDIR, "cd"), 1);	
 	return (change_pwd());
 }
