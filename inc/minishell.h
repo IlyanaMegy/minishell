@@ -122,6 +122,7 @@ int					exec_builtin(char **args);
 int					ms_lstsize(t_env *lst);
 t_env				*copy_my_lst(t_env *src);
 char				**env_to_tab(t_env *env_lst);
+void				print_tab(char **tab);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);

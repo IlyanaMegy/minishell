@@ -12,14 +12,7 @@
 
 #include "../inc/minishell.h"
 
-void	print_tab(char **tab)
-{
-	int	i;
 
-	i = -1;
-	while (tab[++i])
-		ft_printf("%s\n", tab[i]);
-}
 
 int	main(int ac, char **av, char **arg_env)
 {

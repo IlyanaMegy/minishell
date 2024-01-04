@@ -65,3 +65,12 @@ char	**env_to_tab(t_env *env_lst)
 	env_tab[i] = NULL;
 	return (env_tab);
 }
+
+void	print_tab(char **tab)
+{
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+		ft_printf("%s\n", tab[i]);
+}
