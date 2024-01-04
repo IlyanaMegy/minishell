@@ -33,6 +33,13 @@
 // |									ENV											|
 //  --------------------------------------------------------------------------------
 
+typedef struct s_cmd
+{
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+
+}					t_cmd;
+
 /**
  * @brief  char *name, char *content, int print_it, t_env_var *next
  * @note   return var name, var content, do print it ?, next var
