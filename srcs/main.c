@@ -12,11 +12,21 @@
 
 #include "../inc/minishell.h"
 
+void	print_tab(char **tab)
+{
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+		ft_printf("%s\n", tab[i]);
+}
+
 int	main(int ac, char **av, char **arg_env)
 {
 	char	*cmd_line;
-	char **cmd;
-	int exit_s;
+	char	**cmd;
+	int		exit_s;
+	char	**env_tab;
 
 	(void)ac;
 	(void)av;
@@ -26,24 +36,24 @@ int	main(int ac, char **av, char **arg_env)
 	// ?	init of exit status to 0 and save it in single_exit_s function
 	// TODO	use that single_exit_s function to get or update exit_s value
 	exit_s = single_exit_s(0, ADD);
+	env_tab = env_to_tab(single_env(NULL, GET));
+	print_tab(env_tab);
 	while (1)
 	{
 		// ?	stocking the freshly entered input into cmd_line and verify it's not null then add to history
 		cmd_line = readline(PROMPT);
 		add_history(cmd_line);
 		if (!cmd_line)
-			break ;		
+			break ;
 		if (cmd_line[0] != '\0')
 		{
 			// ?	spliting cmd_line each ' ' and stocking it into char** cmd
 			cmd = ft_split(cmd_line, ' ');
 			free(cmd_line);
-
 			// ?	checking if cmd[0] which is the command is a builtin
 			// ?	then executing the builtin if so and save exit status
 			if (is_builtin(cmd[0]))
 				single_exit_s(exec_builtin(cmd), ADD);
-
 			free_tab(cmd);
 		}
 		free(cmd_line);

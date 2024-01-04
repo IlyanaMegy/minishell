@@ -41,7 +41,27 @@ t_env	*copy_my_lst(t_env *src)
 	}
 }
 
-char **env_to_tab(t_env *env)
+char	**env_to_tab(t_env *env_lst)
 {
-	
+	t_env *tmp;
+	char **env_tab;
+	char *joined;
+	int i;
+
+	i = 0;
+	env_tab = ft_calloc((ms_lstsize(env_lst) + 1), sizeof(char *));
+	tmp = env_lst;
+	while (tmp)
+	{
+		if (tmp->print_it)
+		{
+			joined = ft_strjoin(tmp->name, "=");
+			env_tab[i] = ft_strjoin(joined, tmp->content);
+			free(joined);
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	env_tab[i] = NULL;
+	return (env_tab);
 }
