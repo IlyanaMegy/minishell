@@ -23,13 +23,12 @@
 # include <unistd.h>
 
 void	exit_handler(char *msg);
-int		open_file(char *file, int n);
-char	*my_getenv(char *name, char **env);
-char	*get_path(char *cmd, char **env);
-void	exec(char *cmd, char **env);
 void	ft_free_tab(char **tab);
-int		open_it(int ac, char **av);
-void	close_it(int ac, char **av);
-void	here_doc(char **av);
-
+void	swap_pipes(int fd[3]);
+void	ft_close_all(int fd[3]);
+void	ft_dup2(int fdin, int fdout);
+void	open_it(int ac, char **av, int *fd);
+void	close_it(int ac, char **av, int *fd);
+void	exec(char *cmd, char **env);
+void	here_doc_put_in(char **av, int *fd);
 #endif

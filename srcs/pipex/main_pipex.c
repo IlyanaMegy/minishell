@@ -12,28 +12,11 @@
 
 #include "../../inc/pipex.h"
 
-void	exec(char *cmd, char **env)
-{
-	char	**s_cmd;
-	char	*path;
-
-	s_cmd = ft_split(cmd, ' ');
-	path = get_path(s_cmd[0], env);
-	if (execve(path, s_cmd, env) == -1)
-	{
-		ft_putstr_fd("Pipex: command not found: ", 2);
-		ft_putendl_fd(s_cmd[0], 2);
-		ft_free_tab(s_cmd);
-		exit(127);
-	}
-}
-
-void	here_doc_put_in(char **av, int *p_fd)
+void	here_doc_put_in(char **av, int *fd)
 {
 	char	*ret;
 	t_gnl	*clear;
 
-	close(p_fd[0]);
 	while (1)
 	{
 		clear = malloc(sizeof(t_gnl));
@@ -47,73 +30,57 @@ void	here_doc_put_in(char **av, int *p_fd)
 			free(clear);
 			exit(0);
 		}
-		ft_putstr_fd(ret, p_fd[1]);
+		ft_putstr_fd(ret, fd[1]);
 		free(ret);
 	}
-}
-
-void	here_doc(char **av)
-{
-	int		p_fd[2];
-	pid_t	pid;
-
-	if (pipe(p_fd) == -1)
+	if (dup2(fd[0], 0) == -1)
 		exit_handler("__ERROR_PIPE__:\nError pipe.\n");
-	pid = fork();
-	if (pid == -1)
+	close(fd[0]);
+}
+
+void	do_pipe(char **av, int *i, int *fd, char **env)
+{
+	pid_t	pid[4096];
+
+	if (pipe(fd) < 0)
+		exit_handler("__ERROR_PIPE__:\nError pipe.\n");
+	pid[i[0]] = fork();
+	if (pid[i[0]] < 0)
 		exit_handler("__ERROR_FORK__:\nError fork.\n");
-	if (!pid)
-		here_doc_put_in(av, p_fd);
-	else
+	if (!pid[i[0]])
 	{
-		close(p_fd[1]);
-		if (dup2(p_fd[0], 0) == -1)
-			exit_handler("__ERROR_PIPE__:\nError pipe.\n");
-		close(p_fd[0]);
-		wait(NULL);
+		if (i[0] == 0)
+			open_it(i[1], av, fd);
+		else if (i[0] == i[1] - 4)
+			close_it(i[1], av, fd);
+		else
+			ft_dup2(fd[2], fd[1]);
+		ft_close_all(fd);
+		exec(av[i[0] + 2], env);
 	}
+	if (!ft_strcmp(av[1], "here_doc"))
+		wait(0);
 }
 
-void	do_pipe(pid_t pid, int *p_fd, char *cmd, char **env)
+int	main(int ac, char **av, char **env)
 {
-	if (!pid)
-	{
-		close(p_fd[0]);
-		if (dup2(p_fd[1], 1) == -1)
-			exit_handler("__ERROR_PIPE__:\nError pipe.\n");
-		close(p_fd[1]);
-		exec(cmd, env);
-	}
-	else
-	{
-		close(p_fd[1]);
-		close(p_fd[0]);
-	}
-}
-
-int	pipex(int ac, char **av, char **env)
-{
-	int		i;
-	pid_t	pid;
-	int		p_fd[2];
+	pid_t	pid[4096];
+	int		i[3];
+	int		fd[3];
 
 	if (ac < 5)
 		exit_handler("__ERROR_ARGS__:\nInvalid number of args.\n");
-	i = open_it(ac, av);
-	while (i < ac - 2)
+	i[0] = -1;
+	i[1] = ac;
+	fd[2] = dup(STDIN_FILENO);
+	while (++i[0] < ac - 3)
 	{
-		if (pipe(p_fd) == -1)
-			exit_handler("__ERROR_PIPE__:\nError pipe.\n");
-		pid = fork();
-		if (pid == -1)
-			exit_handler("__ERROR_FORK__:\nError fork.\n");
-		do_pipe(pid, p_fd, av[i++], env);
+		do_pipe(av, i, fd, env);
+		swap_pipes(fd);
 	}
-	pid = fork();
-	if (!pid)
-		exec(av[ac - 2], env);
-	close_it(ac, av);
-	while (wait(NULL) > 0)
-		;
+	close(fd[2]);
+	i[0] = -1;
+	while (++i[0] < ac - 3)
+		waitpid(pid[i[0]], &i[2], 0);
 	return (0);
 }

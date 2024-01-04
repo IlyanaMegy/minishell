@@ -1,50 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/24 11:57:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/10/24 11:57:26 by ilymegy          ###   ########.fr       */
+/*   Created: 2023/11/17 12:02:43 by ilymegy           #+#    #+#             */
+/*   Updated: 2023/11/17 12:02:50 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/pipex.h"
-
-void	exit_handler(char *msg)
-{
-	ft_putstr_fd(msg, 2);
-	exit(1);
-}
-
-int	open_file(char *file, int in_or_out)
-{
-	int	ret;
-
-	if (in_or_out == 0)
-		ret = open(file, O_RDONLY, 0777);
-	if (in_or_out == 1)
-		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	if (in_or_out == 2)
-		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	if (ret == -1)
-		exit_handler("__ERROR_FILE__:\nCan't read outfile or infile.\n");
-	return (ret);
-}
-
-void	ft_free_tab(char **tab)
-{
-	size_t	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
 
 char	*my_getenv(char *name, char **env)
 {
@@ -97,4 +63,20 @@ char	*get_path(char *cmd, char **env)
 	ft_free_tab(allpath);
 	ft_free_tab(s_cmd);
 	return (cmd);
+}
+
+void	exec(char *cmd, char **env)
+{
+	char	**s_cmd;
+	char	*path;
+
+	s_cmd = ft_split(cmd, ' ');
+	path = get_path(s_cmd[0], env);
+	if (execve(path, s_cmd, env) == -1)
+	{
+		ft_putstr_fd("Pipex: command not found: ", 2);
+		ft_putendl_fd(s_cmd[0], 2);
+		ft_free_tab(s_cmd);
+		exit(127);
+	}
 }
