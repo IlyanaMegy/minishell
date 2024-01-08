@@ -15,8 +15,8 @@
 # include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdbool.h>
 # include <signal.h>
+# include <stdbool.h>
 
 # define PROMPT "minishell$ "
 
@@ -35,7 +35,7 @@
 // |							GLOBAL VARIABLE										|
 //  --------------------------------------------------------------------------------
 
-extern int	g_sig_exit;
+extern int			g_sig_exit;
 
 //  --------------------------------------------------------------------------------
 // |								ENV												|
@@ -69,7 +69,7 @@ typedef struct s_token
 	int				quote_status;
 	struct s_token	*prev;
 	struct s_token	*next;
-}	t_token;
+}					t_token;
 
 //  --------------------------------------------------------------------------------
 // |								PARSING											|
@@ -85,10 +85,10 @@ typedef struct s_cmd
 	char			*path;
 	char			**args;
 	int				fd_in;
-	bool			fd_out;
+	int				fd_out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
-}	t_cmd;
+}					t_cmd;
 
 //  --------------------------------------------------------------------------------
 // |							MAIN STRUCTURE										|
@@ -102,13 +102,14 @@ typedef struct s_data
 	char			*user_input;
 	t_token			*token;
 	t_cmd			*cmd;
-}	t_data;
+}					t_data;
 
 //  --------------------------------------------------------------------------------
 // |								ENUMS											|
 //  --------------------------------------------------------------------------------
 
-enum e_token_type {
+enum				e_token_type
+{
 	WHITESPACE = 1,
 	WORD,
 	VAR,
@@ -120,7 +121,8 @@ enum e_token_type {
 	END_STR
 };
 
-enum e_quote_status {
+enum				e_quote_status
+{
 	DEFAULT,
 	SINGLE,
 	DOUBLE
@@ -171,7 +173,7 @@ t_env				*clean_env(t_env *e);
 void				free_ptr(void *ptr);
 void				free_tab(char **map);
 void				free_data(t_data *data);
-void				clean_program(char **cmd);
+void				clean_program(t_data *data);
 
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
@@ -196,6 +198,7 @@ int					exec_builtin(char **args);
 int					ms_lstsize(t_env *lst);
 t_env				*copy_my_lst(t_env *src);
 char				**env_to_tab(t_env *env_lst);
+void				print_tab(char **tab);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);
@@ -210,10 +213,9 @@ int					single_exit_s(int exit_s, int mode);
 
 // lexer/token.c
 bool				tokenize_input(t_data *data, char *s);
-int					save_word(t_token **token_lst, char *s,
-						int index, int start);
-int					save_sep(t_token **token_lst, char *s,
-						int index, int type);
+int					save_word(t_token **token_lst, char *s, int index,
+						int start);
+int					save_sep(t_token **token_lst, char *s, int index, int type);
 int					set_quote_status(int quote_status, char c);
 int					is_separator(char *s, int i);
 
@@ -222,7 +224,6 @@ t_token				*lst_new_token(char *value, int type, int quote_status);
 void				lst_add_back_token(t_token **alst, t_token *node);
 void				lstdelone_token(t_token *lst, void (*del)(void *));
 void				lstclear_token(t_token **lst, void (*del)(void *));
-
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|

@@ -44,8 +44,8 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/debug.c
 
 PIPEX			=	srcs/pipex/open_close.c \
-					srcs/pipex/pipex_utils.c \
-					srcs/pipex/pipex.c
+					srcs/pipex/main_pipex.c \
+					srcs/pipex/utils.c
 
 UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c \
