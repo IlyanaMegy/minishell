@@ -5,20 +5,56 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/07 23:29:15 by ltorkia          ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/01/08 17:04:25 by ltorkia          ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	print_tab(char **tab)
+// *	true = success, false = error
+static bool	tokenize_and_parse(t_data *data)
 {
-	int	i;
+	if (data->user_input[0])
+		add_history(data->user_input);
+	// ?	Tokenize the user_input and store it in data->token
+	if (!tokenize_input(data, data->user_input))
+		return (false);
+	// ?	Check if the token list is empty (END_STR) and return false if it is
+	if (data->token->type == END_STR)
+		return (false);
+	// ?	Parse the token list to extract commands and arguments
+	get_commands(data, data->token);
+	// *	DEBUG : Print the current command
+	print_token(data->token);
+	return (true);
+}
 
-	i = -1;
-	while (tab[++i])
-		ft_printf("%s\n", tab[i]);
+/* token + parse input in structure for execution
+*   true = success, false = error
+*/
+static bool	tokenize_and_parse(t_data *data)
+{
+	// Check if user_input is not NULL and add it to history
+	if (data->user_input)
+		add_history(data->user_input);
+	else
+		return (false);
+	// Tokenize the user_input and store it in data->token
+	if (!tokenize_input(data, data->user_input))
+		return (false);
+	// Check if the token list is empty (END_STR) and return false if it is
+	if (data->token->type == END_STR)
+		return (false);
+	// Parse the token list to extract commands and arguments
+	get_commands(data, data->token);
+	// ------------------------ DEBUG ------------------------ //
+	// Print the current token list
+	print_token(data->token);
+	// ---------------------- FIN DEBUG ---------------------- //
+	return (true);
 }
 
 /* token + parse input in structure for execution
@@ -62,8 +98,6 @@ int	main(int ac, char **av, char **arg_env)
 	// ?	init of exit status to 0 and save it in single_exit_s function
 	// TODO	use that single_exit_s function to get or update exit_s value
 	exit_s = single_exit_s(0, ADD);
-	env_tab = env_to_tab(single_env(NULL, GET));
-	print_tab(env_tab);
 	while (1)
 	{
 		// ?	stocking the freshly entered input into data.user_input and verify parsing
@@ -78,7 +112,8 @@ int	main(int ac, char **av, char **arg_env)
 				single_exit_s(exec_builtin(data.cmd->args), ADD);
 		}
 		free_data(&data);
+		free_data(&data);
 	}
-	clean_env(single_env(NULL, 0));
+	clean_program(&data);
 	return (single_exit_s(0, 0));
 }

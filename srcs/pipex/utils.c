@@ -12,47 +12,41 @@
 
 // #include "../../inc/pipex.h"
 
-// int	open_file(char *file, int in_or_out)
+// void	exit_handler(char *msg)
 // {
-// 	int	ret;
-
-// 	if (in_or_out == 0)
-// 		ret = open(file, O_RDONLY, 0777);
-// 	if (in_or_out == 1)
-// 		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-// 	if (in_or_out == 2)
-// 		ret = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
-// 	if (ret == -1)
-// 		exit_handler("__ERROR_FILE__:\nCan't read outfile or infile.\n");
-// 	return (ret);
+// 	ft_putstr_fd(msg, 2);
+// 	exit(1);
 // }
 
-// void	open_it(int ac, char **av, int *fd)
+// void	ft_free_tab(char **tab)
 // {
-// 	int	fdi;
+// 	size_t	i;
 
-// 	if (ft_strcmp(av[1], "here_doc") == 0)
+// 	i = 0;
+// 	while (tab[i])
 // 	{
-// 		if (ac < 6)
-// 			exit_handler("__ERROR_ARGS__:\nInvalid number of args.\n");
-// 		here_doc_put_in(av, fd);
+// 		free(tab[i]);
+// 		i++;
 // 	}
-// 	else
-// 	{
-// 		fdi = open_file(av[1], 0);
-// 		ft_dup2(fdi, fd[1]);
-// 		close(fdi);
-// 	}
+// 	free(tab);
 // }
 
-// void	close_it(int ac, char **av, int *fd)
+// void	swap_pipes(int fd[3])
 // {
-// 	int	fdo;
+// 	dup2(fd[0], fd[2]);
+// 	close(fd[0]);
+// 	close(fd[1]);
+// }
 
-// 	if (ft_strcmp(av[1], "here_doc") == 0)
-// 		fdo = open_file(av[ac - 1], 2);
-// 	else
-// 		fdo = open_file(av[ac - 1], 1);
-// 	ft_dup2(fd[2], fdo);
-// 	close(fdo);
+// void	ft_close_all(int fd[3])
+// {
+// 	close(fd[0]);
+// 	close(fd[1]);
+// 	close(fd[2]);
+// }
+
+// void	ft_dup2(int fdin, int fdout)
+// {
+// 	dup2(fdin, STDIN_FILENO);
+// 	dup2(fdout, STDOUT_FILENO);
 // }

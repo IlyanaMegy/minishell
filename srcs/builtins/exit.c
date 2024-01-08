@@ -31,29 +31,22 @@ void	skip_spaces_get_sign(char *number, int *i, int *sign)
 	}
 }
 
-/**
- * @note   nicely exit the program after all cleaned up
- * @param  number: given exit_status
- * @param  args: exit cmd and exit status numbers
- * @retval None
-*/
-void	clean_exit_exit(int exit_status, int err_state, char *msg, char **args)
+void	clean_exit_exit(t_data *data, int exit_status, int err_state, char *msg)
 {
 	int	exit_s;
 
 	exit_s = single_exit_s(exit_status, ADD);
 	err_handler(err_state, msg);
-	clean_program(args);
+	clean_program(data);
 	exit(exit_s);
 }
 
 /**
  * @note   verify is correct number, find sign, convert to int 
  * @param  number: given exit_status arg
- * @param  args: exit cmd and exit status numbers
  * @retval 255 if not int number and exit, int number is good exit status
 */
-int	calcul_exit_status(char *number, char **args)
+int	calcul_exit_status(t_data *data, char *number)
 {
 	int					i;
 	int					sign;
@@ -63,13 +56,13 @@ int	calcul_exit_status(char *number, char **args)
 	sign = 1;
 	skip_spaces_get_sign(number, &i, &sign);
 	if (!ft_isnumber(number + i))
-		clean_exit_exit(2, ERR_EXIT_NB, number, args);
+		clean_exit_exit(data, 2, ERR_EXIT_NB, number);
 	res = 0;
 	while (number[i])
 	{
 		res = (res * 10) + (number[i] - '0');
 		if (res > LONG_MAX)
-			clean_exit_exit(2, ERR_EXIT_NB, number, args);
+			clean_exit_exit(data, 2, ERR_EXIT_NB, number);
 		i++;
 	}
 	return ((res * sign) % 256);
@@ -77,21 +70,22 @@ int	calcul_exit_status(char *number, char **args)
 
 /**
  * @note   nicely exit the program minishell
- * @param  args: exit cmd and exit status numbers
+ * @param  data: all of data list
  * @retval None
 */
-void	ft_exit(char **args)
+void	ft_exit(t_data *data)
 {
 	int	exit_s;
 
 	exit_s = single_exit_s(0, GET);
-	if (args[1])
+	ft_putstr_fd("exit\n", 1);
+	if (data->cmd->args[1])
 	{
-		if (args[2] && ft_isnumber(args[1]))
-			clean_exit_exit(1, ERR_ARGS, "exit", args);
+		if (data->cmd->args[2] && ft_isnumber(data->cmd->args[1]))
+			clean_exit_exit(data, 1, ERR_ARGS, "exit");
 		else
-			exit_s = single_exit_s(calcul_exit_status(args[1], args), ADD);
+			exit_s = single_exit_s(calcul_exit_status(data, data->cmd->args[1]), ADD);
 	}
-	clean_program(args);
+	clean_program(data);
 	exit(single_exit_s(0, GET));
 }

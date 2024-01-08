@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:30:09 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/06 22:51:41 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:01:19 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,40 @@ void	free_data(t_data *data)
 		lstclear_cmd(&data->cmd, &free_ptr);
 }
 
+/**
+ * @note   clean the data struct
+ * @param  e:	struct to clear
+ * @retval NULL data
+*/
+
+void	free_data(t_data *data)
+{
+	if (data && data->user_input)
+	{
+		free_ptr(data->user_input);
+		data->user_input = NULL;
+	}
+	if (data && data->token)
+		lstclear_token(&data->token, &free_ptr);
+	if (data && data->cmd)
+		lstclear_cmd(&data->cmd, &free_ptr);
+}
+
 void	free_tab(char **map)
 {
 	int	i;
 
 	i = 0;
+	if (map)
+	{
+		while (map[i])
+		{
+			free_ptr(map[i]);
+			i++;
+		}
+		free(map);
+		map = NULL;
+	}
 	if (map)
 	{
 		while (map[i])
@@ -82,9 +111,18 @@ void	free_ptr(void *ptr)
 	}
 }
 
-void	clean_program(char **cmd)
+void	free_ptr(void *ptr)
 {
-	free_tab(cmd);
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+}
+
+void	clean_program(t_data *data)
+{
+	free_data(data);
 	clean_env(single_env(NULL, GET));
 	rl_clear_history();
 	// !	clear everything malloc

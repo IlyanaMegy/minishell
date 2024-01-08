@@ -31,6 +31,7 @@ BUILTINS		=	srcs/builtins/cd.c \
 CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
+					srcs/exec/pipex.c \
 					srcs/exec/exec_builtin.c
 
 ERROR			=	srcs/err_handler/error_handler.c
@@ -44,8 +45,8 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/debug.c
 
 PIPEX			=	srcs/pipex/open_close.c \
-					srcs/pipex/pipex_utils.c \
-					srcs/pipex/pipex.c
+					srcs/pipex/main_pipex.c \
+					srcs/pipex/utils.c
 
 UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c \
