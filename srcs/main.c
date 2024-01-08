@@ -49,7 +49,7 @@ int	main(int ac, char **av, char **arg_env)
 		data.user_input = readline(PROMPT);
 		add_history(data.user_input);
 		if (!data.user_input)
-			break;
+			ft_exit(&data);
 		if (tokenize_and_parse(&data))
 		{
 			// *	DEBUG : Print the current command
