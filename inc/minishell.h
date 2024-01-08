@@ -162,7 +162,7 @@ int					ft_pwd(void);
 int					ft_echo(char **args);
 
 // builtins/exit.c
-void				ft_exit(char **args);
+void				ft_exit(t_data *data);
 
 //  --------------------------------------------------------------------------------
 // |									CLEAN										|
@@ -188,7 +188,7 @@ char				*complexe_err_msg(int err, char *cmd);
 // exec/exec_builtin.c
 
 int					is_builtin(char *arg);
-int					exec_builtin(char **args);
+int					exec_builtin(t_data *data);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
