@@ -39,9 +39,10 @@ ERROR			=	srcs/err_handler/error_handler.c
 LEXER			=	srcs/lexer/token.c \
 					srcs/lexer/token_lst.c
 
-PARSING			=	srcs/parsing/get_cmd.c \
+PARSING			=	srcs/parsing/parser.c \
+					srcs/parsing/get_cmd.c \
 					srcs/parsing/parse_word.c \
-					srcs/parsing/cmd_lst_utils.c \
+					srcs/parsing/cmd_lst.c \
 					srcs/parsing/debug.c
 
 PIPEX			=	srcs/pipex/open_close.c \

@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/08 16:59:40 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/08 14:26:10 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ typedef struct s_token
 //  --------------------------------------------------------------------------------
 
 /**
- * @brief  return char *cmd, char *path, char **args, t_cmd *prev, t_cmd *next
- * @note   return var cmd, var path, var args, prev var, next var
+ * @brief  return char *cmd, char *path, char **args, int fd_in, int fd_out, bool pipe_out, t_cmd *prev, t_cmd *next
+ * @note   return var cmd, var path, var args, var fd_in, var fd_out, var pipe_out, prev var, next var
 */
 typedef struct s_cmd
 {
@@ -86,6 +86,7 @@ typedef struct s_cmd
 	char			**args;
 	int				fd_in;
 	int				fd_out;
+	bool			pipe_out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -123,7 +124,7 @@ enum				e_token_type
 
 enum				e_quote_status
 {
-	DEFAULT,
+	NONE,
 	SINGLE,
 	DOUBLE
 };
@@ -215,7 +216,8 @@ int					single_exit_s(int exit_s, int mode);
 bool				tokenize_input(t_data *data, char *s);
 int					save_word(t_token **token_lst, char *s, int index,
 						int start);
-int					save_sep(t_token **token_lst, char *s, int index, int type);
+int					save_sep(t_token **token_lst, char *s, int index, 
+						int type);
 int					set_quote_status(int quote_status, char c);
 int					is_separator(char *s, int i);
 
@@ -229,6 +231,9 @@ void				lstclear_token(t_token **lst, void (*del)(void *));
 // |									PARSING										|
 //  --------------------------------------------------------------------------------
 
+// parsing/parser.c
+bool				tokenize_and_parse(t_data *data);
+
 // parsing/parse_word.c
 void				parse_word(t_cmd **cmd, t_token **token_lst);
 int					create_args(t_token **token_node, t_cmd *last_cmd);
@@ -237,7 +242,7 @@ int					count_args(t_token *temp);
 // parsing/get_cmd.c
 void				get_commands(t_data *data, t_token *token);
 
-// parsing/cmd_lst_utils.c
+// parsing/cmd_lst.c
 t_cmd				*lst_new_cmd(void);
 void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
 t_cmd				*lst_last_cmd(t_cmd *cmd);

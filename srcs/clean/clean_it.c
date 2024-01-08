@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:30:09 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/08 17:09:20 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/06 22:51:41 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,6 @@ void	free_tab(char **map)
 	int	i;
 
 	i = 0;
-	if (map)
-	{
-		while (map[i])
-		{
-			free_ptr(map[i]);
-			i++;
-		}
-		free(map);
-		map = NULL;
-	}
 	if (map)
 	{
 		while (map[i])
