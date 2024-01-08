@@ -12,18 +12,7 @@
 
 #include "../inc/minishell.h"
 
-// void	print_tab(char **tab)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (tab[++i])
-// 		ft_printf("%s\n", tab[i]);
-// }
-
-/* token + parse input in structure for execution
-*   true = success, false = error
-*/
+// *	true = success, false = error
 static bool	tokenize_and_parse(t_data *data)
 {
 	// ?	Tokenize the user_input and store it in data->token
