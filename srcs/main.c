@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/01/08 17:04:25 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:06:53 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	main(int ac, char **av, char **arg_env)
 			if (is_builtin(data.cmd->cmd))
 				single_exit_s(exec_builtin(data.cmd->args), ADD);
 		}
-		free_data(&data);
 		free_data(&data);
 	}
 	clean_program(&data);
