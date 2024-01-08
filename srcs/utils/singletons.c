@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   singletons.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/04 16:26:09 by ilymegy           #+#    #+#             */
+/*   Updated: 2024/01/04 16:26:11 by ilymegy          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 /**
@@ -12,11 +24,6 @@ t_env	*single_env(t_env *env, int mode)
 
 	if (mode == ADD)
 		single_env = env;
-	// else if (mode == RM)
-	// {
-	// 	single_env = clean_env(env);
-	// 	return (single_env);
-	// }
 	else if (mode == GET)
 		return (single_env);
 	return (single_env);

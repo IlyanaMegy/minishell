@@ -39,13 +39,10 @@ int	ft_echo(char **args)
 	int	i;
 	int	opt;
 
-	i = 1;
+	i = 0;
 	opt = 0;
-	while (args[i] != NULL && check_option(args[i]))
-	{
+	while (args[i++] != NULL && check_option(args[i]))
 		opt = 1;
-		i++;
-	}
 	while (args[i])
 	{
 		ft_putstr_fd(args[i], 1);
