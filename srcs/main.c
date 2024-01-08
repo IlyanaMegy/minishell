@@ -15,6 +15,8 @@
 // *	true = success, false = error
 static bool	tokenize_and_parse(t_data *data)
 {
+	if (data->user_input[0])
+		add_history(data->user_input);
 	// ?	Tokenize the user_input and store it in data->token
 	if (!tokenize_input(data, data->user_input))
 		return (false);
@@ -47,7 +49,6 @@ int	main(int ac, char **av, char **arg_env)
 	{
 		// ?	stocking the freshly entered input into data.user_input and verify parsing
 		data.user_input = readline(PROMPT);
-		add_history(data.user_input);
 		if (!data.user_input)
 			ft_exit(&data);
 		if (tokenize_and_parse(&data))
