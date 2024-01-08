@@ -33,7 +33,7 @@ void	init_pipex(t_cmd *cmd_lst)
 		}
 		if (c->next)
 			pipe(fds);
-		executie();
+		// executie();
 		c = c->next;
 	}
 	// close, wait, clear
