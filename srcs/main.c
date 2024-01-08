@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/01/08 17:06:53 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:11:03 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,60 +32,9 @@ static bool	tokenize_and_parse(t_data *data)
 	return (true);
 }
 
-/* token + parse input in structure for execution
-*   true = success, false = error
-*/
-static bool	tokenize_and_parse(t_data *data)
-{
-	// Check if user_input is not NULL and add it to history
-	if (data->user_input)
-		add_history(data->user_input);
-	else
-		return (false);
-	// Tokenize the user_input and store it in data->token
-	if (!tokenize_input(data, data->user_input))
-		return (false);
-	// Check if the token list is empty (END_STR) and return false if it is
-	if (data->token->type == END_STR)
-		return (false);
-	// Parse the token list to extract commands and arguments
-	get_commands(data, data->token);
-	// ------------------------ DEBUG ------------------------ //
-	// Print the current token list
-	print_token(data->token);
-	// ---------------------- FIN DEBUG ---------------------- //
-	return (true);
-}
-
-/* token + parse input in structure for execution
-*   true = success, false = error
-*/
-static bool	tokenize_and_parse(t_data *data)
-{
-	// Check if user_input is not NULL and add it to history
-	if (data->user_input)
-		add_history(data->user_input);
-	else
-		return (false);
-	// Tokenize the user_input and store it in data->token
-	if (!tokenize_input(data, data->user_input))
-		return (false);
-	// Check if the token list is empty (END_STR) and return false if it is
-	if (data->token->type == END_STR)
-		return (false);
-	// Parse the token list to extract commands and arguments
-	get_commands(data, data->token);
-	// ------------------------ DEBUG ------------------------ //
-	// Print the current token list
-	print_token(data->token);
-	// ---------------------- FIN DEBUG ---------------------- //
-	return (true);
-}
-
 int	main(int ac, char **av, char **arg_env)
 {
 	int		exit_s;
-	char	**env_tab;
 	t_data	data;
 
 	(void)ac;
@@ -109,7 +58,7 @@ int	main(int ac, char **av, char **arg_env)
 			// ?	checking if current_cmd->cmd which is the command is a builtin
 			// ?	then executing the builtin if so and save exit status
 			if (is_builtin(data.cmd->cmd))
-				single_exit_s(exec_builtin(data.cmd->args), ADD);
+				single_exit_s(exec_builtin(&data), ADD);
 		}
 		free_data(&data);
 	}

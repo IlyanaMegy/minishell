@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:30:09 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/08 17:01:19 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:09:20 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,6 @@ void	free_data(t_data *data)
 		lstclear_cmd(&data->cmd, &free_ptr);
 }
 
-/**
- * @note   clean the data struct
- * @param  e:	struct to clear
- * @retval NULL data
-*/
-
-void	free_data(t_data *data)
-{
-	if (data && data->user_input)
-	{
-		free_ptr(data->user_input);
-		data->user_input = NULL;
-	}
-	if (data && data->token)
-		lstclear_token(&data->token, &free_ptr);
-	if (data && data->cmd)
-		lstclear_cmd(&data->cmd, &free_ptr);
-}
-
 void	free_tab(char **map)
 {
 	int	i;
@@ -100,15 +81,6 @@ void	free_tab(char **map)
 		map = NULL;
 	}
 	return ;
-}
-
-void	free_ptr(void *ptr)
-{
-	if (ptr)
-	{
-		free(ptr);
-		ptr = NULL;
-	}
 }
 
 void	free_ptr(void *ptr)
