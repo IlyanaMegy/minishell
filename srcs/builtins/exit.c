@@ -78,6 +78,7 @@ void	ft_exit(t_data *data)
 	int	exit_s;
 
 	exit_s = single_exit_s(0, GET);
+	ft_putstr_fd("exit\n", 1);
 	if (data->cmd->args[1])
 	{
 		if (data->cmd->args[2] && ft_isnumber(data->cmd->args[1]))
