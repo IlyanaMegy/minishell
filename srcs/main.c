@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/27 23:37:13 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/07 23:29:15 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,41 @@ void	print_tab(char **tab)
 		ft_printf("%s\n", tab[i]);
 }
 
+/* token + parse input in structure for execution
+*   true = success, false = error
+*/
+static bool	tokenize_and_parse(t_data *data)
+{
+	// Check if user_input is not NULL and add it to history
+	if (data->user_input)
+		add_history(data->user_input);
+	else
+		return (false);
+	// Tokenize the user_input and store it in data->token
+	if (!tokenize_input(data, data->user_input))
+		return (false);
+	// Check if the token list is empty (END_STR) and return false if it is
+	if (data->token->type == END_STR)
+		return (false);
+	// Parse the token list to extract commands and arguments
+	get_commands(data, data->token);
+	// ------------------------ DEBUG ------------------------ //
+	// Print the current token list
+	print_token(data->token);
+	// ---------------------- FIN DEBUG ---------------------- //
+	return (true);
+}
+
 int	main(int ac, char **av, char **arg_env)
 {
-	char	*cmd_line;
-	char	**cmd;
 	int		exit_s;
 	char	**env_tab;
+	t_data	data;
 
 	(void)ac;
 	(void)av;
+	// Init data to NULL
+	ft_memset(&data, 0, sizeof(t_data));
 	// ?	stock environment into the linked list t_env thanks to single_env function
 	// TODO	use that single_env function to get, update or clear t_env list
 	get_env(arg_env);
@@ -40,23 +66,18 @@ int	main(int ac, char **av, char **arg_env)
 	print_tab(env_tab);
 	while (1)
 	{
-		// ?	stocking the freshly entered input into cmd_line and verify it's not null then add to history
-		cmd_line = readline(PROMPT);
-		add_history(cmd_line);
-		if (!cmd_line)
-			break ;
-		if (cmd_line[0] != '\0')
+		// ?	stocking the freshly entered input into data.user_input and verify parsing
+		data.user_input = readline(PROMPT);
+		if (tokenize_and_parse(&data))
 		{
-			// ?	spliting cmd_line each ' ' and stocking it into char** cmd
-			cmd = ft_split(cmd_line, ' ');
-			free(cmd_line);
-			// ?	checking if cmd[0] which is the command is a builtin
+			// DEBUG : Print the current command
+			print_cmd(data.cmd);
+			// ?	checking if current_cmd->cmd which is the command is a builtin
 			// ?	then executing the builtin if so and save exit status
-			if (is_builtin(cmd[0]))
-				single_exit_s(exec_builtin(cmd), ADD);
-			free_tab(cmd);
+			if (is_builtin(data.cmd->cmd))
+				single_exit_s(exec_builtin(data.cmd->args), ADD);
 		}
-		free(cmd_line);
+		free_data(&data);
 	}
 	clean_env(single_env(NULL, 0));
 	return (single_exit_s(0, 0));

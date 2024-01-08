@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/27 23:34:02 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/08 14:26:10 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 # include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <stdbool.h>
+# include <signal.h>
 
 # define PROMPT "minishell$ "
 
@@ -30,7 +32,13 @@
 # define ERR_EXIT_NB 7
 
 //  --------------------------------------------------------------------------------
-// |									ENV											|
+// |							GLOBAL VARIABLE										|
+//  --------------------------------------------------------------------------------
+
+extern int	g_sig_exit;
+
+//  --------------------------------------------------------------------------------
+// |								ENV												|
 //  --------------------------------------------------------------------------------
 
 /**
@@ -47,12 +55,76 @@ typedef struct s_env
 }					t_env;
 
 //  --------------------------------------------------------------------------------
-// |								MINISHELL										|
+// |								LEXER											|
 //  --------------------------------------------------------------------------------
 
-typedef struct s_minishell
+/**
+ * @brief  char *value, int type, int quote_status, t_token *prev, t_token *next
+ * @note   return var value, var type, var quote_status, prev var, next var
+*/
+typedef struct s_token
 {
-}					t_minishell;
+	char			*value;
+	int				type;
+	int				quote_status;
+	struct s_token	*prev;
+	struct s_token	*next;
+}	t_token;
+
+//  --------------------------------------------------------------------------------
+// |								PARSING											|
+//  --------------------------------------------------------------------------------
+
+/**
+ * @brief  return char *cmd, char *path, char **args, t_cmd *prev, t_cmd *next
+ * @note   return var cmd, var path, var args, prev var, next var
+*/
+typedef struct s_cmd
+{
+	char			*cmd;
+	char			*path;
+	char			**args;
+	int				fd_in;
+	bool			fd_out;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}	t_cmd;
+
+//  --------------------------------------------------------------------------------
+// |							MAIN STRUCTURE										|
+//  --------------------------------------------------------------------------------
+/**
+ * @brief  return char *user_input, t_token *token, t_cmd *cmd
+ * @note   return var user_input, token var, cmd var
+*/
+typedef struct s_data
+{
+	char			*user_input;
+	t_token			*token;
+	t_cmd			*cmd;
+}	t_data;
+
+//  --------------------------------------------------------------------------------
+// |								ENUMS											|
+//  --------------------------------------------------------------------------------
+
+enum e_token_type {
+	WHITESPACE = 1,
+	WORD,
+	VAR,
+	PIPE,
+	INPUT,
+	TRUNC,
+	HEREDOC,
+	APPEND,
+	END_STR
+};
+
+enum e_quote_status {
+	DEFAULT,
+	SINGLE,
+	DOUBLE
+};
 
 //  --------------------------------------------------------------------------------
 // |								BUILTINS										|
@@ -96,7 +168,9 @@ void				ft_exit(char **args);
 
 // clean/clean_it.c
 t_env				*clean_env(t_env *e);
+void				free_ptr(void *ptr);
 void				free_tab(char **map);
+void				free_data(t_data *data);
 void				clean_program(char **cmd);
 
 //  --------------------------------------------------------------------------------
@@ -127,8 +201,50 @@ char				**env_to_tab(t_env *env_lst);
 t_env				*single_env(t_env *env, int mode);
 int					single_exit_s(int exit_s, int mode);
 
+// utils/signals.c
+// void				init_signals(void);
+
+//  --------------------------------------------------------------------------------
+// |									LEXER										|
+//  --------------------------------------------------------------------------------
+
+// lexer/token.c
+bool				tokenize_input(t_data *data, char *s);
+int					save_word(t_token **token_lst, char *s,
+						int index, int start);
+int					save_sep(t_token **token_lst, char *s,
+						int index, int type);
+int					set_quote_status(int quote_status, char c);
+int					is_separator(char *s, int i);
+
+// lexer/token_lst.c
+t_token				*lst_new_token(char *value, int type, int quote_status);
+void				lst_add_back_token(t_token **alst, t_token *node);
+void				lstdelone_token(t_token *lst, void (*del)(void *));
+void				lstclear_token(t_token **lst, void (*del)(void *));
+
+
 //  --------------------------------------------------------------------------------
 // |									PARSING										|
 //  --------------------------------------------------------------------------------
+
+// parsing/parse_word.c
+void				parse_word(t_cmd **cmd, t_token **token_lst);
+int					create_args(t_token **token_node, t_cmd *last_cmd);
+int					count_args(t_token *temp);
+
+// parsing/get_cmd.c
+void				get_commands(t_data *data, t_token *token);
+
+// parsing/cmd_lst_utils.c
+t_cmd				*lst_new_cmd(void);
+void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
+t_cmd				*lst_last_cmd(t_cmd *cmd);
+void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));
+void				lstclear_cmd(t_cmd **lst, void (*del)(void *));
+
+// parsing/debug.c
+void				print_cmd(t_cmd *cmd);
+void				print_token(t_token *token);
 
 #endif
