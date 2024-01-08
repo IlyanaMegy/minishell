@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+         #
+#    By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/13 16:30:30 by ilymegy           #+#    #+#              #
-#    Updated: 2023/12/27 20:43:25 by ilymegy          ###   ########.fr        #
+#    Updated: 2024/01/08 14:22:38 by ltorkia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,24 +31,30 @@ BUILTINS		=	srcs/builtins/cd.c \
 CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
-					srcs/exec/pipex.c \
 					srcs/exec/exec_builtin.c
 
 ERROR			=	srcs/err_handler/error_handler.c
 
-PARSING			=	srcs/parsing/parser.c
+LEXER			=	srcs/lexer/token.c \
+					srcs/lexer/token_lst.c
+
+PARSING			=	srcs/parsing/get_cmd.c \
+					srcs/parsing/parse_word.c \
+					srcs/parsing/cmd_lst_utils.c \
+					srcs/parsing/debug.c
 
 PIPEX			=	srcs/pipex/open_close.c \
-					srcs/piipex/execute_pipex.c \
 					srcs/pipex/pipex_utils.c \
 					srcs/pipex/pipex.c
 
 UTILS			=	srcs/utils/lst_manip.c \
-					srcs/utils/singletons.c
+					srcs/utils/singletons.c \
+					# srcs/utils/signals.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
 					$(EXEC)\
+					$(LEXER)\
 					$(PARSING)\
 					$(PIPEX)\
 					$(UTILS)\
@@ -74,6 +80,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)/srcs/clean
 				@mkdir -p $(OBJ_PATH)/srcs/builtins
 				@mkdir -p $(OBJ_PATH)/srcs/exec
+				@mkdir -p $(OBJ_PATH)/srcs/lexer
 				@mkdir -p $(OBJ_PATH)/srcs/parsing
 				@mkdir -p $(OBJ_PATH)/srcs/pipex
 				@mkdir -p $(OBJ_PATH)/srcs/utils
