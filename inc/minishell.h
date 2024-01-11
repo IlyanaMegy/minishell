@@ -24,12 +24,15 @@
 # define RM 2
 # define GET 3
 
+# define ERR_NOCMD 0
 # define ERR_ARGS 2
 # define ERR_PATH 3
 # define ERR_NOFILEDIR 4
 # define ERR_EXPORT 5
 # define ERR_UNSET 6
 # define ERR_EXIT_NB 7
+# define ERR_AMBIG_REDIR 8
+# define ERR_PERM_DENIED 9
 
 //  --------------------------------------------------------------------------------
 // |							GLOBAL VARIABLE										|
@@ -75,21 +78,34 @@ typedef struct s_token
 // |								PARSING											|
 //  --------------------------------------------------------------------------------
 
+typedef enum e_io_type
+{
+	IO_IN,
+	IO_OUT,
+	IO_HEREDOC,
+	IO_APPEND
+}					t_io_type;
+
+typedef struct s_io_cmd
+{
+	t_io_type		type;
+	char			*path;
+	int				here_doc;
+	struct s_io_cmd	*next;
+	struct s_io_cmd	*prev;
+}					t_io_cmd;
+
 /**
- * @note   
- * @example < file cat | grep "hello" | ls
- * @example	s_cmd *first_cmd : cmd=cat, file_out=NULL, args=cat-file, fd_in=1, fd_out=?, pipe_out=1.
- * @example	s_cmd *second_cmd : cmd=grep, file_out=NULL, args=grep-hello, fd_in=? ...
- * @brief  return char *cmd, char *path, char **args, int fd_in, int fd_out, bool pipe_out, t_cmd *prev, t_cmd *next
- * @note   return var cmd, var path, var args, var fd_in, var fd_out, var pipe_out, prev var, next var
+ * @brief  return char *cmd, char *path, char **args, int fd_in, int fd_out,
+	bool pipe_out, t_cmd *prev, t_cmd *next
+ * @note   return var cmd, var path, var args, var fd_in, var fd_out,
+	var pipe_out, prev var, next var
 */
 typedef struct s_cmd
 {
+	t_io_cmd		*io_list;
 	char			*cmd;
-	char			*file_out;
 	char			**args;
-	int				fd_in;
-	int				fd_out;
 	bool			pipe_out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
@@ -98,6 +114,7 @@ typedef struct s_cmd
 //  --------------------------------------------------------------------------------
 // |							MAIN STRUCTURE										|
 //  --------------------------------------------------------------------------------
+
 /**
  * @brief  return char *user_input, t_token *token, t_cmd *cmd
  * @note   return var user_input, token var, cmd var
@@ -132,6 +149,21 @@ enum				e_quote_status
 	SINGLE,
 	DOUBLE
 };
+
+enum				e_err_no
+{
+	ENO_SUCCESS,
+	ENO_GENERAL,
+	ENO_CANT_EXEC = 126,
+	ENO_NOT_FOUND,
+	ENO_EXEC_255 = 255
+};
+
+typedef enum e_cmd_direction
+{
+	LEFT,
+	RIGHT
+}					t_cmd_direction;
 
 //  --------------------------------------------------------------------------------
 // |								BUILTINS										|
@@ -191,9 +223,26 @@ char				*complexe_err_msg(int err, char *cmd);
 //  --------------------------------------------------------------------------------
 
 // exec/exec_builtin.c
-
 int					is_builtin(char *arg);
 int					exec_builtin(t_data *data);
+
+// exec/exec_utils.c
+int					close_n_wait(int fd[2], int p_first, int p_sec);
+int					get_exit_status(int status);
+int					check_redir(t_data *data);
+void				get_out(t_data *data, int status, char **env);
+
+// exec/exec_redir.c
+int					check_write(char *file);
+int					check_read(char *file);
+int					open_in(t_io_cmd *io_lst, int *status);
+int					open_out(t_io_cmd *io_lst, int *status);
+int					open_out(t_io_cmd *io_lst, int *status);
+
+// exec/exec_get_path.c
+char				*get_path(char *cmd);
+int					check_exec(char *file, bool cmd);
+static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
@@ -220,8 +269,7 @@ int					single_exit_s(int exit_s, int mode);
 bool				tokenize_input(t_data *data, char *s);
 int					save_word(t_token **token_lst, char *s, int index,
 						int start);
-int					save_sep(t_token **token_lst, char *s, int index, 
-						int type);
+int					save_sep(t_token **token_lst, char *s, int index, int type);
 int					set_quote_status(int quote_status, char c);
 int					is_separator(char *s, int i);
 

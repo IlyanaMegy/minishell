@@ -34,6 +34,10 @@ void	err_handler(int err, char *s)
 		err_msg = ft_strjoin(s, ": HOME not set\n");
 	else if (err == ERR_NOFILEDIR)
 		err_msg = ft_strjoin(s, ": No such file or directory\n");
+	else if (err == ERR_PERM_DENIED)
+		err_msg = ft_strjoin(s, ": Permission denied\n");
+	else if (err == ERR_AMBIG_REDIR)
+		err_msg = ft_strjoin(s, ": ambiguous redirect\n");
 	all_msg = ft_strjoin(start_msg, err_msg);
 	ft_putstr_fd(all_msg, STDERR_FILENO); // ou 2?
 	free(start_msg);
