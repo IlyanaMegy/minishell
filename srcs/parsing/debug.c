@@ -30,7 +30,7 @@ void	print_token(t_token *token)
 	ft_printf("\n");
 	while (token)
 	{
-		ft_printf("- token %d = %s | type = %d\n", i, token->value, token->type);
+		ft_printf("- token %d = %s -> type = %d\n", i, token->value, token->type);
 		i++;
 		token = token->next;
 	}

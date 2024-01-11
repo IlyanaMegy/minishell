@@ -12,7 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-static void	no_arg_cmds(t_data *data)
+static void	set_cmd_without_args(t_data *data)
 {
 	t_cmd	*cmd;
 
@@ -29,7 +29,6 @@ static void	no_arg_cmds(t_data *data)
 		}
 		cmd = cmd->next;
 	}
-	cmd = lst_last_cmd(data->cmd);
 }
 
 /**
@@ -57,6 +56,6 @@ void	get_commands(t_data *data, t_token *token)
 		else if (temp->type == END_STR)
 			break ;
 	}
-	// Process commands with no arguments
-	no_arg_cmds(data);
+	// Set commands with no arguments
+	set_cmd_without_args(data);
 }

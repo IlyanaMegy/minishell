@@ -12,24 +12,6 @@
 
 #include "../inc/minishell.h"
 
-// *	true = success, false = error
-static bool	tokenize_and_parse(t_data *data)
-{
-	if (data->user_input[0])
-		add_history(data->user_input);
-	// ?	Tokenize the user_input and store it in data->token
-	if (!tokenize_input(data, data->user_input))
-		return (false);
-	// ?	Check if the token list is empty (END_STR) and return false if it is
-	if (data->token->type == END_STR)
-		return (false);
-	// ?	Parse the token list to extract commands and arguments
-	get_commands(data, data->token);
-	// *	DEBUG : Print the current command
-	print_token(data->token);
-	return (true);
-}
-
 int	main(int ac, char **av, char **arg_env)
 {
 	int		exit_s;
