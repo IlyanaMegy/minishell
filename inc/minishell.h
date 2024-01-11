@@ -76,13 +76,17 @@ typedef struct s_token
 //  --------------------------------------------------------------------------------
 
 /**
+ * @note   
+ * @example < file cat | grep "hello" | ls
+ * @example	s_cmd *first_cmd : cmd=cat, file_out=NULL, args=cat-file, fd_in=1, fd_out=?, pipe_out=1.
+ * @example	s_cmd *second_cmd : cmd=grep, file_out=NULL, args=grep-hello, fd_in=? ...
  * @brief  return char *cmd, char *path, char **args, int fd_in, int fd_out, bool pipe_out, t_cmd *prev, t_cmd *next
  * @note   return var cmd, var path, var args, var fd_in, var fd_out, var pipe_out, prev var, next var
 */
 typedef struct s_cmd
 {
 	char			*cmd;
-	char			*path;
+	char			*file_out;
 	char			**args;
 	int				fd_in;
 	int				fd_out;
