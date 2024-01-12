@@ -149,7 +149,7 @@ enum				e_quote_status
 
 typedef enum e_err_msg
 {
-	ERR_NOCMD,
+	ERR_NOCMD = 0,
 	ERR_ARGS,
 	ERR_PATH,
 	ERR_NOFILEDIR,
@@ -267,8 +267,8 @@ int					open_out(t_io_cmd *io_lst, int *status);
 int					open_append(t_io_cmd *io_lst, int *status);
 
 // exec/exec_get_path.c
-char				*get_path(char *cmd);
-int					check_exec(char *file, bool cmd);
+t_path				get_path(char *cmd);
+t_err				check_exec(char *file, bool cmd);
 // static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------
