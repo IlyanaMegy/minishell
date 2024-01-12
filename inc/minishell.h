@@ -13,10 +13,15 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft.h"
+# include <dirent.h>
+# include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <sys/wait.h>
+# include <termios.h>
 
 # define PROMPT "minishell$ "
 
@@ -124,6 +129,8 @@ typedef struct s_data
 	char			*user_input;
 	t_token			*token;
 	t_cmd			*cmd;
+	int				stdin;
+	int				stdout;
 }					t_data;
 
 //  --------------------------------------------------------------------------------
@@ -222,6 +229,9 @@ char				*complexe_err_msg(int err, char *cmd);
 // |								EXECUTION										|
 //  --------------------------------------------------------------------------------
 
+// exec/exec.c
+void				executie(t_data *data, bool piped);
+
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
 int					exec_builtin(t_data *data);
@@ -231,18 +241,19 @@ int					close_n_wait(int fd[2], int p_first, int p_sec);
 int					get_exit_status(int status);
 int					check_redir(t_data *data);
 void				get_out(t_data *data, int status, char **env);
+void				reset_stds(t_data *data, bool piped);
 
 // exec/exec_redir.c
 int					check_write(char *file);
 int					check_read(char *file);
 int					open_in(t_io_cmd *io_lst, int *status);
 int					open_out(t_io_cmd *io_lst, int *status);
-int					open_out(t_io_cmd *io_lst, int *status);
+int					open_append(t_io_cmd *io_lst, int *status);
 
 // exec/exec_get_path.c
 char				*get_path(char *cmd);
 int					check_exec(char *file, bool cmd);
-static char			*get_env_path(char *cmd, char *path);
+// static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|

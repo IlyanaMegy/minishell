@@ -31,8 +31,10 @@ BUILTINS		=	srcs/builtins/cd.c \
 CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
-					srcs/exec/pipex.c \
-					srcs/exec/exec_builtin.c
+					srcs/exec/exec_utils.c \
+					srcs/exec/exec_redir.c \
+					srcs/exec/exec_get_path.c \
+					srcs/exec/exec_builtins.c
 
 ERROR			=	srcs/err_handler/error_handler.c
 
