@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:29:09 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/04 16:29:11 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/12 19:50:12 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,5 @@ int	exec_builtin(t_data *data)
 	if (ft_strcmp(data->cmd->args[0], "unset") == 0)
 		return (ft_unset(data->cmd->args));
 	ft_exit(data);
-	return (0);
-}
-
-int	is_builtin(char *arg)
-{
-	if (!arg)
-		return (0);
-	if (!ft_strcmp(arg, "echo")
-		|| !ft_strcmp(arg, "cd")
-		|| !ft_strcmp(arg, "exit")
-		|| !ft_strcmp(arg, "pwd")
-		|| !ft_strcmp(arg, "export")
-		|| !ft_strcmp(arg, "unset")
-		|| !ft_strcmp(arg, "env"))
-		return (1);
 	return (0);
 }
