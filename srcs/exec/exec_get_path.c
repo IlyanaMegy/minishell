@@ -33,10 +33,7 @@ static char	*get_env_path(char *cmd, char *path)
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
 		if (check_exec(exec, true) == ENO_SUCCESS)
-		{
-			free_tab(split_path);
-			return (exec);
-		}
+			return (free_tab(split_path), exec);
 		free(exec);
 	}
 	free_tab(split_path);
@@ -46,8 +43,8 @@ static char	*get_env_path(char *cmd, char *path)
 
 /**
  * @note   check if the path is an executable
- * @param  file: the path
- * @param  cmd: ?
+ * @param  file: the executable path
+ * @param  cmd: is it cmd ?
  * @retval exit status
 */
 int	check_exec(char *file, bool cmd)
@@ -56,6 +53,7 @@ int	check_exec(char *file, bool cmd)
 		return (err_handler(ERR_NOFILEDIR, file), ENO_GENERAL);
 	if (access(file, F_OK) == 0)
 	{
+		
 		if (access(file, X_OK) == -1)
 			return (err_handler(ERR_PERM_DENIED, file), ENO_CANT_EXEC);
 		return (ENO_SUCCESS);
@@ -83,7 +81,7 @@ char	*get_path(char *cmd)
 		return (single_exit_s(check_exec(cmd, false), ADD), cmd);
 	content = get_var_content_from_env("PATH");
 	if (content)
-		return (get_env_path(content, cmd));
+		return (get_env_path(cmd, content));
 	single_exit_s(ENO_NOT_FOUND, ADD);
 	return (err_handler(ERR_NOFILEDIR, "\'\'"), NULL);
 }

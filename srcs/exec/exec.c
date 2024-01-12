@@ -106,7 +106,7 @@ static int	exec_child(t_data *data)
 
 /**
  * @note   execution as simple command
- * @param  *data: t_data linked list
+ * @param  data: t_data linked list
  * @param  piped: is it piped ?
  * @retval exit status
 */
@@ -115,7 +115,8 @@ int	exec_simple_cmd(t_data *data, bool piped)
 	if (!data->cmd->args)
 	{
 		single_exit_s(check_redir(data), ADD);
-		return (reset_stds(data, piped), (single_exit_s(0, GET) && ENO_GENERAL));
+		return (reset_stds(data, piped), (single_exit_s(0, GET)
+				&& ENO_GENERAL));
 	}
 	else if (is_builtin(data->cmd->args[0]))
 	{
