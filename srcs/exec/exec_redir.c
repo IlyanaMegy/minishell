@@ -110,7 +110,7 @@ int	open_out(t_io_cmd *io_lst, int *status)
  * @param  status: exit status
  * @retval exit status
 */
-int	open_out(t_io_cmd *io_lst, int *status)
+int	open_append(t_io_cmd *io_lst, int *status)
 {
 	int	fdo;
 

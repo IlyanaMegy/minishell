@@ -12,13 +12,13 @@
 
 #include "../../inc/minishell.h"
 
-// void	ft_reset_stds(bool piped)
-// {
-// 	if (piped)
-// 		return ;
-// 	dup2(g_minishell.stdin, 0);
-// 	dup2(g_minishell.stdout, 1);
-// }
+void	reset_stds(t_data *data, bool piped)
+{
+	if (piped)
+		return ;
+	dup2(data->stdin, 0);
+	dup2(data->stdout, 1);
+}
 
 void	get_out(t_data *data, int status, char **env)
 {

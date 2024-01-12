@@ -45,7 +45,6 @@ static void	exec_pipe_child(t_data *data, int fd[2], t_cmd_direction dir)
 */
 static int	exec_pipe(t_data *data)
 {
-	int	status;
 	int	fd[2];
 	int	pid_first;
 	int	pid_sec;
@@ -55,20 +54,20 @@ static int	exec_pipe(t_data *data)
 		return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 1);
 	pid_first = fork();
 	if (pid_first < 0)
-		return (ft_putchar_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
+		return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
 	if (!pid_first)
 		exec_pipe_child(data, fd, LEFT);
 	else
 	{
 		pid_sec = fork();
 		if (pid_sec < 0)
-			return (ft_putchar_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
+			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
 		if (!pid_sec)
 			exec_pipe_child(data, fd, RIGHT);
 		else
 			return (close_n_wait(fd, pid_first, pid_sec));
-		return (ENO_GENERAL);
 	}
+	return (ENO_GENERAL);
 }
 
 /**
@@ -87,7 +86,7 @@ static int	exec_child(t_data *data)
 	env = env_to_tab(single_env(NULL, GET));
 	fork_pid = fork();
 	if (fork_pid < 0)
-		return (ft_putchar_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
+		return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
 	if (!fork_pid)
 	{
 		status = check_redir(data);
@@ -115,16 +114,16 @@ int	exec_simple_cmd(t_data *data, bool piped)
 {
 	if (!data->cmd->args)
 	{
-		single_exit_s(check_redir(data->cmd), ADD);
-		return (reset_stds(piped), (single_exit_s(0, GET) && ENO_GENERAL));
+		single_exit_s(check_redir(data), ADD);
+		return (reset_stds(data, piped), (single_exit_s(0, GET) && ENO_GENERAL));
 	}
 	else if (is_builtin(data->cmd->args[0]))
 	{
-		single_exit_s(check_redir(data->cmd), ADD);
+		single_exit_s(check_redir(data), ADD);
 		if (single_exit_s(0, GET) != ENO_SUCCESS)
-			return (reset_stds(piped), ENO_GENERAL);
+			return (reset_stds(data, piped), ENO_GENERAL);
 		single_exit_s(exec_builtin(data), ADD);
-		return (reset_stds(piped), single_exit_s(0, GET));
+		return (reset_stds(data, piped), single_exit_s(0, GET));
 	}
 	else
 		return (exec_child(data));

@@ -34,12 +34,12 @@ static char	*get_env_path(char *cmd, char *path)
 		free(path_part);
 		if (check_exec(exec, true) == ENO_SUCCESS)
 		{
-			ft_free_tab(split_path);
+			free_tab(split_path);
 			return (exec);
 		}
 		free(exec);
 	}
-	ft_free_tab(split_path);
+	free_tab(split_path);
 	single_exit_s(ENO_NOT_FOUND, ADD);
 	return (err_handler(ERR_NOCMD, cmd), NULL);
 }
