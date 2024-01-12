@@ -75,29 +75,29 @@ static int	exec_pipe(t_data *data)
  * @param  data: t_data linked list
  * @retval exit status
 */
-static int	exec_child(t_data *data)
+static int	exec_child(t_data *data, int fork_pid)
 {
-	int		fork_pid;
 	int		status;
-	char	*path;
+	t_path	path;
 	char	**env;
 
 	// signint_child = true
 	env = env_to_tab(single_env(NULL, GET));
-	fork_pid = fork();
-	if (fork_pid < 0)
-		return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
+	if (!env)
+		return (ENO_GENERAL);
 	if (!fork_pid)
 	{
 		status = check_redir(data);
 		if (status != ENO_SUCCESS)
 			get_out(data, ENO_GENERAL, env);
 		path = get_path(data->cmd->args[0]);
-		if (!path)
-			get_out(data, single_exit_s(0, GET), env);
-		if (execve(path, data->cmd->args, env) == -1)
-			return (free(path), get_out(data, single_exit_s(0, GET), env), 1);
-		free(path);
+		if (path.err.no != ENO_SUCCESS)
+			(err_handler(path.err.msg, path.err.cause), get_out(data,
+						single_exit_s(path.err.no, ADD), env));
+		if (execve(path.path, data->cmd->args, env) == -1)
+			return (free(path.path), get_out(data, single_exit_s(0, GET), env),
+				1);
+		free(path.path);
 	}
 	waitpid(fork_pid, &status, 0);
 	// signint_child = false
@@ -106,16 +106,19 @@ static int	exec_child(t_data *data)
 
 /**
  * @note   execution as simple command
- * @param  *data: t_data linked list
+ * @param  data: t_data linked list
  * @param  piped: is it piped ?
  * @retval exit status
 */
 int	exec_simple_cmd(t_data *data, bool piped)
 {
+	int	fork_pid;
+
 	if (!data->cmd->args)
 	{
 		single_exit_s(check_redir(data), ADD);
-		return (reset_stds(data, piped), (single_exit_s(0, GET) && ENO_GENERAL));
+		return (reset_stds(data, piped), (single_exit_s(0, GET)
+				&& ENO_GENERAL));
 	}
 	else if (is_builtin(data->cmd->args[0]))
 	{
@@ -126,7 +129,12 @@ int	exec_simple_cmd(t_data *data, bool piped)
 		return (reset_stds(data, piped), single_exit_s(0, GET));
 	}
 	else
-		return (exec_child(data));
+	{
+		fork_pid = fork();
+		if (fork_pid < 0)
+			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 1);
+		return (exec_child(data, fork_pid));
+	}
 }
 
 /**

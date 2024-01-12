@@ -29,16 +29,6 @@
 # define RM 2
 # define GET 3
 
-# define ERR_NOCMD 0
-# define ERR_ARGS 2
-# define ERR_PATH 3
-# define ERR_NOFILEDIR 4
-# define ERR_EXPORT 5
-# define ERR_UNSET 6
-# define ERR_EXIT_NB 7
-# define ERR_AMBIG_REDIR 8
-# define ERR_PERM_DENIED 9
-
 //  --------------------------------------------------------------------------------
 // |							GLOBAL VARIABLE										|
 //  --------------------------------------------------------------------------------
@@ -157,14 +147,27 @@ enum				e_quote_status
 	DOUBLE
 };
 
-enum				e_err_no
+typedef enum e_err_msg
+{
+	ERR_NOCMD = 0,
+	ERR_ARGS,
+	ERR_PATH,
+	ERR_NOFILEDIR,
+	ERR_EXPORT,
+	ERR_UNSET,
+	ERR_EXIT_NB,
+	ERR_AMBIG_REDIR,
+	ERR_PERM_DENIED
+}					t_err_msg;
+
+typedef enum e_err_no
 {
 	ENO_SUCCESS,
 	ENO_GENERAL,
 	ENO_CANT_EXEC = 126,
 	ENO_NOT_FOUND,
 	ENO_EXEC_255 = 255
-};
+}					t_err_no;
 
 typedef enum e_cmd_direction
 {
@@ -229,6 +232,19 @@ char				*complexe_err_msg(int err, char *cmd);
 // |								EXECUTION										|
 //  --------------------------------------------------------------------------------
 
+typedef struct s_err
+{
+	t_err_no		no;
+	t_err_msg		msg;
+	char			*cause;
+}					t_err;
+
+typedef struct s_path
+{
+	t_err			err;
+	char			*path;
+}					t_path;
+
 // exec/exec.c
 void				executie(t_data *data, bool piped);
 
@@ -251,8 +267,8 @@ int					open_out(t_io_cmd *io_lst, int *status);
 int					open_append(t_io_cmd *io_lst, int *status);
 
 // exec/exec_get_path.c
-char				*get_path(char *cmd);
-int					check_exec(char *file, bool cmd);
+t_path				get_path(char *cmd);
+t_err				check_exec(char *file, bool cmd);
 // static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------

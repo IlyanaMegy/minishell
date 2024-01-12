@@ -32,6 +32,8 @@ void	err_handler(int err, char *s)
 		err_msg = complexe_err_msg(err, s);
 	else if (err == ERR_PATH)
 		err_msg = ft_strjoin(s, ": HOME not set\n");
+	else if (err == ERR_NOCMD)
+		err_msg = ft_strjoin(s, ": command not found\n");
 	else if (err == ERR_NOFILEDIR)
 		err_msg = ft_strjoin(s, ": No such file or directory\n");
 	else if (err == ERR_PERM_DENIED)
