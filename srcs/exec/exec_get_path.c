@@ -18,9 +18,10 @@
  * @param  path: PATH in the environment
  * @retval path of cmd
 */
-static char	*get_env_path(char *cmd, char *path)
+static t_path	get_env_path(char *cmd, char *path)
 {
 	int		i;
+	t_err	err;
 	char	*exec;
 	char	*path_part;
 	char	**split_path;
@@ -32,35 +33,56 @@ static char	*get_env_path(char *cmd, char *path)
 		path_part = ft_strjoin(split_path[i], "/");
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
-		if (check_exec(exec, true) == ENO_SUCCESS)
-			return (free_tab(split_path), exec);
+		err = check_exec(exec, true);
+		if (err.no == ENO_SUCCESS)
+			return (free_tab(split_path), (t_path){(t_err){ENO_SUCCESS, 55, exec}, exec});
 		free(exec);
 	}
 	free_tab(split_path);
-	single_exit_s(ENO_NOT_FOUND, ADD);
-	return (err_handler(ERR_NOCMD, cmd), NULL);
+	return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 }
+
+// /**
+//  * @note   check if the path is an executable
+//  * @param  file: the executable path
+//  * @param  cmd: is it cmd ?
+//  * @retval exit status
+// */
+// int	check_exec(char *file, bool cmd)
+// {
+// 	if (!*file)
+// 		return (err_handler(ERR_NOFILEDIR, file), ENO_GENERAL);
+// 	if (access(file, F_OK) == 0)
+// 	{
+
+// 		if (access(file, X_OK) == -1)
+// 			return (err_handler(ERR_PERM_DENIED, file), ENO_CANT_EXEC);
+// 		return (ENO_SUCCESS);
+// 	}
+// 	if (cmd)
+// 		return (err_handler(ERR_NOCMD, file), ENO_NOT_FOUND);
+// 	return (err_handler(ERR_NOFILEDIR, file), ENO_NOT_FOUND);
+// }
 
 /**
  * @note   check if the path is an executable
  * @param  file: the executable path
  * @param  cmd: is it cmd ?
- * @retval exit status
+ * @retval t_err error status
 */
-int	check_exec(char *file, bool cmd)
+t_err	check_exec(char *file, bool cmd)
 {
 	if (!*file)
-		return (err_handler(ERR_NOFILEDIR, file), ENO_GENERAL);
+		return ((t_err){ENO_GENERAL, ERR_NOFILEDIR, file});
 	if (access(file, F_OK) == 0)
 	{
-		
 		if (access(file, X_OK) == -1)
-			return (err_handler(ERR_PERM_DENIED, file), ENO_CANT_EXEC);
-		return (ENO_SUCCESS);
+			return ((t_err){ENO_CANT_EXEC, ERR_PERM_DENIED, file});
+		return ((t_err){ENO_SUCCESS, 55, NULL});
 	}
 	if (cmd)
-		return (err_handler(ERR_NOCMD, file), ENO_NOT_FOUND);
-	return (err_handler(ERR_NOFILEDIR, file), ENO_NOT_FOUND);
+		return ((t_err){ENO_NOT_FOUND, ERR_NOCMD, file});
+	return ((t_err){ENO_NOT_FOUND, ERR_NOFILEDIR, file});
 }
 
 /**
@@ -68,20 +90,20 @@ int	check_exec(char *file, bool cmd)
  * @param  cmd: command in question
  * @retval the path or NULL if error
 */
-char	*get_path(char *cmd)
+t_path	get_path(char *cmd)
 {
 	char	*content;
 
 	if (*cmd == '\0')
 	{
-		single_exit_s(ENO_NOT_FOUND, ADD);
-		return (err_handler(ERR_NOCMD, "\'\'"), NULL);
+		// single_exit_s(ENO_NOT_FOUND, ADD);
+		// return (err_handler(ERR_NOCMD, "\'\'"), NULL);
+		return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 	}
 	if (ft_strnstr(cmd, "/", ft_strlen(cmd)))
-		return (single_exit_s(check_exec(cmd, false), ADD), cmd);
+		return ((t_path){check_exec(cmd, false), cmd});
 	content = get_var_content_from_env("PATH");
 	if (content)
 		return (get_env_path(cmd, content));
-	single_exit_s(ENO_NOT_FOUND, ADD);
-	return (err_handler(ERR_NOFILEDIR, "\'\'"), NULL);
+	return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOFILEDIR, cmd}, NULL});
 }
