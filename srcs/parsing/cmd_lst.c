@@ -6,11 +6,38 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/12 20:58:24 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 09:49:26 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+// bool	init_io_cmd(t_io_cmd **io_list, t_io_type type, char *path)
+// {
+// 	t_io_cmd	*temp;
+
+// 	temp = *io_list;
+// 	temp = (t_io_cmd *)malloc(sizeof(t_io_cmd));
+// 	if (!temp)
+// 		return (false);
+// 	temp->path = path;
+// 	temp->type = type;
+// 	temp->here_doc = 0;
+// 	if (!(*io_list))
+// 	{
+// 		temp->prev = NULL;
+// 		*io_list = temp;
+// 	}
+// 	else
+// 	{
+// 		t_io_cmd *current = *io_list;
+// 		while (current->next)
+// 			current = current->next;
+// 		current->next = temp;
+// 		temp->prev = current;
+// 	}
+// 	return (true);
+// }
 
 bool	init_io_cmd(t_cmd **node)
 {
@@ -30,18 +57,16 @@ bool	init_io_cmd(t_cmd **node)
 	return (true);
 }
 
-t_cmd    *lst_new_cmd(bool pipe)
+t_cmd	*lst_new_cmd(void)
 {
     t_cmd    *node;
 
 	node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!(node))
 		return (NULL);
-	if (!init_io_cmd(&node))
-		return (NULL);
+	(node)->io_list = NULL;
 	(node)->cmd = NULL;
 	(node)->args = NULL;
-	(node)->pipe_out = pipe;
 	(node)->prev = NULL;
 	(node)->next = NULL;
 	return (node);

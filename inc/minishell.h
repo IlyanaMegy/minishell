@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/12 20:45:25 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 10:28:17 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ typedef struct s_cmd
 	t_io_cmd		*io_list;
 	char			*cmd;
 	char			**args;
-	bool			pipe_out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -130,24 +129,17 @@ enum				e_token_type
 {
 	WHITESPACE = 1,
 	WORD,
-	VAR,
-	PIPE,
-	INPUT,
-	TRUNC,
-	HEREDOC,
-	APPEND,
-	END_STR
-};
-
-enum				e_quote_status
-{
-	NONE,
-	SINGLE,
-	DOUBLE
+	VAR, // $
+	PIPE, // |
+	INPUT, // <
+	TRUNC, // >
+	HEREDOC, // <<
+	APPEND // >>
 };
 
 typedef enum e_err_msg
 {
+	ERR_SYNTAX = -1,
 	ERR_NOCMD = 0,
 	ERR_ARGS,
 	ERR_PATH,
@@ -250,6 +242,7 @@ typedef struct s_path
 void				executie(t_data *data, bool piped);
 
 // exec/exec_builtin.c
+int					is_builtin(char *arg);
 int					exec_builtin(t_data *data);
 
 // exec/exec_utils.c
@@ -304,9 +297,6 @@ int					is_separator(char *s, int i);
 bool				is_quote(char *s, int index);
 bool				ignore_quotes(char *s, int *index);
 
-// lexer/syntax_error.c
-bool				check_syntax(t_token **token_lst);
-
 // lexer/token_lst.c
 t_token				*lst_new_token(char *value, int type);
 void				lst_add_back_token(t_token **alst, t_token *node);
@@ -314,8 +304,7 @@ void				lstdelone_token(t_token *lst, void (*del)(void *));
 void				lstclear_token(t_token **lst, void (*del)(void *));
 
 // lexer/syntax_error.c
-bool				check_syntax(t_token **token_lst);
-bool				is_builtin(char *arg);
+bool				check_syntax(t_token *token);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|
@@ -324,8 +313,11 @@ bool				is_builtin(char *arg);
 // parsing/get_cmd.c
 bool				get_commands(t_data *data, t_token *token);
 
-// parsing/parse_word.c
-bool				parse_word(t_cmd **cmd, t_token **token_lst);
+// parsing/handle_word.c
+bool				handle_word(t_cmd **cmd, t_token **token_lst);
+
+// parsing/handle_input.c
+bool				handle_input(t_cmd **cmd, t_token **token_lst);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -335,7 +327,8 @@ int					count_args(t_token *temp);
 bool				set_cmd_without_args(t_data *data);
 
 // parsing/cmd_lst.c
-t_cmd				*lst_new_cmd(bool pipe);
+t_cmd				*lst_new_cmd(void);
+bool				init_io_cmd(t_cmd **node);
 void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
 t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));

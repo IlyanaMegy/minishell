@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/12 21:08:58 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/15 13:30:28 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	is_separator(char *s, int i)
 
 bool	is_quote(char *s, int index)
 {
-	if (s[index] == '\'' || s[index] == '\"')
+	if (s[index] == '\'' || s[index] == '"')
 		return (true);
 	return (false);
 }
