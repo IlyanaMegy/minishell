@@ -12,6 +12,12 @@
 
 #include "../../inc/minishell.h"
 
+/**
+ * @note   reset stdin and stdout if not piped
+ * @param  data: t_data linked list
+ * @param  piped: is it piped or not
+ * @retval None
+*/
 void	reset_stds(t_data *data, bool piped)
 {
 	if (piped)
@@ -20,19 +26,31 @@ void	reset_stds(t_data *data, bool piped)
 	dup2(data->stdout, 1);
 }
 
+/**
+ * @note   let's free everything before exit with the right status
+ * @param  data: t_data linked list to free
+ * @param  status: exit status
+ * @param  env: environment 2D array to free
+ * @retval None
+*/
 void	get_out(t_data *data, int status, char **env)
 {
 	free_tab(env);
 	clean_program(data);
-	exit (status);
+	exit(status);
 }
 
-int	check_redir(t_data *data)
+/**
+ * @note   check redirections of the given command
+ * @param  cmd: current command
+ * @retval exit status
+*/
+int	check_redir(t_cmd *cmd)
 {
 	t_io_cmd	*cmd_io;
 	int			status;
 
-	cmd_io = data->cmd->io_list;
+	cmd_io = cmd->io_list;
 	while (cmd_io)
 	{
 		if (cmd_io->type == IO_OUT && open_out(cmd_io, &status) != 0)
@@ -51,6 +69,11 @@ int	check_redir(t_data *data)
 	return (ENO_SUCCESS);
 }
 
+/**
+ * @note   get right exit status
+ * @param  status: 
+ * @retval exit status
+*/
 int	get_exit_status(int status)
 {
 	if (WIFSIGNALED(status))
@@ -58,6 +81,13 @@ int	get_exit_status(int status)
 	return (WEXITSTATUS(status));
 }
 
+/**
+ * @note   do close fds and waitpid first and second fork
+ * @param  fd[2]: fds tab
+ * @param  p_first: first fork
+ * @param  p_sec: second fork
+ * @retval exit status
+*/
 int	close_n_wait(int fd[2], int p_first, int p_sec)
 {
 	int	status;

@@ -13,7 +13,7 @@
 #include "../inc/minishell.h"
 
 // *	LEXER + PARSING -> true = success / false = error
-static bool tokenize_and_parse(t_data *data)
+static bool	tokenize_and_parse(t_data *data)
 {
 	if (data->user_input[0])
 		add_history(data->user_input);
@@ -37,6 +37,8 @@ int	main(int ac, char **av, char **arg_env)
 	(void)av;
 	// ?	init data to NULL
 	ft_memset(&data, 0, sizeof(t_data));
+	data.stdin = dup(0);
+	data.stdout = dup(1);
 	// ?	stock environment into the linked list t_env thanks to single_env function
 	// TODO	use that single_env function to get, update or clear t_env list
 	get_env(arg_env);
@@ -48,7 +50,7 @@ int	main(int ac, char **av, char **arg_env)
 		// ?	stocking the freshly entered input into data.user_input and verify parsing
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)
-			ft_exit(&data);
+			(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
 		if (tokenize_and_parse(&data))
 		{
 			// *	DEBUG : Print the current command
