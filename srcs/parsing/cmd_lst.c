@@ -59,7 +59,7 @@ bool	init_io_cmd(t_cmd **node)
 
 t_cmd	*lst_new_cmd(void)
 {
-	t_cmd	*node;
+    t_cmd    *node;
 
 	node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!(node))
