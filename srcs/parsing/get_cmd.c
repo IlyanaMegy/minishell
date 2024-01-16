@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/16 10:32:48 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 12:06:36 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ bool	get_commands(t_data *data, t_token *token)
 				temp_tkn = temp_tkn->next;
 		}
 		// if the token is a WORD or VAR (command or argument), parse it
-		if ((temp_tkn->type == WORD
-				&& (!temp_tkn->prev || temp_tkn->prev->type <= PIPE)))
+		if (temp_tkn->type == WORD)
 		{
 			if (!handle_word(&data->cmd, &temp_tkn))
 				return (false);
