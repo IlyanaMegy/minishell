@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/16 10:28:17 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 14:07:37 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -328,11 +328,13 @@ bool				set_cmd_without_args(t_data *data);
 
 // parsing/cmd_lst.c
 t_cmd				*lst_new_cmd(void);
-bool				init_io_cmd(t_cmd **node);
 void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
 t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));
 void				lstclear_cmd(t_cmd **lst, void (*del)(void *));
+
+//parsing/io_utils.c
+bool				init_io_cmd(t_cmd **cmd);
 
 // parsing/debug.c
 void				print_cmd(t_cmd *cmd);
