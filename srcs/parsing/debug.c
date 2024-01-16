@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:34:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/07 22:27:48 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 10:17:32 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,23 @@
 
 void	print_cmd(t_cmd *cmd)
 {
-	ft_printf("Commande actuelle: %s\n", cmd->cmd);
-	int j = 1;
-	while (cmd->args[j])
+	int i = 1;
+	while (cmd)
 	{
-		ft_printf("- arg %d = %s\n", j, cmd->args[j]);
-		j++;
+		ft_printf("Commande %d: %s\n", i, cmd->cmd);
+		if (cmd->io_list)
+			ft_printf("- input path = %s\n", cmd->io_list->path);
+		int j = 0;
+		while (cmd->args[j])
+		{
+			ft_printf("- arg %d = %s\n", j, cmd->args[j]);
+			j++;
+		}
+		ft_printf("\n");
+		i++;
+		cmd = cmd ->next;
 	}
-	ft_printf("\n");
+	// exit (0);
 }
 
 void	print_token(t_token *token)

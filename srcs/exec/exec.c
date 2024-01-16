@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:22:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/13 16:22:25 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/15 19:42:14 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * @note   executing pipe child
- * @param  data: t_data linked list 
+ * @param  data: t_data linked list
  * @param  fd[2]: pipes
  * @param  dir: LEFT or RIGHT command
  * @retval None

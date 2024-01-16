@@ -6,7 +6,7 @@
 #    By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/13 16:30:30 by ilymegy           #+#    #+#              #
-#    Updated: 2024/01/08 14:22:38 by ltorkia          ###   ########.fr        #
+#    Updated: 2024/01/16 10:50:44 by ltorkia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME			=	minishell
 CC				=	cc
 CFLAGS			=	-Wall -Wextra -Werror -g3
 
-INC				=	-I ./inc/\
+INC				=	-I ./inc/ \
 					-I ./libft/
 INCS			=	./inc/*.h
 
@@ -39,12 +39,15 @@ EXEC			=	srcs/exec/exec.c \
 ERROR			=	srcs/err_handler/error_handler.c
 
 LEXER			=	srcs/lexer/token.c \
-					srcs/lexer/token_lst.c
+					srcs/lexer/token_utils.c \
+					srcs/lexer/token_lst.c \
+					srcs/lexer/syntax_error.c
 
-PARSING			=	srcs/parsing/parser.c \
-					srcs/parsing/get_cmd.c \
-					srcs/parsing/parse_word.c \
+PARSING			=	srcs/parsing/get_cmd.c \
+					srcs/parsing/handle_word.c \
+					srcs/parsing/handle_input.c \
 					srcs/parsing/cmd_lst.c \
+					srcs/parsing/get_args.c \
 					srcs/parsing/debug.c
 
 PIPEX			=	srcs/pipex/open_close.c \

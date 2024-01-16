@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/08 14:26:10 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 10:28:17 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
-	int				quote_status;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -101,7 +100,6 @@ typedef struct s_cmd
 	t_io_cmd		*io_list;
 	char			*cmd;
 	char			**args;
-	bool			pipe_out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -131,24 +129,17 @@ enum				e_token_type
 {
 	WHITESPACE = 1,
 	WORD,
-	VAR,
-	PIPE,
-	INPUT,
-	TRUNC,
-	HEREDOC,
-	APPEND,
-	END_STR
-};
-
-enum				e_quote_status
-{
-	NONE,
-	SINGLE,
-	DOUBLE
+	VAR, // $
+	PIPE, // |
+	INPUT, // <
+	TRUNC, // >
+	HEREDOC, // <<
+	APPEND // >>
 };
 
 typedef enum e_err_msg
 {
+	ERR_SYNTAX = -1,
 	ERR_NOCMD = 0,
 	ERR_ARGS,
 	ERR_PATH,
@@ -227,6 +218,8 @@ void				clean_program(t_data *data);
 //  --------------------------------------------------------------------------------
 void				err_handler(int err, char *s);
 char				*complexe_err_msg(int err, char *cmd);
+void				err_syntax(int err, char *s);
+void				err_quote(char c);
 
 //  --------------------------------------------------------------------------------
 // |								EXECUTION										|
@@ -294,35 +287,48 @@ int					single_exit_s(int exit_s, int mode);
 
 // lexer/token.c
 bool				tokenize_input(t_data *data, char *s);
-int					save_word(t_token **token_lst, char *s, int index,
-						int start);
-int					save_sep(t_token **token_lst, char *s, int index, int type);
-int					set_quote_status(int quote_status, char c);
+int					save_word(t_token **token_lst, char *s, int index);
+int					save_sep(t_token **token_lst, char *s, int index,
+						int sep_type);
+
+// lexer/token_utils.c
+int					ignore_spaces(char *s, int index);
 int					is_separator(char *s, int i);
+bool				is_quote(char *s, int index);
+bool				ignore_quotes(char *s, int *index);
 
 // lexer/token_lst.c
-t_token				*lst_new_token(char *value, int type, int quote_status);
+t_token				*lst_new_token(char *value, int type);
 void				lst_add_back_token(t_token **alst, t_token *node);
 void				lstdelone_token(t_token *lst, void (*del)(void *));
 void				lstclear_token(t_token **lst, void (*del)(void *));
+
+// lexer/syntax_error.c
+bool				check_syntax(t_token *token);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|
 //  --------------------------------------------------------------------------------
 
-// parsing/parser.c
-bool				tokenize_and_parse(t_data *data);
-
-// parsing/parse_word.c
-void				parse_word(t_cmd **cmd, t_token **token_lst);
-int					create_args(t_token **token_node, t_cmd *last_cmd);
-int					count_args(t_token *temp);
-
 // parsing/get_cmd.c
-void				get_commands(t_data *data, t_token *token);
+bool				get_commands(t_data *data, t_token *token);
+
+// parsing/handle_word.c
+bool				handle_word(t_cmd **cmd, t_token **token_lst);
+
+// parsing/handle_input.c
+bool				handle_input(t_cmd **cmd, t_token **token_lst);
+
+// parsing/get_args.c
+bool				create_args(t_token **token_node, t_cmd *last_cmd);
+bool				args_default(t_token **token_node, t_cmd **last_cmd,
+						int *index);
+int					count_args(t_token *temp);
+bool				set_cmd_without_args(t_data *data);
 
 // parsing/cmd_lst.c
 t_cmd				*lst_new_cmd(void);
+bool				init_io_cmd(t_cmd **node);
 void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
 t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));
