@@ -24,14 +24,12 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int fd[2],
 {
 	if (dir == LEFT)
 	{
-		ft_printf("cmd left = %s\n\n", cmd->args[0]);
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
 	else if (dir == RIGHT)
 	{
-		ft_printf("cmd right = %s\n\n", cmd->args[0]);
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
