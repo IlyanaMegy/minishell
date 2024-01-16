@@ -6,35 +6,28 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/12 20:45:25 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 10:28:17 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft.h"
+# include <dirent.h>
+# include <fcntl.h>
+# include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
+# include <sys/wait.h>
+# include <termios.h>
 
 # define PROMPT "minishell$ "
 
 # define ADD 1
 # define RM 2
 # define GET 3
-
-# define ERR_NOCMD 0
-# define ERR_ARGS 2
-# define ERR_PATH 3
-# define ERR_NOFILEDIR 4
-# define ERR_EXPORT 5
-# define ERR_UNSET 6
-# define ERR_EXIT_NB 7
-# define ERR_AMBIG_REDIR 8
-# define ERR_PERM_DENIED 9
-# define ERR_SYNTAX 10
-# define ERR_CMD_NOT_FOUND 11
 
 //  --------------------------------------------------------------------------------
 // |							GLOBAL VARIABLE										|
@@ -107,7 +100,6 @@ typedef struct s_cmd
 	t_io_cmd		*io_list;
 	char			*cmd;
 	char			**args;
-	bool			pipe_out;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -125,6 +117,8 @@ typedef struct s_data
 	char			*user_input;
 	t_token			*token;
 	t_cmd			*cmd;
+	int				stdin;
+	int				stdout;
 }					t_data;
 
 //  --------------------------------------------------------------------------------
@@ -135,22 +129,36 @@ enum				e_token_type
 {
 	WHITESPACE = 1,
 	WORD,
-	VAR,
-	PIPE,
-	INPUT,
-	TRUNC,
-	HEREDOC,
-	APPEND
+	VAR, // $
+	PIPE, // |
+	INPUT, // <
+	TRUNC, // >
+	HEREDOC, // <<
+	APPEND // >>
 };
 
-enum				e_err_no
+typedef enum e_err_msg
+{
+	ERR_SYNTAX = -1,
+	ERR_NOCMD = 0,
+	ERR_ARGS,
+	ERR_PATH,
+	ERR_NOFILEDIR,
+	ERR_EXPORT,
+	ERR_UNSET,
+	ERR_EXIT_NB,
+	ERR_AMBIG_REDIR,
+	ERR_PERM_DENIED
+}					t_err_msg;
+
+typedef enum e_err_no
 {
 	ENO_SUCCESS,
 	ENO_GENERAL,
 	ENO_CANT_EXEC = 126,
 	ENO_NOT_FOUND,
 	ENO_EXEC_255 = 255
-};
+}					t_err_no;
 
 typedef enum e_cmd_direction
 {
@@ -217,7 +225,24 @@ void				err_quote(char c);
 // |								EXECUTION										|
 //  --------------------------------------------------------------------------------
 
+typedef struct s_err
+{
+	t_err_no		no;
+	t_err_msg		msg;
+	char			*cause;
+}					t_err;
+
+typedef struct s_path
+{
+	t_err			err;
+	char			*path;
+}					t_path;
+
+// exec/exec.c
+void				executie(t_data *data, bool piped);
+
 // exec/exec_builtin.c
+int					is_builtin(char *arg);
 int					exec_builtin(t_data *data);
 
 // exec/exec_utils.c
@@ -225,17 +250,19 @@ int					close_n_wait(int fd[2], int p_first, int p_sec);
 int					get_exit_status(int status);
 int					check_redir(t_data *data);
 void				get_out(t_data *data, int status, char **env);
+void				reset_stds(t_data *data, bool piped);
 
 // exec/exec_redir.c
 int					check_write(char *file);
 int					check_read(char *file);
 int					open_in(t_io_cmd *io_lst, int *status);
 int					open_out(t_io_cmd *io_lst, int *status);
-int					open_out(t_io_cmd *io_lst, int *status);
+int					open_append(t_io_cmd *io_lst, int *status);
 
 // exec/exec_get_path.c
-char				*get_path(char *cmd);
-int					check_exec(char *file, bool cmd);
+t_path				get_path(char *cmd);
+t_err				check_exec(char *file, bool cmd);
+// static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
@@ -270,9 +297,6 @@ int					is_separator(char *s, int i);
 bool				is_quote(char *s, int index);
 bool				ignore_quotes(char *s, int *index);
 
-// lexer/syntax_error.c
-bool				check_syntax(t_token **token_lst);
-
 // lexer/token_lst.c
 t_token				*lst_new_token(char *value, int type);
 void				lst_add_back_token(t_token **alst, t_token *node);
@@ -280,8 +304,7 @@ void				lstdelone_token(t_token *lst, void (*del)(void *));
 void				lstclear_token(t_token **lst, void (*del)(void *));
 
 // lexer/syntax_error.c
-bool				check_syntax(t_token **token_lst);
-bool				is_builtin(char *arg);
+bool				check_syntax(t_token *token);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|
@@ -290,8 +313,11 @@ bool				is_builtin(char *arg);
 // parsing/get_cmd.c
 bool				get_commands(t_data *data, t_token *token);
 
-// parsing/parse_word.c
-bool				parse_word(t_cmd **cmd, t_token **token_lst);
+// parsing/handle_word.c
+bool				handle_word(t_cmd **cmd, t_token **token_lst);
+
+// parsing/handle_input.c
+bool				handle_input(t_cmd **cmd, t_token **token_lst);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -301,7 +327,8 @@ int					count_args(t_token *temp);
 bool				set_cmd_without_args(t_data *data);
 
 // parsing/cmd_lst.c
-t_cmd				*lst_new_cmd(bool pipe);
+t_cmd				*lst_new_cmd(void);
+bool				init_io_cmd(t_cmd **node);
 void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
 t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));

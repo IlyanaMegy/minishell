@@ -53,10 +53,7 @@ int	main(int ac, char **av, char **arg_env)
 		{
 			// *	DEBUG : Print the current command
 			print_cmd(data.cmd);
-			// ?	checking if current_cmd->cmd which is the command is a builtin
-			// ?	then executing the builtin if so and save exit status
-			if (is_builtin(data.cmd->cmd))
-				single_exit_s(exec_builtin(&data), ADD);
+			executie(&data, false);
 		}
 		free_data(&data);
 	}

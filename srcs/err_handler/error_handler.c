@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:29:30 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/12 20:48:10 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/15 10:38:25 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * @note   handling errors prints
- * @param  err: error code 
+ * @param  err: error code
  * @param  s: wrong argument or action
  * @retval None
 */
@@ -32,6 +32,8 @@ void	err_handler(int err, char *s)
 		err_msg = complexe_err_msg(err, s);
 	else if (err == ERR_PATH)
 		err_msg = ft_strjoin(s, ": HOME not set\n");
+	else if (err == ERR_NOCMD)
+		err_msg = ft_strjoin(s, ": command not found\n");
 	else if (err == ERR_NOFILEDIR)
 		err_msg = ft_strjoin(s, ": No such file or directory\n");
 	else if (err == ERR_PERM_DENIED)
@@ -39,7 +41,7 @@ void	err_handler(int err, char *s)
 	else if (err == ERR_AMBIG_REDIR)
 		err_msg = ft_strjoin(s, ": ambiguous redirect\n");
 	all_msg = ft_strjoin(start_msg, err_msg);
-	ft_putstr_fd(all_msg, STDERR_FILENO); // ou 2?
+	ft_putstr_fd(all_msg, STDERR_FILENO);
 	free(start_msg);
 	free(err_msg);
 	free(all_msg);
@@ -53,8 +55,8 @@ void	err_handler(int err, char *s)
 */
 char	*complexe_err_msg(int err, char *cmd)
 {
-	char *tmp;
-	char *res;
+	char	*tmp;
+	char	*res;
 
 	tmp = NULL;
 	res = NULL;
@@ -90,7 +92,7 @@ void	err_syntax(int err, char *s)
 		ft_putstr_fd(s, STDERR_FILENO);
 		ft_putstr_fd("'\n", STDERR_FILENO);
 	}
-	else if (err == ERR_CMD_NOT_FOUND)
+	else if (err == ERR_NOCMD)
 	{
 		ft_putstr_fd(s, STDERR_FILENO);
 		ft_putstr_fd(" : ", STDERR_FILENO);
@@ -101,7 +103,8 @@ void	err_syntax(int err, char *s)
 
 void	err_quote(char c)
 {
-	ft_putstr_fd("minishell: unexpected EOF while looking for matching `", STDERR_FILENO);
+	ft_putstr_fd("minishell: unexpected EOF while looking for matching `",
+		STDERR_FILENO);
 	ft_putchar_fd(c, STDERR_FILENO);
 	ft_putstr_fd("'\n", STDERR_FILENO);
 }

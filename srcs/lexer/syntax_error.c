@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/12 21:16:32 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/16 10:43:58 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,37 @@
 
 static bool	sep_is_doubled(t_token *token_node)
 {
-	if (token_node->next)
-	{
-		if (((token_node->type > PIPE && token_node->next->type > PIPE)
-			&& (token_node->type != INPUT && token_node->next->type != TRUNC))
-			|| (token_node->type == INPUT && token_node->next->type == INPUT)
-			|| (token_node->type == TRUNC && token_node->next->type == TRUNC))
-			return (true);
-	}
+	if ((token_node->type > PIPE
+			&& token_node->next
+			&& token_node->next->type > PIPE)
+		|| (token_node->type == PIPE
+			&& (!token_node->prev || !token_node->next))
+		|| (token_node->type == PIPE && !token_node->prev && !token_node->next))
+		return (true);
 	return (false);
 }
 
 static bool	sep_is_before_newline(t_token *token_node)
 {
-	if ((token_node->type > PIPE && !token_node->next)
-		|| (token_node->type == INPUT && token_node->next->type == TRUNC))
+	if ((token_node->type > PIPE && !token_node->next))
 		return (true);
-	return (false);
-}
-
-static bool	pipe_is_invalid(t_token *token_node)
-{
-	if (token_node->type == PIPE)
-	{
-		if ((!token_node->prev)
-			|| (!token_node->prev && !token_node->next))
-			return (true);
-	}
 	return (false);
 }
 
 static bool	check_sep(t_token *token_node)
 {
+	char	*value;
+
 	if (sep_is_doubled(token_node))
 	{
-		err_syntax(ERR_SYNTAX, token_node->next->value);
+		if ((token_node->type == PIPE
+				&& (!token_node->prev || !token_node->next))
+			|| (token_node->type == PIPE
+				&& !token_node->prev && !token_node->next))
+			value = token_node->value;
+		else
+			value = token_node->next->value;
+		err_syntax(ERR_SYNTAX, value);
 		return (false);
 	}
 	else if (sep_is_before_newline(token_node))
@@ -56,52 +52,29 @@ static bool	check_sep(t_token *token_node)
 		err_syntax(ERR_SYNTAX, "newline");
 		return (false);
 	}
-	else if (pipe_is_invalid(token_node))
-	{
-		err_syntax(ERR_SYNTAX, token_node->value);
-		return (false);
-	}
 	return (true);
 }
 
-bool	is_builtin(char *arg)
+bool	check_syntax(t_token *token_node)
 {
-	if (!arg)
-		return (false);
-	if (!ft_strcmp(arg, "echo")
-		|| !ft_strcmp(arg, "cd")
-		|| !ft_strcmp(arg, "exit")
-		|| !ft_strcmp(arg, "pwd")
-		|| !ft_strcmp(arg, "export")
-		|| !ft_strcmp(arg, "unset")
-		|| !ft_strcmp(arg, "env"))
-		return (true);
-	return (false);
-}
-
-static bool	check_word(t_token *token_node)
-{
-	if (!is_builtin(token_node->value))
+	while (token_node)
 	{
-		err_syntax(ERR_CMD_NOT_FOUND, token_node->value);
-		return (false);
+		if (!check_sep(token_node))
+			return (single_exit_s(2, ADD), false);
+		else if (ft_strcmp(token_node->value, "echo") == 0
+			&& (!token_node->next
+				|| (token_node->next->type >= PIPE && !token_node->next->next)))
+		{
+			ft_printf("\n");
+			return (single_exit_s(ERR_NOCMD, ADD), false);
+		}
+		// else if ((!token_node->prev || token_node->prev->type >= PIPE)
+		// 	&& (!is_builtin(token_node->value)))
+		// {
+		// 	err_syntax(ERR_NOCMD, token_node->value);
+		// 	return (single_exit_s(ERR_NOCMD, ADD), false);
+		// }
+		token_node = token_node->next;
 	}
-	return (true);
-}
-
-bool	check_syntax(t_token **token_lst)
-{
-	t_token	*token;
-
-	token = *token_lst;
-	while (*token_lst)
-	{
-		if (!check_sep(token))
-			return (false);
-		else if (!check_word(token))
-			return (false);
-		*token_lst = (*token_lst)->next;
-	}
-	*token_lst = token;
 	return (true);
 }

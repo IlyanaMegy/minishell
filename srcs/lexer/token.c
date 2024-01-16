@@ -6,13 +6,13 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/12 18:26:53 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/15 19:25:23 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int save_sep(t_token **token_lst, char *s, int index, int sep_type)
+int	save_sep(t_token **token_lst, char *s, int index, int sep_type)
 {
 	int		len;
 	char	*sep;
@@ -80,7 +80,7 @@ bool	tokenize_input(t_data *data, char *s)
 	}
 	// *	DEBUG : Print the current token list
 	print_token(data->token);
-	if (!check_syntax(&data->token))
+	if (!check_syntax(data->token))
 		return (false);
 	return (true);
 }
