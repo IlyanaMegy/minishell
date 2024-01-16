@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_manager.c                                    :+:      :+:    :+:   */
+/*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:29:30 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/22 17:29:31 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/12 20:48:10 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,35 @@ char	*complexe_err_msg(int err, char *cmd)
 	}
 	free(tmp);
 	return (res);
+}
+
+/**
+ * @note   handling syntax errors during tokenization and parsing
+ * @param  s: wrong token
+ * @retval None
+*/
+void	err_syntax(int err, char *s)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	if (err == ERR_SYNTAX)
+	{
+		ft_putstr_fd("syntax error near unexpected token", STDERR_FILENO);
+		ft_putstr_fd(" `", STDERR_FILENO);
+		ft_putstr_fd(s, STDERR_FILENO);
+		ft_putstr_fd("'\n", STDERR_FILENO);
+	}
+	else if (err == ERR_CMD_NOT_FOUND)
+	{
+		ft_putstr_fd(s, STDERR_FILENO);
+		ft_putstr_fd(" : ", STDERR_FILENO);
+		ft_putstr_fd("command not found", STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+	}
+}
+
+void	err_quote(char c)
+{
+	ft_putstr_fd("minishell: unexpected EOF while looking for matching `", STDERR_FILENO);
+	ft_putchar_fd(c, STDERR_FILENO);
+	ft_putstr_fd("'\n", STDERR_FILENO);
 }

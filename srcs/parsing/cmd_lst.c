@@ -1,50 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_lst_utils.c                                    :+:      :+:    :+:   */
+/*   cmd_lst.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/08 11:09:56 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/12 20:58:24 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-bool    init_io_cmd(t_cmd **node)
+bool	init_io_cmd(t_cmd **node)
 {
-    (*node)->io_list = (t_io_cmd *)malloc(sizeof(t_io_cmd));
-    (*node)->io_list->next = (t_io_cmd *)malloc(sizeof(t_io_cmd));
-    if (!((*node)->io_list) || !((*node)->io_list->next))
-        return (false);
-    (*node)->io_list->path = NULL;
-    (*node)->io_list->type = IO_IN;
-    (*node)->io_list->here_doc = 0;
-    (*node)->io_list->prev = NULL;
-    (*node)->io_list->next->type = IO_OUT;
-    (*node)->io_list->next->path = NULL;
-    (*node)->io_list->next->here_doc = 0;
-    (*node)->io_list->next->prev = (*node)->io_list;
-    (*node)->io_list->next->next = NULL;
-    return (true);
+	(*node)->io_list = (t_io_cmd *)malloc(sizeof(t_io_cmd));
+	(*node)->io_list->next = (t_io_cmd *)malloc(sizeof(t_io_cmd));
+	if (!((*node)->io_list) || !((*node)->io_list->next))
+		return (false);
+	(*node)->io_list->path = NULL;
+	(*node)->io_list->type = IO_IN;
+	(*node)->io_list->here_doc = 0;
+	(*node)->io_list->prev = NULL;
+	(*node)->io_list->next->type = IO_OUT;
+	(*node)->io_list->next->path = NULL;
+	(*node)->io_list->next->here_doc = 0;
+	(*node)->io_list->next->prev = (*node)->io_list;
+	(*node)->io_list->next->next = NULL;
+	return (true);
 }
 
 t_cmd    *lst_new_cmd(bool pipe)
 {
     t_cmd    *node;
 
-    node = (t_cmd *)malloc(sizeof(t_cmd));
-    if (!(node))
-        return (NULL);
-    if (!init_io_cmd(&node))
-        return (NULL);
-    (node)->cmd = NULL;
-    (node)->args = NULL;
-    (node)->pipe_out = pipe;
-    (node)->prev = NULL;
-    (node)->next = NULL;
-    return (node);
+	node = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!(node))
+		return (NULL);
+	if (!init_io_cmd(&node))
+		return (NULL);
+	(node)->cmd = NULL;
+	(node)->args = NULL;
+	(node)->pipe_out = pipe;
+	(node)->prev = NULL;
+	(node)->next = NULL;
+	return (node);
 }
 
 void	lst_add_back_cmd(t_cmd **alst, t_cmd *node)

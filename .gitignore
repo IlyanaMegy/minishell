@@ -1,5 +1,5 @@
 obj
 scrs/libft/libft
-libft/obj
+srcs/libft/obj
 minishell
 .nfs000*

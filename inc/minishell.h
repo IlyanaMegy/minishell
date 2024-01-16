@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/08 14:26:10 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/12 20:45:25 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
-	int				quote_status;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -227,6 +226,8 @@ void				clean_program(t_data *data);
 //  --------------------------------------------------------------------------------
 void				err_handler(int err, char *s);
 char				*complexe_err_msg(int err, char *cmd);
+void				err_syntax(int err, char *s);
+void				err_quote(char c);
 
 //  --------------------------------------------------------------------------------
 // |								EXECUTION										|
@@ -249,7 +250,6 @@ typedef struct s_path
 void				executie(t_data *data, bool piped);
 
 // exec/exec_builtin.c
-int					is_builtin(char *arg);
 int					exec_builtin(t_data *data);
 
 // exec/exec_utils.c
@@ -294,35 +294,48 @@ int					single_exit_s(int exit_s, int mode);
 
 // lexer/token.c
 bool				tokenize_input(t_data *data, char *s);
-int					save_word(t_token **token_lst, char *s, int index,
-						int start);
-int					save_sep(t_token **token_lst, char *s, int index, int type);
-int					set_quote_status(int quote_status, char c);
+int					save_word(t_token **token_lst, char *s, int index);
+int					save_sep(t_token **token_lst, char *s, int index,
+						int sep_type);
+
+// lexer/token_utils.c
+int					ignore_spaces(char *s, int index);
 int					is_separator(char *s, int i);
+bool				is_quote(char *s, int index);
+bool				ignore_quotes(char *s, int *index);
+
+// lexer/syntax_error.c
+bool				check_syntax(t_token **token_lst);
 
 // lexer/token_lst.c
-t_token				*lst_new_token(char *value, int type, int quote_status);
+t_token				*lst_new_token(char *value, int type);
 void				lst_add_back_token(t_token **alst, t_token *node);
 void				lstdelone_token(t_token *lst, void (*del)(void *));
 void				lstclear_token(t_token **lst, void (*del)(void *));
+
+// lexer/syntax_error.c
+bool				check_syntax(t_token **token_lst);
+bool				is_builtin(char *arg);
 
 //  --------------------------------------------------------------------------------
 // |									PARSING										|
 //  --------------------------------------------------------------------------------
 
-// parsing/parser.c
-bool				tokenize_and_parse(t_data *data);
+// parsing/get_cmd.c
+bool				get_commands(t_data *data, t_token *token);
 
 // parsing/parse_word.c
-void				parse_word(t_cmd **cmd, t_token **token_lst);
-int					create_args(t_token **token_node, t_cmd *last_cmd);
-int					count_args(t_token *temp);
+bool				parse_word(t_cmd **cmd, t_token **token_lst);
 
-// parsing/get_cmd.c
-void				get_commands(t_data *data, t_token *token);
+// parsing/get_args.c
+bool				create_args(t_token **token_node, t_cmd *last_cmd);
+bool				args_default(t_token **token_node, t_cmd **last_cmd,
+						int *index);
+int					count_args(t_token *temp);
+bool				set_cmd_without_args(t_data *data);
 
 // parsing/cmd_lst.c
-t_cmd				*lst_new_cmd(void);
+t_cmd				*lst_new_cmd(bool pipe);
 void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
 t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));

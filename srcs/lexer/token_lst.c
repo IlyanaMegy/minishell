@@ -6,13 +6,13 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/07 20:34:58 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/12 17:13:18 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_token	*lst_new_token(char *value, int type, int quote_status)
+t_token	*lst_new_token(char *value, int type)
 {
 	t_token	*node;
 
@@ -21,7 +21,6 @@ t_token	*lst_new_token(char *value, int type, int quote_status)
 		return (NULL);
 	node->value = value;
 	node->type = type;
-	node->quote_status = quote_status;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);

@@ -1,0 +1,151 @@
+OK:
+	cat && ( echo bravo ) || ls
+	1- DOIT FONCTIONNER :
+		( bravo ) = (bravo)
+		( b ravo ) = (b ravo)
+		( bravo ) && ( bravo ) = (bravo) && (bravo)
+		( echo bravo ) && ( bravo ) = (echo bravo) && (bravo) = ( echo bravo )&&( bravo ) = (echo bravo)&&(bravo)
+		
+		( ( bravo ) ) = ( ( bravo )) = (( bravo ) ) = ( (bravo) ) = ((bravo) ) = (( bravo) )
+		( ( bravo ) ) && ( ( bravo ) )
+		( ( bravo ) && ( bravo ) ) = (( bravo ) && ( bravo )) = ((bravo ) && ( bravo)) = ((bravo) && (bravo)) = ((bravo)&&(bravo)) = ( (bravo)&&(bravo) )
+		( ( echo bravo ) ) = ((echo bravo) ) = ( (echo bravo)) = ( ( echo bravo )) = (( echo bravo ) )
+		(( bravo ) && bravo ) = ((bravo) && bravo) = ( (bravo) && bravo) = ( ( bravo ) && bravo )
+		( bravo && (bravo)) = ( bravo && (bravo) ) = ( bravo && ( bravo ) ) = ( bravo && ( bravo ))
+		( ( ls && ls ) ) = (( ls && ls ) ) = ( ( ls && ls ))
+		(( echo && ( bravo )) && la ) = (( echo && ( bravo ) ) && la ) = ( ( echo && ( bravo ) ) && la ) = ( ( echo && ( bravo )) && la )
+		< infile && cat = <infile&&cat
+		cat Makefile > outfile
+		cat Makefile >> outfile
+		(ls && pwd) > hola = (ls&&pwd)>hola
+		(ls && pwd | wc) > hola = (ls&&pwd|wc)>hola
+		(ls && pwd | wc) >> hola
+		(ls&&pwd|wc)>>hola
+		(ls > Docs/hey && pwd) > hola
+		(pwd | wc) < hola
+
+	2- DOIT PASSER TEST PARSING MAIS EN EXEC : N IMPRIME RIEN + EXITSTATUS = 1 // AGERER DANS L EXEC
+		(( bravo )) = ((bravo))
+		(( ls && ls )) = ((ls && ls))
+		echo Bravo && ((ls && ls)) && echo hehe
+		echo Bravo && ((ls && ls)) || echo hehe
+
+	3- bash: syntax error near unexpected token + EXIT STATUS 2 => A RE TESTER : => valgrind : Invalid read of size 1 qui se manifeste si c est la premiere comande mais pas avec toutes les comandes
+	( bravo ) ( bravo ) = (bravo) (bravo) = (bravo)(bravo) = ( bravo )( bravo ) => minishell: syntax error near unexpected token `('
+	( echo bravo ) ( bravo ) = (echo bravo) (bravo) = (echo bravo)(bravo) = ( echo bravo )( bravo )=> minishell: syntax error near unexpected token `('
+	() = ( ) = (      ) => syntax error near unexpected token `)'
+	) =        ) = bravo ) => syntax error near unexpected token `)'
+	
+	( echo ( bravo ) ) = ( echo( bravo )) = ( echo(bravo)) = (echo (bravo)) = ( echoo ( bravo ) echo ) = ( echoo ( bravo ) echo) = (( echo ) bravo ) = ( ( echo ) bravo ) => minishell: syntax error near unexpected token `bravo'
+	(( bravo ) ( bravo )) = ( (bravo)  (bravo) ) = ((bravo)  (bravo)) = ((bravo)(bravo)) = ((bravo)(bravo) ) = ( (bravo)(bravo) ) => minishell: syntax error near unexpected token `('
+	
+	4- DOIT PASSER TEST PARSING MAIS EN EXEC ERREUR: minishell: ((: bravo  bravo: syntax error in expression (error token is "bravo")  + EXIT STATUS 2 // AGERER DANS L EXEC
+	(( echo bravo )) = ((echo bravo)) => minishell: ((: echo bravo : syntax error in expression (error token is "bravo ")
+	ls && (( echo bravo )) || echo bravo => erreur sur le (( echo bravo)) a afficher pendanst exec
+
+A GERER GARANCE :
+	// OK POUR PAS GERER
+	echo((((bravo)))) -> pas le bon message d erreur
+
+	OK// #A GERER SPLIT
+	# //echo "-n" Hola => Split mauvais
+	# //echo " " | cat -e => valgrind jump split
+	# //echo" "|cat -e =>Split mauvais
+	# ""''echo hola""'''' que""'' tal""'' => SPLIT MAUVAIS echo doit avoir type 0 et les autres mots type 5
+	# echo $"" => SPLIT $ en type 5 au lieu de 0
+	# //echo "" hola => mauvais resultat split
+	# ///echo ""hola
+	# //export HOLA=" -n bonjour "
+	# //export "" HOLA=bonjour
+	# //echo """$HOLA""" | cat -e
+	# //export HOLA=" hola et $HOLA"$HOLA
+	# //export HOLA=" bonjour hey " 
+	# //export HOLA=' hola et $HOLA'
+	# env|"w<<< is known as here-stringc" -l
+	# //export "" || ls
+	# export ""|| ls
+	# //export "" && ls
+	# export ""&& ls
+	# //export "" && unset ""
+	# echo “ ‘ $USER’” PARSING + TYPE
+
+	OK// #REVOIR SPLIT TYPE:
+		# bash-5.1$ echo “ ‘ $USER’”
+		# “ ‘ galambey’”
+		# bash-5.1$ echo “ $USER”
+		# “ galambey”
+		# bash-5.1$ echo $USER
+		# galambey
+		# bash-5.1$ echo "$USER "
+		# galambey 
+		# bash-5.1$ echo "$US"ER 
+		# ER
+		# bash-5.1$ echo "'$USER'" 
+		# 'galambey'
+		# bash-5.1$ echo " ' $USER '" 
+		# ' galambey '
+		# bash-5.1$ echo "$USER"
+		# galambey
+		# bash-5.1$ echo '$USER'
+		# $USER
+		# bash-5.1$ echo "'$USER'"
+		# 'galambey'
+
+// A GERE QQUEPART :
+(echo Bravo | wc) < hola cat -e => bash: syntax error near unexpected token `cat'
+(echo Bravo | wc) < hola && cat -e => exec ok
+
+=> Comprendre TESTS 762 A 765
+	$> << $hola
+	$> << $"hola"$"b"
+	$> << $"$hola"$$"b"
+	$> << ho$la$"$a"$$"b"
+
+ 
+
+	//A GERER parenthese
+	test 628 a 634 => renvoie erreur quand doit s executer
+	
+	> hola (ls && pwd) => pas le bon message d erreur
+	> pwd (ls) => pas le bon message d erreur
+
+
+	//A GERER
+    Tu vas me tuer : si la parenthese ouvrante est precedee par un chevron < ne pas ajouter d'espace avant la parenthese dans le parsing 
+	exemple : <( => <( et < ( => < (
+		<( => <( : la parenthese collee est consideree comme un infile donc c est exec qui s en occupera
+		< ( => < ( : erreur parsing exit code 2 car ( est consideree comme telle et non comme un infile potentiel
+
+A GERER ALIX :
+	//A GERER
+    Tu vas me tuer : si la parenthese ouvrante est precedee par un chevron < ne pas ajouter d'espace avant la parenthese dans le parsing 
+	exemple : <( => <( et < ( => < (
+		<( => <( : la parenthese collee est consideree comme un infile donc c est exec qui s en occupera
+		< ( => < ( : erreur parsing exit code 2 car ( est consideree comme telle et non comme un infile potentiel
+
+	//A GERER
+	OK : echo """""yfguakhns"""jlask"""sajkns => GUILLEMET NON FERME
+	OK : ( echo "(((bravo" ) & &  (     bravo ) -> doit renvoyer exit status 2: bash: syntax error near unexpected token `&'
+	OK : ( echo bravo ) | |  (     bravo ) -> doit renvoyer exit status 2: bash: syntax error near unexpected token `|'
+	OK : Sur les cmd du 3 => valgrind : Invalid read of size 1 qui se manifeste si c est la premiere comande mais pas avec toutes les comandes
+	
+
+	// POUR LES CHEVRONS OK POUR GERER > >> et a partir de trois erreur avec 1 seul > d affiche
+	a partir de 4 chevrons et plus >>>> => pas le bon message d erreur : minishell: syntax error near unexpected token `>>'
+	>>> => pas le bon message d erreur : minishell: syntax error near unexpected token `>'
+	cat Makefile >>> outfile => pas le bon message d erreur
+	de < a <<< => mettre message d erreur : minishell: syntax error near unexpected token `newline'
+	<<<< => pas le bon message d erreur : minishell: syntax error near unexpected token `<'
+	<<<<< => pas le bon message d erreur : minishell: syntax error near unexpected token `<<'
+	a partir de 6 chevrons et plus <<<<<< => pas le bon message d erreur : minishell: syntax error near unexpected token `<<<'
+
+	//A GERER
+	< && allo = < && = <&& => doit renvoyer message erreur
+	ls || <
+	ls && <
+	//echo hola > > bonjour => mauvais message erreur, le token a imprimer est newline si fin de la lg mais sinon c est le token suivant
+	//echo hola < < bonjour => doit renvoyer message d erreur
+	//cat >> << => doit renvoyer message d erreur
+	//cat >> > >> << >>
+	//cat << 
+ => doit renvoyer erreur
