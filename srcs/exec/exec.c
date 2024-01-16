@@ -76,6 +76,7 @@ static int	exec_pipe(t_data *data)
  * @note   execution of child
  * @param  data: t_data linked list
  * @param  cmd : current command to execute
+ * @param  fork_pid : recently forked variable
  * @retval exit status
 */
 static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
