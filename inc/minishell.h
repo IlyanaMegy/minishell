@@ -129,10 +129,10 @@ typedef enum e_token_type
 {
 	WHITESPACE = 1,
 	WORD,
-	VAR, // $
-	PIPE, // |
-	INPUT, // <
-	TRUNC, // >
+	VAR,     // $
+	PIPE,    // |
+	INPUT,   // <
+	TRUNC,   // >
 	HEREDOC, // <<
 	APPEND // >>
 }					t_token_type;
@@ -200,7 +200,7 @@ int					ft_pwd(void);
 int					ft_echo(char **args);
 
 // builtins/exit.c
-void				ft_exit(t_data *data);
+void				ft_exit(t_data *data, t_cmd *cmd);
 
 //  --------------------------------------------------------------------------------
 // |									CLEAN										|
@@ -239,16 +239,17 @@ typedef struct s_path
 }					t_path;
 
 // exec/exec.c
-void				executie(t_data *data, bool piped);
+int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
+void				executie(t_data *data, t_cmd *cmd, bool piped);
 
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
-int					exec_builtin(t_data *data);
+int					exec_builtin(t_data *data, t_cmd *cmd);
 
 // exec/exec_utils.c
 int					close_n_wait(int fd[2], int p_first, int p_sec);
 int					get_exit_status(int status);
-int					check_redir(t_data *data);
+int					check_redir(t_cmd *cmd);
 void				get_out(t_data *data, int status, char **env);
 void				reset_stds(t_data *data, bool piped);
 

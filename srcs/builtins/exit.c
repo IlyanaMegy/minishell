@@ -71,20 +71,21 @@ int	calcul_exit_status(t_data *data, char *number)
 /**
  * @note   nicely exit the program minishell
  * @param  data: all of data list
+ * @param  cmd : current command
  * @retval None
 */
-void	ft_exit(t_data *data)
+void	ft_exit(t_data *data, t_cmd *cmd)
 {
 	int	exit_s;
 
 	exit_s = single_exit_s(0, GET);
 	ft_putstr_fd("exit\n", 1);
-	if (data->cmd->args[1])
+	if (cmd->args[1])
 	{
-		if (data->cmd->args[2] && ft_isnumber(data->cmd->args[1]))
+		if (cmd->args[2] && ft_isnumber(cmd->args[1]))
 			clean_exit_exit(data, 1, ERR_ARGS, "exit");
 		else
-			exit_s = single_exit_s(calcul_exit_status(data, data->cmd->args[1]), ADD);
+			exit_s = single_exit_s(calcul_exit_status(data, cmd->args[1]), ADD);
 	}
 	clean_program(data);
 	exit(single_exit_s(0, GET));

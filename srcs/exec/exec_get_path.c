@@ -42,28 +42,6 @@ static t_path	get_env_path(char *cmd, char *path)
 	return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 }
 
-// /**
-//  * @note   check if the path is an executable
-//  * @param  file: the executable path
-//  * @param  cmd: is it cmd ?
-//  * @retval exit status
-// */
-// int	check_exec(char *file, bool cmd)
-// {
-// 	if (!*file)
-// 		return (err_handler(ERR_NOFILEDIR, file), ENO_GENERAL);
-// 	if (access(file, F_OK) == 0)
-// 	{
-
-// 		if (access(file, X_OK) == -1)
-// 			return (err_handler(ERR_PERM_DENIED, file), ENO_CANT_EXEC);
-// 		return (ENO_SUCCESS);
-// 	}
-// 	if (cmd)
-// 		return (err_handler(ERR_NOCMD, file), ENO_NOT_FOUND);
-// 	return (err_handler(ERR_NOFILEDIR, file), ENO_NOT_FOUND);
-// }
-
 /**
  * @note   check if the path is an executable
  * @param  file: the executable path
