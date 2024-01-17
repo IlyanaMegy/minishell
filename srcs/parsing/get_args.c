@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/11 14:50:18 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:50:13 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	count_args(t_token *temp)
 	i = 0;
 	while (temp && (temp->type == WORD))
 	{
+		if (temp->next && temp->next->type == TRUNC)
+			temp = temp->next;
 		i++;
 		temp = temp->next;
 	}
@@ -56,8 +58,15 @@ bool	args_default(t_token **token_node, t_cmd **last_cmd, int *index)
 		(*last_cmd)->args[*index] = ft_strdup((*token_node)->value);
 		if (!(*last_cmd)->args[*index])
 			return (false);
+		if ((*token_node)->next && (*token_node)->next->type == TRUNC)
+		{
+			*token_node = (*token_node)->next;
+			if (!handle_input_trunc(last_cmd, token_node, TRUNC))
+				return (false);
+		}
+		else
+			*token_node = (*token_node)->next;
 		(*index)++;
-		*token_node = (*token_node)->next;
 	}
 	return (true);
 }

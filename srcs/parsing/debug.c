@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:34:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/16 10:17:32 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:06:05 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,19 @@ void	print_cmd(t_cmd *cmd)
 	while (cmd)
 	{
 		ft_printf("Commande %d: %s\n", i, cmd->cmd);
-		if (cmd->io_list)
-			ft_printf("- input path = %s\n", cmd->io_list->path);
+		int k = 1;
+		while (cmd->io_list)
+		{
+			ft_printf("- input path %d = %s\n", k, cmd->io_list->path);
+			ft_printf("- input type %d = %d\n\n", k, cmd->io_list->type);
+			k++;
+			cmd->io_list = cmd->io_list->next;
+		}
+		// if (cmd->io_list)
+		// {
+		// 	ft_printf("- input path %d = %s\n", k, cmd->io_list->path);
+		// 	ft_printf("- input type %d = %d\n\n", k, cmd->io_list->type);
+		// }
 		int j = 0;
 		while (cmd->args[j])
 		{
@@ -28,7 +39,7 @@ void	print_cmd(t_cmd *cmd)
 		}
 		ft_printf("\n");
 		i++;
-		cmd = cmd ->next;
+		cmd = cmd->next;
 	}
 	// exit (0);
 }

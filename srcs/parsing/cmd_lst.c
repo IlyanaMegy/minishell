@@ -6,60 +6,15 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/16 12:02:34 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:55:18 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// bool	init_io_cmd(t_io_cmd **io_list, t_io_type type, char *path)
-// {
-// 	t_io_cmd	*temp;
-
-// 	temp = *io_list;
-// 	temp = (t_io_cmd *)malloc(sizeof(t_io_cmd));
-// 	if (!temp)
-// 		return (false);
-// 	temp->path = path;
-// 	temp->type = type;
-// 	temp->here_doc = 0;
-// 	if (!(*io_list))
-// 	{
-// 		temp->prev = NULL;
-// 		*io_list = temp;
-// 	}
-// 	else
-// 	{
-// 		t_io_cmd *current = *io_list;
-// 		while (current->next)
-// 			current = current->next;
-// 		current->next = temp;
-// 		temp->prev = current;
-// 	}
-// 	return (true);
-// }
-
-bool	init_io_cmd(t_cmd **node)
-{
-	(*node)->io_list = (t_io_cmd *)malloc(sizeof(t_io_cmd));
-	(*node)->io_list->next = (t_io_cmd *)malloc(sizeof(t_io_cmd));
-	if (!((*node)->io_list) || !((*node)->io_list->next))
-		return (false);
-	(*node)->io_list->path = NULL;
-	(*node)->io_list->type = IO_IN;
-	(*node)->io_list->here_doc = 0;
-	(*node)->io_list->prev = NULL;
-	(*node)->io_list->next->type = IO_OUT;
-	(*node)->io_list->next->path = NULL;
-	(*node)->io_list->next->here_doc = 0;
-	(*node)->io_list->next->prev = (*node)->io_list;
-	(*node)->io_list->next->next = NULL;
-	return (true);
-}
-
 t_cmd	*lst_new_cmd(void)
 {
-    t_cmd    *node;
+	t_cmd	*node;
 
 	node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!(node))
@@ -104,6 +59,8 @@ void	lstdelone_cmd(t_cmd *lst, void (*del)(void *))
 		(*del)(lst->cmd);
 	if (lst->args)
 		free_tab(lst->args);
+	if (lst->io_list)
+		lstclear_io_list(&lst->io_list, del);
 	(*del)(lst);
 }
 

@@ -6,7 +6,7 @@
 #    By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/13 16:30:30 by ilymegy           #+#    #+#              #
-#    Updated: 2024/01/16 10:50:44 by ltorkia          ###   ########.fr        #
+#    Updated: 2024/01/17 11:32:34 by ltorkia          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,9 +45,10 @@ LEXER			=	srcs/lexer/token.c \
 
 PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/handle_word.c \
-					srcs/parsing/handle_input.c \
+					srcs/parsing/handle_sep.c \
 					srcs/parsing/cmd_lst.c \
 					srcs/parsing/get_args.c \
+					srcs/parsing/io_utils.c \
 					srcs/parsing/debug.c
 
 PIPEX			=	srcs/pipex/open_close.c \
