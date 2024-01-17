@@ -86,7 +86,6 @@ bool	tokenize_input(t_data *data, char *s)
 			return (false);
 	}
 	// *	DEBUG : Print the current token list
-	print_token(data->token);
 	if (!check_syntax(data->token))
 		return (false);
 	return (true);

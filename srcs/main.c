@@ -54,7 +54,7 @@ int	main(int ac, char **av, char **arg_env)
 		if (tokenize_and_parse(&data))
 		{
 			// *	DEBUG : Print the current command
-			print_cmd(data.cmd);
+			// print_cmd(data.cmd);
 			executie(&data, data.cmd, false);
 		}
 		free_data(&data);

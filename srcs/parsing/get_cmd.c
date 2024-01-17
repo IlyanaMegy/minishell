@@ -40,14 +40,12 @@ bool	get_commands(t_data *data, t_token *token)
 		// if the token is a WORD or VAR (command or argument), parse it
 		if (temp_tkn->type == WORD)
 		{
-			ft_printf("WORD temp_tkn->value: %s\n", temp_tkn->value);
 			if (!handle_word(&data->cmd, &temp_tkn))
 				return (false);
 		}
 		// if the token is INPUT < or TRUNC >
 		else if (temp_tkn->type == INPUT)
 		{
-			ft_printf("SEP temp_tkn->value: %s\n", temp_tkn->value);
 			if (!handle_input_trunc(&data->cmd, &temp_tkn, temp_tkn->type))
 				return (false);
 		}
