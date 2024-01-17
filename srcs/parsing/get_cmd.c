@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 17:00:50 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:25:25 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	get_commands(t_data *data, t_token *token)
 				return (false);
 		}
 		// if the token is INPUT < or TRUNC >
-		else if (temp_tkn->type == INPUT)
+		else if (temp_tkn->type == INPUT || temp_tkn->type == TRUNC)
 		{
 			if (!handle_input_trunc(&data->cmd, &temp_tkn, temp_tkn->type))
 				return (false);
