@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 17:27:27 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 20:32:16 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int	save_word(t_token **token_lst, char *s, int index)
 	int		start;
 	char	*word;
 	t_token	*new_token;
-	t_token	*temp;
+	// t_token	*temp;
 
 	start = index;
-	temp = *token_lst;
+	// temp = *token_lst;
 	while (s[index] && !is_separator(s, index))
 	{
 		if (is_quote(s, index))

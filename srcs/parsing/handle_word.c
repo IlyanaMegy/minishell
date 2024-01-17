@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 13:54:11 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 20:22:34 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ bool	handle_word(t_cmd **cmd, t_token **token_lst)
 		else
 		{
 			// If not, fill the arguments of the current command
-			if ((last_cmd && !(last_cmd->args))
-				|| (last_cmd->args && temp->prev->type == TRUNC))
+			if ((last_cmd && !(last_cmd->args)))
 			{
 				if (!create_args(&temp, last_cmd))
 					return (false);

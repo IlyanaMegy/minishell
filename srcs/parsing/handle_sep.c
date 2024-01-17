@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:44:39 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 15:39:35 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 20:44:53 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ bool	handle_input_trunc(t_cmd **last_cmd,
 		cmd->io_list->type = IO_IN;
 	else if (type == TRUNC)
 		cmd->io_list->type = IO_OUT;
-	token = token->next;
+	if (token->next->next && token->next->next->type == WORD)
+		token = token->next->next;
+	else
+		token = token->next;
 	*token_lst = token;
 	return (true);
 }

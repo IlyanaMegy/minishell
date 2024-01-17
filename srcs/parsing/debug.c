@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:34:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 14:06:05 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 20:35:52 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	print_cmd(t_cmd *cmd)
 			k++;
 			cmd->io_list = cmd->io_list->next;
 		}
-		// if (cmd->io_list)
-		// {
-		// 	ft_printf("- input path %d = %s\n", k, cmd->io_list->path);
-		// 	ft_printf("- input type %d = %d\n\n", k, cmd->io_list->type);
-		// }
+		if (cmd->io_list)
+		{
+			ft_printf("- input path %d = %s\n", k, cmd->io_list->path);
+			ft_printf("- input type %d = %d\n\n", k, cmd->io_list->type);
+		}
 		int j = 0;
 		while (cmd->args[j])
 		{
