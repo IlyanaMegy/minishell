@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/16 12:06:36 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:43:53 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ bool	get_commands(t_data *data, t_token *token)
 	while (temp_tkn)
 	{
 		// If at the beginning of the token sequence, add a new empty command
-		if (temp_tkn == token || temp_tkn->type == PIPE)
+		if (temp_tkn == token || temp_tkn->type == PIPE
+			|| ((temp_tkn->type == INPUT || temp_tkn->type == TRUNC)
+				&& !temp_tkn->prev))
 		{
 			new_cmd = lst_new_cmd();
 			if (!new_cmd)
@@ -38,13 +40,15 @@ bool	get_commands(t_data *data, t_token *token)
 		// if the token is a WORD or VAR (command or argument), parse it
 		if (temp_tkn->type == WORD)
 		{
+			ft_printf("WORD temp_tkn->value: %s\n", temp_tkn->value);
 			if (!handle_word(&data->cmd, &temp_tkn))
 				return (false);
 		}
-		// if the token is INPUT <
+		// if the token is INPUT < or TRUNC >
 		else if (temp_tkn->type == INPUT)
 		{
-			if (!handle_input(&data->cmd, &temp_tkn))
+			ft_printf("SEP temp_tkn->value: %s\n", temp_tkn->value);
+			if (!handle_input_trunc(&data->cmd, &temp_tkn, temp_tkn->type))
 				return (false);
 		}
 		else

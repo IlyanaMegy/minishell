@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/16 14:07:37 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:53:51 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct s_data
 // |								ENUMS											|
 //  --------------------------------------------------------------------------------
 
-enum				e_token_type
+typedef enum e_token_type
 {
 	WHITESPACE = 1,
 	WORD,
@@ -135,7 +135,7 @@ enum				e_token_type
 	TRUNC, // >
 	HEREDOC, // <<
 	APPEND // >>
-};
+}					t_token_type;
 
 typedef enum e_err_msg
 {
@@ -289,7 +289,7 @@ int					single_exit_s(int exit_s, int mode);
 bool				tokenize_input(t_data *data, char *s);
 int					save_word(t_token **token_lst, char *s, int index);
 int					save_sep(t_token **token_lst, char *s, int index,
-						int sep_type);
+						t_token_type sep_type);
 
 // lexer/token_utils.c
 int					ignore_spaces(char *s, int index);
@@ -298,7 +298,8 @@ bool				is_quote(char *s, int index);
 bool				ignore_quotes(char *s, int *index);
 
 // lexer/token_lst.c
-t_token				*lst_new_token(char *value, int type);
+t_token				*lst_new_token(char *value, t_token_type type);
+void				lst_add_front_token(t_token **alst, t_token *node);
 void				lst_add_back_token(t_token **alst, t_token *node);
 void				lstdelone_token(t_token *lst, void (*del)(void *));
 void				lstclear_token(t_token **lst, void (*del)(void *));
@@ -316,8 +317,9 @@ bool				get_commands(t_data *data, t_token *token);
 // parsing/handle_word.c
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
-// parsing/handle_input.c
-bool				handle_input(t_cmd **cmd, t_token **token_lst);
+// parsing/handle_sep.c
+bool				handle_input_trunc(t_cmd **last_cmd,
+						t_token **token_lst, t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -335,6 +337,8 @@ void				lstclear_cmd(t_cmd **lst, void (*del)(void *));
 
 //parsing/io_utils.c
 bool				init_io_cmd(t_cmd **cmd);
+void				lstdelone_io_list(t_io_cmd *io_list, void (*del)(void *));
+void				lstclear_io_list(t_io_cmd **io_list, void (*del)(void *));
 
 // parsing/debug.c
 void				print_cmd(t_cmd *cmd);

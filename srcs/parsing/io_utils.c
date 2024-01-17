@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/16 14:43:28 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/17 15:54:24 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,24 @@ bool	init_io_cmd(t_cmd **cmd)
 	temp->here_doc = 0;
 	temp->next = NULL;
 	return (true);
+}
+
+void	lstdelone_io_list(t_io_cmd *io_list, void (*del)(void *))
+{
+	if (io_list->path)
+		(*del)(io_list->path);
+	(*del)(io_list);
+}
+
+void	lstclear_io_list(t_io_cmd **io_list, void (*del)(void *))
+{
+	t_io_cmd	*temp;
+
+	temp = NULL;
+	while (*io_list)
+	{
+		temp = (*io_list)->next;
+		lstdelone_io_list(*io_list, del);
+		*io_list = temp;
+	}
 }
