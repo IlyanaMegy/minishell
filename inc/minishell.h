@@ -240,7 +240,7 @@ typedef struct s_path
 
 // exec/exec.c
 int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
-void				executie(t_data *data, bool piped);
+void				executie(t_data *data, t_cmd *cmd, bool piped);
 
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
