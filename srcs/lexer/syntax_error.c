@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/16 10:43:58 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/18 10:26:08 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ bool	check_syntax(t_token *token_node)
 			return (single_exit_s(2, ADD), false);
 		else if (ft_strcmp(token_node->value, "echo") == 0
 			&& (!token_node->next
-				|| (token_node->next->type >= PIPE && !token_node->next->next)))
+				|| (token_node->next->type >= PIPE && !token_node->next->next)
+				|| (token_node->next->type == INPUT && token_node->next->next)))
 		{
 			ft_printf("\n");
 			return (single_exit_s(ERR_NOCMD, ADD), false);
