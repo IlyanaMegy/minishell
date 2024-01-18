@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/17 15:53:51 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:05:48 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <termios.h>
 
 # define PROMPT "minishell$ "
+# define HEREDOC_NAME "/tmp/.heredoc_"
 
 # define ADD 1
 # define RM 2
@@ -319,9 +320,8 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool	handle_input_trunc(t_cmd **last_cmd,
-						t_token **token_lst,
-						t_token_type type);
+bool				handle_redir(t_cmd **last_cmd,
+						t_token **token_lst, t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
