@@ -85,6 +85,7 @@ typedef struct s_io_cmd
 {
 	t_io_type		type;
 	char			*path;
+	char			**expanded_value;
 	int				here_doc;
 	struct s_io_cmd	*next;
 	struct s_io_cmd	*prev;
@@ -101,6 +102,7 @@ typedef struct s_cmd
 	t_io_cmd		*io_list;
 	char			*cmd;
 	char			**args;
+	char			**expanded_args;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -120,6 +122,8 @@ typedef struct s_data
 	t_cmd			*cmd;
 	int				stdin;
 	int				stdout;
+	bool			signint_child;
+	bool			heredoc_sigint;
 }					t_data;
 
 //  --------------------------------------------------------------------------------
@@ -239,6 +243,9 @@ typedef struct s_path
 	char			*path;
 }					t_path;
 
+// exec/init_structure.c
+void				init_cmdlst(t_data *data, t_cmd *cmd);
+
 // exec/exec.c
 int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
 void				executie(t_data *data, t_cmd *cmd, bool piped);
@@ -320,8 +327,9 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool				handle_redir(t_cmd **last_cmd,
-						t_token **token_lst, t_token_type type);
+bool	handle_redir(t_cmd **last_cmd,
+					t_token **token_lst,
+					t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -364,5 +372,8 @@ char				*ft_clean_empty_strs(char *str);
 
 // expand/expand_split.c
 char				**expand_split(char *s);
+
+// expand/expander_heredoc.c
+void				heredoc_expander(char *str, int fd);
 
 #endif

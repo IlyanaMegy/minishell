@@ -97,11 +97,11 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 		status = check_redir(cmd);
 		if (status != ENO_SUCCESS)
 			get_out(data, ENO_GENERAL, env);
-		path = get_path(cmd->args[0]);
+		path = get_path(cmd->expanded_args[0]);
 		if (path.err.no != ENO_SUCCESS)
 			(err_handler(path.err.msg, path.err.cause), get_out(data,
 						single_exit_s(path.err.no, ADD), env));
-		if (execve(path.path, cmd->args, env) == -1)
+		if (execve(path.path, cmd->expanded_args, env) == -1)
 			return (free(path.path), get_out(data, single_exit_s(0, GET), env),
 				1);
 		free(path.path);
@@ -122,13 +122,13 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 {
 	int	fork_pid;
 
-	if (!cmd->args)
+	if (!cmd->expanded_args)
 	{
 		single_exit_s(check_redir(cmd), ADD);
 		reset_stds(data, piped);
 		return ((single_exit_s(0, GET) && ENO_GENERAL));
 	}
-	else if (is_builtin(cmd->args[0]))
+	else if (is_builtin(cmd->expanded_args[0]))
 	{
 		single_exit_s(check_redir(cmd), ADD);
 		if (single_exit_s(0, GET) != ENO_SUCCESS)

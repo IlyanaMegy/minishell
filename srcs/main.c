@@ -55,6 +55,7 @@ int	main(int ac, char **av, char **arg_env)
 		{
 			// *	DEBUG : Print the current command
 			// print_cmd(data.cmd);
+			init_cmdlst(&data, data.cmd);
 			executie(&data, data.cmd, false);
 		}
 		free_data(&data);

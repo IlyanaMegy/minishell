@@ -31,12 +31,14 @@ BUILTINS		=	srcs/builtins/cd.c \
 CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
+					srcs/exec/init_structure.c \
 					srcs/exec/exec_utils.c \
 					srcs/exec/exec_redir.c \
 					srcs/exec/exec_get_path.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \
+					srcs/expand/expander_heredoc.c \
 					srcs/expand/expand_utils.c \
 					srcs/expand/expand_split.c \
 					srcs/expand/expand_clean.c
