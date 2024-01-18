@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/18 10:41:31 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/18 14:16:26 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ bool	get_commands(t_data *data, t_token *token)
 			if (!handle_word(&data->cmd, &temp_tkn))
 				return (false);
 		}
-		// if the token is INPUT < or TRUNC >
-		else if (temp_tkn->type == INPUT || temp_tkn->type == TRUNC)
+		// if the token is INPUT < TRUNC > HEREDOC << or APPEND >>
+		else if (temp_tkn->type > PIPE)
 		{
-			if (!handle_input_trunc(&data->cmd, &temp_tkn, temp_tkn->type))
+			if (!handle_redir(&data->cmd, &temp_tkn, temp_tkn->type))
 				return (false);
 		}
 		else
