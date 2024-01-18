@@ -45,7 +45,6 @@ static char	*pre_handling(char *str)
 */
 char	**expander(char *str)
 {
-	int		i;
 	char	**exp;
 
 	str = pre_handling(str);
@@ -58,4 +57,5 @@ char	**expander(char *str)
 	free(str);
 	if (!exp)
 		return (NULL);
+	return (exp);
 }
