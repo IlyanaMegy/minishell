@@ -37,7 +37,9 @@ EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \
-					srcs/expand/expand_utils.c
+					srcs/expand/expand_utils.c \
+					srcs/expand/expand_split.c \
+					srcs/expand/expand_clean.c
 
 ERROR			=	srcs/err_handler/error_handler.c
 

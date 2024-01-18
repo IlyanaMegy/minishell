@@ -134,7 +134,7 @@ typedef enum e_token_type
 	INPUT,   // <
 	TRUNC,   // >
 	HEREDOC, // <<
-	APPEND // >>
+	APPEND   // >>
 }					t_token_type;
 
 typedef enum e_err_msg
@@ -319,8 +319,9 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool				handle_input_trunc(t_cmd **last_cmd,
-						t_token **token_lst, t_token_type type);
+bool	handle_input_trunc(t_cmd **last_cmd,
+						t_token **token_lst,
+						t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -350,7 +351,18 @@ void				print_token(t_token *token);
 //  --------------------------------------------------------------------------------
 
 //	expand/expand.c
+char				**expander(char *str);
 
 //	expand/expand_utils.c
+char				*handle_single_quotes(char *s, int *i);
+char				*handle_double_quotes(char *s, int *i);
+char				*handle_dollar(char *s, int *i);
+char				*handle_normal_str(char *s, int *i);
+
+// expand/expand_clean.c
+char				*ft_clean_empty_strs(char *str);
+
+// expand/expand_split.c
+char				**expand_split(char *s);
 
 #endif
