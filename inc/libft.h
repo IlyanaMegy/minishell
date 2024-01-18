@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+#include <stdbool.h>
 
 # ifndef T_LIST
 #  define T_LIST
@@ -53,6 +54,7 @@ int					ft_isalpha(int c);
 int					ft_isascii(int c);
 int					ft_ischarset(int c, const char *charset);
 int					ft_isdigit(int c);
+bool				ft_isdelimiter(char *delimiter, char *str);
 int					ft_islower(int c);
 int					ft_isprint(int c);
 int					ft_isspace(int c);
