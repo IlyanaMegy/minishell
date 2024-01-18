@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 20:22:34 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/18 10:43:51 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ bool	handle_word(t_cmd **cmd, t_token **token_lst)
 	temp = *token_lst;
 	while (temp && temp->type == WORD)
 	{
+		ft_printf("token dans handle_word: %s\n", temp->value);
 		last_cmd = lst_last_cmd(*cmd);
 		// Check if the token is at the beginning of a command
 		if (!temp->prev || (temp->prev && temp->prev->type == PIPE)
