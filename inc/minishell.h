@@ -345,4 +345,12 @@ void				lstclear_io_list(t_io_cmd **io_list, void (*del)(void *));
 void				print_cmd(t_cmd *cmd);
 void				print_token(t_token *token);
 
+//  --------------------------------------------------------------------------------
+// |									EXPAND										|
+//  --------------------------------------------------------------------------------
+
+//	expand/expand.c
+
+//	expand/expand_utils.c
+
 #endif

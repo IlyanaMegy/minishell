@@ -36,6 +36,9 @@ EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_get_path.c \
 					srcs/exec/exec_builtins.c
 
+EXPAND			=	srcs/expand/expand.c \
+					srcs/expand/expand_utils.c
+
 ERROR			=	srcs/err_handler/error_handler.c
 
 LEXER			=	srcs/lexer/token.c \
@@ -62,6 +65,7 @@ UTILS			=	srcs/utils/lst_manip.c \
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
 					$(EXEC)\
+					$(EXPAND)\
 					$(LEXER)\
 					$(PARSING)\
 					$(PIPEX)\
@@ -86,6 +90,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)
 				@mkdir -p $(OBJ_PATH)/srcs
 				@mkdir -p $(OBJ_PATH)/srcs/clean
+				@mkdir -p $(OBJ_PATH)/srcs/expand
 				@mkdir -p $(OBJ_PATH)/srcs/builtins
 				@mkdir -p $(OBJ_PATH)/srcs/exec
 				@mkdir -p $(OBJ_PATH)/srcs/lexer
