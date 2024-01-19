@@ -360,7 +360,6 @@ void				print_token(t_token *token);
 
 //	expand/expand.c
 char				**expander(char *str);
-
 //	expand/expand_utils.c
 char				*handle_single_quotes(char *s, int *i);
 char				*handle_double_quotes(char *s, int *i);

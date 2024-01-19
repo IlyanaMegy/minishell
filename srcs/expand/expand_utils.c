@@ -22,12 +22,11 @@ char	*handle_single_quotes(char *s, int *i)
 {
 	int	start;
 
-	start = *i;
-	(*i)++;
+	start = ++(*i);
 	while (s[*i] != '\'')
 		(*i)++;
 	(*i)++;
-	return (ft_substr(s, start, *i - start));
+	return (ft_substr(s, start, *i - start - 1));
 }
 
 /**
