@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:44:39 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/18 14:19:36 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:51:56 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,46 @@ static char	*generate_name(void)
 	char		*name;
 
 	n = ft_itoa(i);
+	if (!n)
+		return (NULL);
 	name = ft_strjoin(HEREDOC_NAME, n);
 	if (!name)
 		return (NULL);
-	free_ptr(&n);
+	free(n);
+	n = NULL;
 	i++;
 	return (name);
 }
 
-static void	set_io_type(t_io_cmd **io_list, t_token_type type)
+static t_io_type	get_io_type(t_token_type type)
 {
 	if (type == INPUT)
-		(*io_list)->type = IO_IN;
+		return (IO_IN);
 	else if (type == TRUNC)
-		(*io_list)->type = IO_OUT;
+		return (IO_OUT);
 	else if (type == HEREDOC)
-		(*io_list)->type = IO_HEREDOC;
+		return (IO_HEREDOC);
 	else if (type == APPEND)
-		(*io_list)->type = IO_APPEND;
+		return (IO_APPEND);
+	return (-1);
 }
 
-static void	set_io_path(t_io_cmd **io_list, t_token **token, t_token_type type)
+static char	*get_io_path(t_token **token, t_token_type type)
 {
 	if (type == HEREDOC)
-		(*io_list)->path = generate_name();
+		return (generate_name());
 	else
-		(*io_list)->path = ft_strdup((*token)->next->value);
+		return (ft_strdup((*token)->next->value));
+}
+
+static t_token	*get_next_token(t_token **token)
+{
+	if ((*token)->next->next
+		&& ((*token)->next->next->type == WORD
+			|| (*token)->next->next->type == PIPE))
+		return ((*token)->next->next);
+	else
+		return ((*token)->next);
 }
 
 bool	handle_redir(t_cmd **last_cmd, t_token **token_lst, t_token_type type)
@@ -56,16 +70,11 @@ bool	handle_redir(t_cmd **last_cmd, t_token **token_lst, t_token_type type)
 	cmd = lst_last_cmd(*last_cmd);
 	if (!init_io_cmd(&cmd))
 		return (false);
-	set_io_path(&cmd->io_list, &token, type);
+	cmd->io_list->path = get_io_path(&token, type);
 	if (!cmd->io_list->path)
 		return (false);
-	set_io_type(&cmd->io_list, type);
-	if (token->next->next
-		&& (token->next->next->type == WORD
-			|| token->next->next->type == PIPE))
-		token = token->next->next;
-	else
-		token = token->next;
+	cmd->io_list->type = get_io_type(type);
+	token = get_next_token(&token);
 	*token_lst = token;
 	return (true);
 }

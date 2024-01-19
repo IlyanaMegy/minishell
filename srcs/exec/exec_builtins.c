@@ -20,18 +20,18 @@
 */
 int	exec_builtin(t_data *data, t_cmd *cmd)
 {
-	if (ft_strcmp(cmd->args[0], "echo") == 0)
-		return (ft_echo(cmd->args));
-	if (ft_strcmp(cmd->args[0], "cd") == 0)
-		return (ft_cd(cmd->args));
-	if (ft_strcmp(cmd->args[0], "env") == 0)
+	if (ft_strcmp(cmd->expanded_args[0], "echo") == 0)
+		return (ft_echo(cmd->expanded_args));
+	if (ft_strcmp(cmd->expanded_args[0], "cd") == 0)
+		return (ft_cd(cmd->expanded_args));
+	if (ft_strcmp(cmd->expanded_args[0], "env") == 0)
 		return (ft_env(), 0);
-	if (ft_strcmp(cmd->args[0], "pwd") == 0)
+	if (ft_strcmp(cmd->expanded_args[0], "pwd") == 0)
 		return (ft_pwd());
-	if (ft_strcmp(cmd->args[0], "export") == 0)
-		return (ft_export(cmd->args));
-	if (ft_strcmp(cmd->args[0], "unset") == 0)
-		return (ft_unset(cmd->args));
+	if (ft_strcmp(cmd->expanded_args[0], "export") == 0)
+		return (ft_export(cmd->expanded_args));
+	if (ft_strcmp(cmd->expanded_args[0], "unset") == 0)
+		return (ft_unset(cmd->expanded_args));
 	ft_exit(data, data->cmd);
 	return (0);
 }

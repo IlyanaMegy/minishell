@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:34:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 20:35:52 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:50:46 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,30 @@
 void	print_cmd(t_cmd *cmd)
 {
 	int i = 1;
-	while (cmd)
+	t_cmd	*temp;
+	t_io_cmd *temp_io_list;
+
+	temp = cmd;
+	while (temp)
 	{
-		ft_printf("Commande %d: %s\n", i, cmd->cmd);
+		dprintf(2, "Commande %d: %s\n", i++, temp->cmd);
 		int k = 1;
-		while (cmd->io_list)
+		temp_io_list = temp->io_list;
+		while (temp_io_list)
 		{
-			ft_printf("- input path %d = %s\n", k, cmd->io_list->path);
-			ft_printf("- input type %d = %d\n\n", k, cmd->io_list->type);
+			dprintf(2, "- path %d = %s\n", k, temp_io_list->path);
+			dprintf(2, "- type %d = %d\n\n", k, temp_io_list->type);
 			k++;
-			cmd->io_list = cmd->io_list->next;
-		}
-		if (cmd->io_list)
-		{
-			ft_printf("- input path %d = %s\n", k, cmd->io_list->path);
-			ft_printf("- input type %d = %d\n\n", k, cmd->io_list->type);
+			temp_io_list = temp_io_list->next;
 		}
 		int j = 0;
-		while (cmd->args[j])
+		while (temp->args[j])
 		{
-			ft_printf("- arg %d = %s\n", j, cmd->args[j]);
+			dprintf(2, "- arg %d = %s\n", j, temp->args[j]);
 			j++;
 		}
-		ft_printf("\n");
-		i++;
-		cmd = cmd->next;
+		dprintf(2, "\n");
+		temp = temp->next;
 	}
 	// exit (0);
 }
@@ -47,12 +46,13 @@ void	print_cmd(t_cmd *cmd)
 void	print_token(t_token *token)
 {
 	int	i = 0;
-	ft_printf("\n");
-	while (token)
+	t_token *temp = token;
+	dprintf(2, "\n");
+	while (temp)
 	{
-		ft_printf("- token %d = %s -> type = %d\n", i, token->value, token->type);
+		dprintf(2, "- token %d = %s -> type = %d\n", i, temp->value, temp->type);
 		i++;
-		token = token->next;
+		temp = temp->next;
 	}
-	ft_printf("\n");
+	dprintf(2, "\n");
 }

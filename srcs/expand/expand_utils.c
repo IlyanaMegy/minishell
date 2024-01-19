@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:51:44 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/18 12:51:46 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/19 22:36:01 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*handle_double_quotes_str(char *s, int *i)
 	int	start;
 
 	start = *i;
-	while (s[*i] != '"' || s[*i] != '$')
+	while (s[*i] != '"' && s[*i] != '$')
 		(*i)++;
 	return (ft_substr(s, start, *i - start));
 }

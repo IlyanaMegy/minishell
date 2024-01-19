@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/12/13 16:30:30 by ilymegy           #+#    #+#              #
-#    Updated: 2024/01/18 14:06:01 by ltorkia          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME			=	minishell
 
 CC				=	cc
@@ -31,12 +19,15 @@ BUILTINS		=	srcs/builtins/cd.c \
 CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
+					srcs/exec/init_structure.c \
 					srcs/exec/exec_utils.c \
 					srcs/exec/exec_redir.c \
 					srcs/exec/exec_get_path.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \
+					srcs/expand/remove_quotes.c \
+					srcs/expand/expander_heredoc.c \
 					srcs/expand/expand_utils.c \
 					srcs/expand/expand_split.c \
 					srcs/expand/expand_clean.c

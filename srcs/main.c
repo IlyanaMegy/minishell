@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/18 10:46:18 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/20 00:12:38 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	main(int ac, char **av, char **arg_env)
 			(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
 		if (tokenize_and_parse(&data))
 		{
+			init_cmdlst(&data, data.cmd);
 			// *	DEBUG : Print the current command
 			// print_cmd(data.cmd);
 			executie(&data, data.cmd, false);

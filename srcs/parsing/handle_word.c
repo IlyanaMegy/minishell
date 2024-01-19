@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/18 11:03:08 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:52:14 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,9 @@ bool	handle_word(t_cmd **cmd, t_token **token_lst)
 	while (temp && temp->type == WORD)
 	{
 		last_cmd = lst_last_cmd(*cmd);
-		// Check if the token is at the beginning of a command
 		if (!temp->prev || (temp->prev && temp->prev->type == PIPE)
 			|| !last_cmd->cmd)
 		{
-			// If so, and it's a WORD, copy the word as the command
 			last_cmd->cmd = ft_strdup(temp->value);
 			if (!last_cmd->cmd)
 				return (false);
@@ -38,7 +36,6 @@ bool	handle_word(t_cmd **cmd, t_token **token_lst)
 		}
 		else
 		{
-			// If not, fill the arguments of the current command
 			if ((last_cmd && !(last_cmd->args)))
 			{
 				if (!create_args(&temp, last_cmd))
