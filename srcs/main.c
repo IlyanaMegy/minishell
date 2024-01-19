@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/18 10:46:18 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:42:07 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static bool	tokenize_and_parse(t_data *data)
 
 int	main(int ac, char **av, char **arg_env)
 {
-	int		exit_s;
 	t_data	data;
 
 	(void)ac;
@@ -44,7 +43,7 @@ int	main(int ac, char **av, char **arg_env)
 	get_env(arg_env);
 	// ?	init of exit status to 0 and save it in single_exit_s function
 	// TODO	use that single_exit_s function to get or update exit_s value
-	exit_s = single_exit_s(0, ADD);
+	single_exit_s(0, ADD);
 	while (1)
 	{
 		// ?	stocking the freshly entered input into data.user_input and verify parsing

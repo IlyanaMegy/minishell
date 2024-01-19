@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_manip.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:25:58 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/04 16:26:03 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:25:49 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,14 @@ void	print_tab(char **tab)
 	i = -1;
 	while (tab[++i])
 		ft_printf("%s\n", tab[i]);
+}
+
+int	double_array_len(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }

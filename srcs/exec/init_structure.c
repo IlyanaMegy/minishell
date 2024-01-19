@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structure.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:03:32 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/18 16:03:33 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/19 22:33:31 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,14 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 {
 	t_io_cmd	*io;
 	int			fd[2];
-	char		*args;
+	char **io_path_d;
 	int			pid;
 
 	if (cmd->args)
 	{
-		args = ft_strsjoin(cmd->args, " ");
-		cmd->expanded_args = expander(args);
-		free(args);
+		// args = ft_strsjoin(cmd->args, " ");
+		cmd->expanded_args = expander(cmd->args);
+		// free(args);
 	}
 	io = cmd->io_list;
 	while (io)
@@ -98,8 +98,14 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 			// 	return ;
 			io->here_doc = fd[0];
 		}
-		else
-			io->expanded_value = expander(io->path);
+		else{
+			io_path_d = malloc(sizeof(char *) * 2);
+			io_path_d[0] = ft_strdup(io->path);
+			io_path_d[1] = NULL;
+			io->expanded_value = expander(io_path_d);
+		}
+		// else
+		// 	io->expanded_value = expander(io->path);
 		io = io->next;
 	}
 }

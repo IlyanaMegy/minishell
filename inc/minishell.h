@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/18 14:05:48 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:26:16 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_env
 /**
  * @brief  char *value, int type, int quote_status, t_token *prev, t_token *next
  * @note   return var value, var type, var quote_status, prev var, next var
-*/
+ */
 typedef struct s_token
 {
 	char			*value;
@@ -114,7 +114,7 @@ typedef struct s_cmd
 /**
  * @brief  return char *user_input, t_token *token, t_cmd *cmd
  * @note   return var user_input, token var, cmd var
-*/
+ */
 typedef struct s_data
 {
 	char			*user_input;
@@ -282,6 +282,7 @@ int					ms_lstsize(t_env *lst);
 t_env				*copy_my_lst(t_env *src);
 char				**env_to_tab(t_env *env_lst);
 void				print_tab(char **tab);
+int					double_array_len(char **arr);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);
@@ -327,9 +328,8 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool	handle_redir(t_cmd **last_cmd,
-					t_token **token_lst,
-					t_token_type type);
+bool				handle_redir(t_cmd **last_cmd, t_token **token_lst,
+						t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -345,7 +345,7 @@ t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));
 void				lstclear_cmd(t_cmd **lst, void (*del)(void *));
 
-//parsing/io_utils.c
+// parsing/io_utils.c
 bool				init_io_cmd(t_cmd **cmd);
 void				lstdelone_io_list(t_io_cmd *io_list, void (*del)(void *));
 void				lstclear_io_list(t_io_cmd **io_list, void (*del)(void *));
@@ -359,7 +359,7 @@ void				print_token(t_token *token);
 //  --------------------------------------------------------------------------------
 
 //	expand/expand.c
-char				**expander(char *str);
+char				**expander(char **args);
 //	expand/expand_utils.c
 char				*handle_single_quotes(char *s, int *i);
 char				*handle_double_quotes(char *s, int *i);

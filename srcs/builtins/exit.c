@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:21:14 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/13 16:21:16 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:39:36 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,13 @@ int	calcul_exit_status(t_data *data, char *number)
 */
 void	ft_exit(t_data *data, t_cmd *cmd)
 {
-	int	exit_s;
-
-	exit_s = single_exit_s(0, GET);
 	ft_putstr_fd("exit\n", 1);
 	if (cmd->args[1])
 	{
 		if (cmd->args[2] && ft_isnumber(cmd->args[1]))
 			clean_exit_exit(data, 1, ERR_ARGS, "exit");
 		else
-			exit_s = single_exit_s(calcul_exit_status(data, cmd->args[1]), ADD);
+			single_exit_s(calcul_exit_status(data, cmd->args[1]), ADD);
 	}
 	clean_program(data);
 	exit(single_exit_s(0, GET));
