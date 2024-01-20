@@ -13,11 +13,11 @@
 #include "../../inc/minishell.h"
 
 /**
- * @note   translate and write in fd
+ * @note   reveal environment variable and write in fd
  * @param  str: given line
- * @param  i: index
+ * @param  i: current index
  * @param  fd: file descriptor
- * @retval index
+ * @retval current updated index
 */
 static int	heredoc_expander_w(char *str, int i, int fd)
 {
@@ -37,6 +37,7 @@ static int	heredoc_expander_w(char *str, int i, int fd)
 		free(tmp1);
 		if (tmp2)
 			ft_putstr_fd(tmp2, fd);
+		// free tmp2 ?
 	}
 	return (i);
 }

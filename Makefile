@@ -44,10 +44,6 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/io_utils.c \
 					srcs/parsing/debug.c
 
-PIPEX			=	srcs/pipex/open_close.c \
-					srcs/pipex/main_pipex.c \
-					srcs/pipex/utils.c
-
 UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c \
 					# srcs/utils/signals.c
@@ -58,7 +54,6 @@ SRCS			=	$(BUILTINS)\
 					$(EXPAND)\
 					$(LEXER)\
 					$(PARSING)\
-					$(PIPEX)\
 					$(UTILS)\
 					$(ERROR)\
 					srcs/main.c
@@ -85,7 +80,6 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)/srcs/exec
 				@mkdir -p $(OBJ_PATH)/srcs/lexer
 				@mkdir -p $(OBJ_PATH)/srcs/parsing
-				@mkdir -p $(OBJ_PATH)/srcs/pipex
 				@mkdir -p $(OBJ_PATH)/srcs/utils
 				@mkdir -p $(OBJ_PATH)/srcs/err_handler
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include

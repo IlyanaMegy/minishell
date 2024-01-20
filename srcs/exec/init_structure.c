@@ -12,13 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-// static void	heredoc_sigint_handler(t_data *data, int signum)
-// {
-// 	(void)signum;
-// 	clean_program(data);
-// 	exit(SIGINT);
-// }
-
 /**
  * @note   handling here_doc
  * @param  data: t_data linked list
@@ -54,16 +47,21 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	exit(0);
 }
 
-// static bool	quit_da_cmd(t_data *data, int fd[2], int *pid)
-// {
-// 	waitpid(*pid, pid, 0);
-// 	signal(SIGQUIT, ft_sigquit_handler);
-// 	data->signint_child = false;
-// 	close(fd[1]);
-// 	if (WIFEXITED(*pid) && WEXITSTATUS(*pid) == SIGINT)
-// 		return (true);
-// 	return (false);
-// }
+/**
+ * @note   get io_expanded_value
+ * @param  io: t_io_cmd linked list
+ * @retval None
+*/
+void	get_io_expanded_value(t_io_cmd *io)
+{
+	char	**io_path_d;
+
+	io_path_d = malloc(sizeof(char *) * 2);
+	io_path_d[0] = ft_strdup(io->path);
+	io_path_d[1] = NULL;
+	io->expanded_value = expander(io_path_d);
+	free_tab(io_path_d);
+}
 
 /**
  * @note   initializing t_cmd lst and handling here_docs
@@ -75,7 +73,6 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 {
 	t_io_cmd	*io;
 	int			fd[2];
-	char **io_path_d;
 	int			pid;
 
 	if (cmd->args)
@@ -94,13 +91,8 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 			// 	return ;
 			io->here_doc = fd[0];
 		}
-		else{
-			io_path_d = malloc(sizeof(char *) * 2);
-			io_path_d[0] = ft_strdup(io->path);
-			io_path_d[1] = NULL;
-			io->expanded_value = expander(io_path_d);
-			free_tab(io_path_d);
-		}
+		else
+			get_io_expanded_value(io);
 		io = io->next;
 	}
 }
