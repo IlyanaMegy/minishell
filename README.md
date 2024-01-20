@@ -16,3 +16,9 @@
 <p align="center">
   <img src="ressources/diagrams/builtins.drawio.png" alt="builtins diagrams"/>
 </p>
+
+## EXECUTION
+
+<p align="center">
+  <img src="ressources/diagrams/example.drawio.png" alt="example execution diagrams"/>
+</p>
