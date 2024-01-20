@@ -278,7 +278,7 @@ t_err				check_exec(char *file, bool cmd);
 //  --------------------------------------------------------------------------------
 
 // utils/lst_manip.c
-int					ms_lstsize(t_env *lst);
+int					envlst_len(t_env *lst);
 t_env				*copy_my_lst(t_env *src);
 char				**env_to_tab(t_env *env_lst);
 void				print_tab(char **tab);
