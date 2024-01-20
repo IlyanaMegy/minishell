@@ -1,0 +1,19 @@
+➜  08_minishell git:(lee) ✗ ./minishell
+minishell$ exit 22222222222222222222222222222
+exit
+minishell: exit: 22222222222222222222222222222: numeric argument required
+➜  08_minishell git:(lee) ✗ ./minishell
+minishell$ exit oui 5
+exit
+minishell: exit: oui: numeric argument required
+➜  08_minishell git:(lee) ✗ ./minishell
+minishell$ 6 oui
+minishell: 6: command not found
+minishell$ exit 6 oui
+exit
+minishell: exit: too many arguments
+➜  08_minishell git:(lee) ✗
+
+
+
+pwd : check getcwd error

@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:22:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/15 19:42:14 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 17:22:15 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int fd[2],
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
 		executie(data, cmd, true);
-	}	
+	}
 	clean_program(data);
 	exit(single_exit_s(0, GET));
 }

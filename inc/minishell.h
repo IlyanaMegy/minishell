@@ -328,8 +328,9 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool				handle_redir(t_cmd **last_cmd, t_token **token_lst,
-						t_token_type type);
+bool	handle_redir(t_cmd **last_cmd,
+					t_token **token_lst,
+					t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -365,12 +366,6 @@ char				*handle_single_quotes(char *s, int *i);
 char				*handle_double_quotes(char *s, int *i);
 char				*handle_dollar(char *s, int *i);
 char				*handle_normal_str(char *s, int *i);
-
-// expand/expand_clean.c
-char				*ft_clean_empty_strs(char *str);
-
-// expand/expand_split.c
-char				**expand_split(char *s);
 
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
