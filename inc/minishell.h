@@ -328,9 +328,8 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool	handle_redir(t_cmd **last_cmd,
-					t_token **token_lst,
-					t_token_type type);
+bool				handle_redir(t_cmd **last_cmd, t_token **token_lst,
+						t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
