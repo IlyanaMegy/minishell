@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/20 12:58:39 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/20 13:16:57 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int	ignore_spaces(char *s, int index)
 	{
 		if (!ft_isspace(s[index]))
 			return (index);
-		else if (ft_isspace(s[index]))
-			return (index + 1);
 		index++;
 	}
 	return (-1);
