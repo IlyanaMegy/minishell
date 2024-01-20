@@ -52,7 +52,6 @@ int	main(int ac, char **av, char **arg_env)
 			(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
 		if (tokenize_and_parse(&data))
 		{
-			init_cmdlst(&data, data.cmd);
 			// *	DEBUG : Print the current command
 			// print_cmd(data.cmd);
 			init_cmdlst(&data, data.cmd);
