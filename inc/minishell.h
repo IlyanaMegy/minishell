@@ -40,10 +40,6 @@ extern int			g_sig_exit;
 // |								ENV												|
 //  --------------------------------------------------------------------------------
 
-/**
- * @brief  char *name, char *content, int print_it, t_env_var *next
- * @note   return var name, var content, do print it ?, next var
- */
 typedef struct s_env
 {
 	char			*name;
@@ -57,10 +53,6 @@ typedef struct s_env
 // |								LEXER											|
 //  --------------------------------------------------------------------------------
 
-/**
- * @brief  char *value, int type, int quote_status, t_token *prev, t_token *next
- * @note   return var value, var type, var quote_status, prev var, next var
- */
 typedef struct s_token
 {
 	char			*value;
@@ -91,12 +83,6 @@ typedef struct s_io_cmd
 	struct s_io_cmd	*prev;
 }					t_io_cmd;
 
-/**
- * @brief  return char *cmd, char *path, char **args, int fd_in, int fd_out,
-	bool pipe_out, t_cmd *prev, t_cmd *next
- * @note   return var cmd, var path, var args, var fd_in, var fd_out,
-	var pipe_out, prev var, next var
-*/
 typedef struct s_cmd
 {
 	t_io_cmd		*io_list;
@@ -111,10 +97,6 @@ typedef struct s_cmd
 // |							MAIN STRUCTURE										|
 //  --------------------------------------------------------------------------------
 
-/**
- * @brief  return char *user_input, t_token *token, t_cmd *cmd
- * @note   return var user_input, token var, cmd var
- */
 typedef struct s_data
 {
 	char			*user_input;
@@ -221,6 +203,8 @@ void				clean_program(t_data *data);
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
 //  --------------------------------------------------------------------------------
+
+// err_handler/err_handler.c
 void				err_handler(int err, char *s);
 char				*complexe_err_msg(int err, char *cmd);
 void				err_syntax(int err, char *s);
@@ -271,7 +255,6 @@ int					open_append(t_io_cmd *io_lst, int *status);
 // exec/exec_get_path.c
 t_path				get_path(char *cmd);
 t_err				check_exec(char *file, bool cmd);
-// static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
@@ -360,6 +343,7 @@ void				print_token(t_token *token);
 
 //	expand/expand.c
 char				**expander(char **args);
+
 //	expand/expand_utils.c
 char				*handle_single_quotes(char *s, int *i);
 char				*handle_double_quotes(char *s, int *i);
@@ -368,5 +352,11 @@ char				*handle_normal_str(char *s, int *i);
 
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
+
+//  --------------------------------------------------------------------------------
+// |									SIGNALS										|
+//  --------------------------------------------------------------------------------
+
+// signals/signals_exec.c
 
 #endif

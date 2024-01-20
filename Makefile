@@ -48,6 +48,8 @@ UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c \
 					# srcs/utils/signals.c
 
+SIGNALS			=	srcs/signals/signals_exec.c
+
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
 					$(EXEC)\
@@ -56,6 +58,7 @@ SRCS			=	$(BUILTINS)\
 					$(PARSING)\
 					$(UTILS)\
 					$(ERROR)\
+					$(SIGNALS)\
 					srcs/main.c
 
 LIBFT_PATH 		=	srcs/libft/
@@ -81,6 +84,7 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)/srcs/lexer
 				@mkdir -p $(OBJ_PATH)/srcs/parsing
 				@mkdir -p $(OBJ_PATH)/srcs/utils
+				@mkdir -p $(OBJ_PATH)/srcs/signals
 				@mkdir -p $(OBJ_PATH)/srcs/err_handler
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include
 
