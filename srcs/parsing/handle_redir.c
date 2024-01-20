@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:44:39 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/19 21:51:56 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/20 13:03:18 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ static char	*generate_name(void)
 	name = ft_strjoin(HEREDOC_NAME, n);
 	if (!name)
 		return (NULL);
-	free(n);
-	n = NULL;
+	free_ptr(n);
 	i++;
 	return (name);
 }

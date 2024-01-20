@@ -1,7 +1,7 @@
 NAME			=	minishell
 
 CC				=	cc
-CFLAGS			=	-Wall -Wextra -Werror -g3
+CFLAGS			=	-Wall -Wextra -g3
 
 INC				=	-I ./inc/ \
 					-I ./libft/
