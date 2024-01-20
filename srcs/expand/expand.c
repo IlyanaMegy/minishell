@@ -13,7 +13,7 @@
 #include "../../inc/minishell.h"
 
 /**
- * @note   return revealed string after handling simple and double quotes and dollars
+ * @note   reveal string after handling simple and double quotes and dollars
  * @param  str: given string
  * @retval cleaned and revealed string
  */
