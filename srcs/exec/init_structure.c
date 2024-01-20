@@ -79,11 +79,7 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 	int			pid;
 
 	if (cmd->args)
-	{
-		// args = ft_strsjoin(cmd->args, " ");
 		cmd->expanded_args = expander(cmd->args);
-		// free(args);
-	}
 	io = cmd->io_list;
 	while (io)
 	{
@@ -103,9 +99,8 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 			io_path_d[0] = ft_strdup(io->path);
 			io_path_d[1] = NULL;
 			io->expanded_value = expander(io_path_d);
+			free_tab(io_path_d);
 		}
-		// else
-		// 	io->expanded_value = expander(io->path);
 		io = io->next;
 	}
 }
