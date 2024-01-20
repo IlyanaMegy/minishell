@@ -21,7 +21,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-#include <stdbool.h>
+# include <stdbool.h>
 
 # ifndef T_LIST
 #  define T_LIST
@@ -91,7 +91,8 @@ size_t				ft_strlen(const char *s);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strncmp(char *str1, char *str2, size_t n);
 int					ft_strnsame(char const *s1, char const *s2, size_t n);
-char				*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char				*ft_strnstr(const char *haystack, const char *needle,
+						size_t len);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strsjoin(char **strs, char *sep);
 char				*ft_strtrim(char const *s1, char const *set);
@@ -142,8 +143,10 @@ void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 t_list				*ft_lstlast(t_list *lst);
-t_list				*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
+						void (*del)(void *));
 t_list				*ft_lstnew(void *content);
 int					ft_lstsize(t_list *lst);
-void 				ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)());
+void				ft_list_remove_if(t_list **begin_list,
+						void *data_ref, int (*cmp)());
 #endif
