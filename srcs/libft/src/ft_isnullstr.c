@@ -12,10 +12,9 @@
 
 #include "../../../inc/libft.h"
 
-int	ft_isnullstr(char c, char next_c, int quotes)
+int	ft_isnullstr(char c, int quotes)
 {
-	if (((c == '"' && next_c == '"') || (c == '\'' && next_c == '\''))
-		&& !quotes)
+	if (((c == '"') || (c == '\'')) && !quotes)
 		return (1);
 	return (0);
 }

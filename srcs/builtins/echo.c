@@ -48,9 +48,12 @@ int	ft_echo(char **args)
 	}
 	while (args[i] != NULL)
 	{
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1])
-			ft_putstr_fd(" ", 1);
+		if (*args[i])
+		{
+			ft_putstr_fd(args[i], 1);
+			if (args[i + 1])
+				ft_putstr_fd(" ", 1);
+		}
 		i++;
 	}
 	if (opt == 0)

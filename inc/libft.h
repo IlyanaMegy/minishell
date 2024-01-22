@@ -60,7 +60,7 @@ int					ft_isprint(int c);
 int					ft_isspace(int c);
 int					ft_isupper(int c);
 int					ft_isnumber(char *s);
-int					ft_isnullstr(char c, char next_c, int quotes);
+int					ft_isnullstr(char c, int quotes);
 char				*ft_itoa_base(int n, const char *base, size_t len_base);
 char				*ft_itoa(int n);
 void				*ft_memccpy(void *dest, const void *src, int c, size_t n);

@@ -65,7 +65,7 @@ char	*handle_double_quotes(char *s, int *i)
 			res = ft_strjoin_n_free(res, handle_double_quotes_str(s, i));
 	}
 	(*i)++;
-	return (ft_strjoin_n_free(res, ft_strdup("")));
+	return (res);
 }
 
 /**
@@ -82,7 +82,7 @@ char	*handle_dollar(char *s, int *i, int quotes)
 	char	*env_content;
 
 	(*i)++;
-	if (ft_isnullstr(s[*i], s[*i + 1], quotes))
+	if (ft_isnullstr(s[*i], quotes))
 		return ( ft_strdup(""));
 	if (ft_isdigit(s[*i]) || s[*i] == '@')
 		return ((*i)++, ft_strdup(""));
