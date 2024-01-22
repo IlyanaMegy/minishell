@@ -83,12 +83,12 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 		if (io->type == IO_HEREDOC)
 		{
 			pipe(fd);
-			// data->signint_child = true;
+			data->signint_child = true;
 			pid = (signal(SIGQUIT, SIG_IGN), fork());
 			if (!pid)
 				come_heredoc(data, io, fd);
-			// if (quit_da_cmd(data, fd, &pid))
-			// 	return ;
+			if (quit_da_cmd(data, fd, &pid))
+				return ;
 			io->here_doc = fd[0];
 		}
 		else

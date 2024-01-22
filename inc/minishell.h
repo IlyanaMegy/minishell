@@ -359,5 +359,5 @@ void				heredoc_expander(char *str, int fd);
 //  --------------------------------------------------------------------------------
 
 // signals/signals_exec.c
-
+bool			quit_da_cmd(t_data *data, int fd[2], int *pid);
 #endif
