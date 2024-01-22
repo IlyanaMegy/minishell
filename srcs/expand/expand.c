@@ -24,7 +24,6 @@ static char	*pre_handling(char *str)
 
 	i = 0;
 	res = ft_strdup("");
-	ft_printf("s = \"%s\"\n", str);
 	while (str[i])
 	{
 		if (str[i] == '\'')
