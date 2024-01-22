@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/22 10:24:42 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:26:16 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,6 @@ int					save_sep(t_token **token_lst, char *s, int index,
 
 // lexer/token_utils.c
 int					ignore_spaces(char *s, int index);
-char				*trim_end_spaces(char *s);
 int					is_separator(char *s, int i);
 bool				is_quote(char *s, int index);
 bool				ignore_quotes(char *s, int *index);

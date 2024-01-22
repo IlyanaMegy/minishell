@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/22 12:19:22 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:51:37 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ bool	get_commands(t_data *data, t_token *token)
 		}
 		else if (temp_tkn->type > PIPE)
 		{
+			if (!handle_redir(&data->cmd, &temp_tkn, temp_tkn->type))
 			if (!handle_redir(&data->cmd, &temp_tkn, temp_tkn->type))
 				return (false);
 		}

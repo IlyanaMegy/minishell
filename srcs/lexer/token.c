@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/22 12:37:47 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:50:13 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,22 @@ bool	tokenize_input(t_data *data, char *s)
 {
 	int		i;
 	int		sep_type;
-	char	*str;
 
 	i = 0;
-	if (!s[i + 1] && (s[0] == '!' || s[0] == ':'))
-		return (false);
-	str = trim_end_spaces(s);
-	if (!str)
-		return (false);
-	while (str[i])
+	while (s[i])
 	{
-		sep_type = is_separator(str, i);
-		if (ft_isspace(str[i]))
+		sep_type = is_separator(s, i);
+		if (ft_isspace(s[i]))
 			i = ignore_spaces(s, i);
 		else if (sep_type)
-			i = save_sep(&data->token, str, i, sep_type);
+			i = save_sep(&data->token, s, i, sep_type);
 		else
-			i = save_word(&data->token, str, i);
+			i = save_word(&data->token, s, i);
 		if (i == -1)
-			return (free_ptr(str), single_exit_s(1, ADD), false);
+			return (false);
 	}
-	free_ptr(str);
+	// *	DEBUG : Print the current token list
+	// print_token(data->token);
 	if (!check_syntax(data->token))
 		return (false);
 	return (true);
