@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 21:42:07 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/22 12:20:26 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,11 @@ static bool	tokenize_and_parse(t_data *data)
 	if (data->user_input[0])
 		add_history(data->user_input);
 	else
-		return (false);
-	// ?	Tokenize the user_input and store it in data->token
+		return (single_exit_s(1, ADD), false);
 	if (!tokenize_input(data, data->user_input))
 		return (false);
-	// ?	Parse the token list to extract commands and arguments
 	if (!get_commands(data, data->token))
-		return (false);
+		return (single_exit_s(1, ADD), false);
 	return (true);
 }
 
