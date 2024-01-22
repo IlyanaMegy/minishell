@@ -48,12 +48,17 @@ char	**expander(char **args)
 	char	**exp_args;
 	int		i;
 
-	i = -1;
+	i = 0;
 	if (!args[0])
 		return (args);
-	exp_args = malloc(sizeof(char *) * double_array_len(args) + 1);
-	while (args[++i])
+	exp_args = malloc(sizeof(char *) * (double_array_len(args) + 1));
+	if (!exp_args)
+		return (NULL);
+	while (args[i])
+	{
 		exp_args[i] = pre_handling(args[i]);
+		i++;
+	}
 	exp_args[i] = NULL;
 	return (exp_args);
 }
