@@ -60,8 +60,6 @@ void	lstdelone_io_list(t_io_cmd *io_list, void (*del)(void *))
 {
 	if (io_list->path)
 		(*del)(io_list->path);
-	if (io_list->expanded_value)
-		free_tab(io_list->expanded_value);
 	(*del)(io_list);
 }
 
