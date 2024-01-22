@@ -83,7 +83,7 @@ char	*handle_dollar(char *s, int *i, int quotes)
 
 	(*i)++;
 	if (ft_isnullstr(s[*i], s[*i + 1], quotes))
-		return ((*i)++, (*i)++, ft_strdup(""));
+		return ( ft_strdup(""));
 	if (ft_isdigit(s[*i]) || s[*i] == '@')
 		return ((*i)++, ft_strdup(""));
 	else if (s[*i] == '?')
