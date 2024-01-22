@@ -45,10 +45,7 @@ t_env	*clean_env(t_env *e)
 void	free_data(t_data *data)
 {
 	if (data && data->user_input)
-	{
 		free_ptr(data->user_input);
-		data->user_input = NULL;
-	}
 	if (data && data->token)
 		lstclear_token(&data->token, &free_ptr);
 	if (data && data->cmd)
