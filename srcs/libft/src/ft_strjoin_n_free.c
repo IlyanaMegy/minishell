@@ -34,6 +34,6 @@ char	*ft_strjoin_n_free(char *s1, char *s2)
 	j = 0;
 	while (s2[j])
 		joined[i++] = s2[j++];
-	joined[i] = 0;
+	joined[i] = '\0';
 	return (free(s1), free(s2), joined);
 }
