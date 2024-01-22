@@ -88,19 +88,18 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 	t_path	path;
 	char	**env;
 
-	// signint_child = true
-	env = env_to_tab(single_env(NULL, GET));
-	if (!env)
-		return (ENO_GENERAL);
 	if (!fork_pid)
 	{
+		env = env_to_tab(single_env(NULL, GET));
+		if (!env)
+			get_out(data, ENO_GENERAL, NULL);
 		status = check_redir(cmd);
 		if (status != ENO_SUCCESS)
 			get_out(data, ENO_GENERAL, env);
 		path = get_path(cmd->expanded_args[0]);
 		if (path.err.no != ENO_SUCCESS)
-			(err_handler(path.err.msg, path.err.cause), get_out(data,
-					single_exit_s(path.err.no, ADD), env));
+			(err_handler(path.err.msg, path.err.cause),
+					get_out(data, single_exit_s(path.err.no, ADD), env));
 		if (execve(path.path, cmd->expanded_args, env) == -1)
 			return (free(path.path), get_out(data, single_exit_s(0, GET), env),
 				1);
@@ -108,7 +107,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 	}
 	waitpid(fork_pid, &status, 0);
 	// signint_child = false
-	return (free_tab(env), get_exit_status(status));
+	return (get_exit_status(status));
 }
 
 /**
@@ -138,6 +137,7 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 	}
 	else
 	{
+		// signint_child = true
 		fork_pid = fork();
 		if (fork_pid < 0)
 			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);

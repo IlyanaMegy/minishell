@@ -35,7 +35,8 @@ void	reset_stds(t_data *data, bool piped)
 */
 void	get_out(t_data *data, int status, char **env)
 {
-	free_tab(env);
+	if (env)
+		free_tab(env);
 	clean_program(data);
 	exit(status);
 }
