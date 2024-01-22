@@ -82,14 +82,13 @@ char	*handle_dollar(char *s, int *i, int quotes)
 	char	*env_content;
 
 	(*i)++;
+	if (ft_isnullstr(s[*i], s[*i + 1], quotes))
+		return ((*i)++, (*i)++, ft_strdup(""));
 	if (ft_isdigit(s[*i]) || s[*i] == '@')
 		return ((*i)++, ft_strdup(""));
 	else if (s[*i] == '?')
-	{
-		(*i)++;
-		return (ft_itoa(single_exit_s(0, GET)));
-	}
-	else if (!(ft_isalnum(s[*i]) || s[*i] == '_') && quotes)
+		return ((*i)++, ft_itoa(single_exit_s(0, GET)));
+	else if (!(ft_isalnum(s[*i]) || s[*i] == '_'))
 		return (ft_strdup("$"));
 	start = *i;
 	while (ft_isalnum(s[*i]) || s[*i] == '_')
