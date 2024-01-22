@@ -69,6 +69,6 @@ int	ft_cd(char **cmd)
 	if (!cmd[1])
 		return (cd_home());
 	if (chdir(cmd[1]) != 0)
-		return (err_handler(ERR_NOFILEDIR, "cd"), 1);	
+		return (err_handler(ERR_NOFILEDIR, "cd"), 1);
 	return (change_pwd());
 }

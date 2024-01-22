@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 16:18:30 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/20 16:18:32 by ilymegy          ###   ########.fr       */
+/*   Created: 2023/05/09 14:30:16 by ilymegy           #+#    #+#             */
+/*   Updated: 2023/05/09 14:30:18 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/libft.h"
 
-int	ft_isspace(int c)
+t_list	*ft_lstlast(t_list *lst)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\r'
-		|| c == '\v' || c == '\f')
-		return (c);
-	return (0);
+	t_list	*tmp;
+
+	tmp = lst;
+	if (lst)
+		while (tmp->next)
+			tmp = tmp->next;
+	return (tmp);
 }

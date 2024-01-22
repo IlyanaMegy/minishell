@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:21:31 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/12/27 20:35:01 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:41:32 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	extract_var(char *arg, int *append)
 	}
 	else if (!arg[i])
 		return (extract_var_no_content(arg, append));
-	return (free(var[0]), free(var[1]), 0);
+	return (0);
 }
 
 /**

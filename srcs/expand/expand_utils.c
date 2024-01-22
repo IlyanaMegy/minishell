@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:51:44 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 22:36:01 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:22:27 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,16 @@
  * @param  s: given string
  * @param  i: index
  * @retval cleaned and revealed str
-*/
+ */
 char	*handle_single_quotes(char *s, int *i)
 {
 	int	start;
 
-	start = *i;
-	(*i)++;
+	start = ++(*i);
 	while (s[*i] != '\'')
 		(*i)++;
 	(*i)++;
-	return (ft_substr(s, start, *i - start));
+	return (ft_substr(s, start, *i - start - 1));
 }
 
 /**
@@ -35,7 +34,7 @@ char	*handle_single_quotes(char *s, int *i)
  * @param  s: given string
  * @param  i: index
  * @retval cleaned and revealed str
-*/
+ */
 static char	*handle_double_quotes_str(char *s, int *i)
 {
 	int	start;
@@ -51,12 +50,12 @@ static char	*handle_double_quotes_str(char *s, int *i)
  * @param  s: given string
  * @param  i: index
  * @retval cleaned and revealed str
-*/
+ */
 char	*handle_double_quotes(char *s, int *i)
 {
 	char	*res;
 
-	res = ft_strdup("\"");
+	res = ft_strdup("");
 	(*i)++;
 	while (s[*i] != '"')
 	{
@@ -66,7 +65,7 @@ char	*handle_double_quotes(char *s, int *i)
 			res = ft_strjoin_n_free(res, handle_double_quotes_str(s, i));
 	}
 	(*i)++;
-	return (ft_strjoin_n_free(res, ft_strdup("\"")));
+	return (ft_strjoin_n_free(res, ft_strdup("")));
 }
 
 /**
@@ -74,7 +73,7 @@ char	*handle_double_quotes(char *s, int *i)
  * @param  s: given string
  * @param  i: index
  * @retval cleaned and revealed str
-*/
+ */
 char	*handle_dollar(char *s, int *i)
 {
 	int		start;
@@ -108,7 +107,7 @@ char	*handle_dollar(char *s, int *i)
  * @param  s: given string
  * @param  i: index
  * @retval cleaned and revealed str
-*/
+ */
 char	*handle_normal_str(char *s, int *i)
 {
 	int	start;

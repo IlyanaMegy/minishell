@@ -87,5 +87,4 @@ void	clean_program(t_data *data)
 	free_data(data);
 	clean_env(single_env(NULL, GET));
 	rl_clear_history();
-	// !	clear everything malloc
 }

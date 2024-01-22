@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/20 12:23:33 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/22 10:24:42 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,6 @@ extern int			g_sig_exit;
 // |								ENV												|
 //  --------------------------------------------------------------------------------
 
-/**
- * @brief  char *name, char *content, int print_it, t_env_var *next
- * @note   return var name, var content, do print it ?, next var
- */
 typedef struct s_env
 {
 	char			*name;
@@ -57,10 +53,6 @@ typedef struct s_env
 // |								LEXER											|
 //  --------------------------------------------------------------------------------
 
-/**
- * @brief  char *value, int type, int quote_status, t_token *prev, t_token *next
- * @note   return var value, var type, var quote_status, prev var, next var
-*/
 typedef struct s_token
 {
 	char			*value;
@@ -91,12 +83,6 @@ typedef struct s_io_cmd
 	struct s_io_cmd	*prev;
 }					t_io_cmd;
 
-/**
- * @brief  return char *cmd, char *path, char **args, int fd_in, int fd_out,
-	bool pipe_out, t_cmd *prev, t_cmd *next
- * @note   return var cmd, var path, var args, var fd_in, var fd_out,
-	var pipe_out, prev var, next var
-*/
 typedef struct s_cmd
 {
 	t_io_cmd		*io_list;
@@ -111,10 +97,6 @@ typedef struct s_cmd
 // |							MAIN STRUCTURE										|
 //  --------------------------------------------------------------------------------
 
-/**
- * @brief  return char *user_input, t_token *token, t_cmd *cmd
- * @note   return var user_input, token var, cmd var
-*/
 typedef struct s_data
 {
 	char			*user_input;
@@ -221,6 +203,8 @@ void				clean_program(t_data *data);
 //  --------------------------------------------------------------------------------
 // |								ERROR_HANDLER									|
 //  --------------------------------------------------------------------------------
+
+// err_handler/err_handler.c
 void				err_handler(int err, char *s);
 char				*complexe_err_msg(int err, char *cmd);
 void				err_syntax(int err, char *s);
@@ -271,17 +255,17 @@ int					open_append(t_io_cmd *io_lst, int *status);
 // exec/exec_get_path.c
 t_path				get_path(char *cmd);
 t_err				check_exec(char *file, bool cmd);
-// static char			*get_env_path(char *cmd, char *path);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
 //  --------------------------------------------------------------------------------
 
 // utils/lst_manip.c
-int					ms_lstsize(t_env *lst);
+int					envlst_len(t_env *lst);
 t_env				*copy_my_lst(t_env *src);
 char				**env_to_tab(t_env *env_lst);
 void				print_tab(char **tab);
+int					double_array_len(char **arr);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);
@@ -328,9 +312,8 @@ bool				get_commands(t_data *data, t_token *token);
 bool				handle_word(t_cmd **cmd, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool	handle_redir(t_cmd **last_cmd,
-					t_token **token_lst,
-					t_token_type type);
+bool				handle_redir(t_cmd **last_cmd, t_token **token_lst,
+						t_token_type type);
 
 // parsing/get_args.c
 bool				create_args(t_token **token_node, t_cmd *last_cmd);
@@ -346,7 +329,7 @@ t_cmd				*lst_last_cmd(t_cmd *cmd);
 void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));
 void				lstclear_cmd(t_cmd **lst, void (*del)(void *));
 
-//parsing/io_utils.c
+// parsing/io_utils.c
 bool				init_io_cmd(t_cmd **cmd);
 void				lstdelone_io_list(t_io_cmd *io_list, void (*del)(void *));
 void				lstclear_io_list(t_io_cmd **io_list, void (*del)(void *));
@@ -360,7 +343,7 @@ void				print_token(t_token *token);
 //  --------------------------------------------------------------------------------
 
 //	expand/expand.c
-char				**expander(char *str);
+char				**expander(char **args);
 
 //	expand/expand_utils.c
 char				*handle_single_quotes(char *s, int *i);
@@ -368,16 +351,13 @@ char				*handle_double_quotes(char *s, int *i);
 char				*handle_dollar(char *s, int *i);
 char				*handle_normal_str(char *s, int *i);
 
-// expand/expand_clean.c
-char				*ft_clean_empty_strs(char *str);
-
-// expand/expand_split.c
-char				**expand_split(char *s);
-
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
 
-//expand/remove_quotes.c
-void				remove_quotes(t_cmd	**cmd);
+//  --------------------------------------------------------------------------------
+// |									SIGNALS										|
+//  --------------------------------------------------------------------------------
+
+// signals/signals_exec.c
 
 #endif

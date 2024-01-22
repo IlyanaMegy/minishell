@@ -16,19 +16,18 @@ char	*ft_strsjoin(char **strs, char *sep)
 {
 	int		i;
 	size_t	join_len;
-	size_t	sep_len;
 	char	*join;
 
-	sep_len = ft_strlen(sep);
 	join_len = 0;
 	i = -1;
 	while (strs[++i] != NULL)
 	{
 		join_len += ft_strlen(strs[i]);
 		if (strs[i + 1] != NULL)
-			join_len += sep_len;
+			join_len += ft_strlen(sep);
 	}
-	if ((join = (char*)malloc(sizeof(char) * (join_len + 1))) == NULL)
+	join = (char *)malloc(sizeof(char) * (join_len + 1));
+	if (join == NULL)
 		return (NULL);
 	join[0] = '\0';
 	i = -1;

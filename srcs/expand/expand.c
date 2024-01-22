@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:39:02 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 23:21:11 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:25:38 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @note   reveal string after handling simple and double quotes and dollars
  * @param  str: given string
  * @retval cleaned and revealed string
-*/
+ */
 static char	*pre_handling(char *str)
 {
 	char	*res;
@@ -40,22 +40,20 @@ static char	*pre_handling(char *str)
 
 /**
  * @note   handling expander here
- * @param  str: given string
- * @retval splited and clean 2D array
-*/
-char	**expander(char *str)
+ * @param  args: given args
+ * @retval revealed 2D array
+ */
+char	**expander(char **args)
 {
-	char	**exp;
+	char	**exp_args;
+	int		i;
 
-	str = pre_handling(str);
-	if (!str)
-		return (NULL);
-	str = ft_clean_empty_strs(str);
-	if (!str)
-		return (NULL);
-	exp = expand_split(str);
-	free(str);
-	if (!exp)
-		return (NULL);
-	return (exp);
+	i = -1;
+	if (!args[0])
+		return (args);
+	exp_args = malloc(sizeof(char *) * double_array_len(args) + 1);
+	while (args[++i])
+		exp_args[i] = pre_handling(args[i]);
+	exp_args[i] = NULL;
+	return (exp_args);
 }

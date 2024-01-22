@@ -35,7 +35,8 @@ static t_path	get_env_path(char *cmd, char *path)
 		free(path_part);
 		err = check_exec(exec, true);
 		if (err.no == ENO_SUCCESS)
-			return (free_tab(split_path), (t_path){(t_err){ENO_SUCCESS, 55, exec}, exec});
+			return (free_tab(split_path), (t_path){(t_err){ENO_SUCCESS, 55,
+				exec}, exec});
 		free(exec);
 	}
 	free_tab(split_path);

@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 16:18:30 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/20 16:18:32 by ilymegy          ###   ########.fr       */
+/*   Created: 2023/05/09 13:54:45 by ilymegy           #+#    #+#             */
+/*   Updated: 2023/05/09 13:54:48 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/libft.h"
 
-int	ft_isspace(int c)
+t_list	*ft_lstnew(void *content)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\r'
-		|| c == '\v' || c == '\f')
-		return (c);
-	return (0);
+	t_list	*new;
+
+	new = (t_list *)malloc(sizeof(t_list));
+	new->content = content;
+	new->next = NULL;
+	return (new);
 }

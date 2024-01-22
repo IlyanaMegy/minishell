@@ -1,7 +1,7 @@
 NAME			=	minishell
 
 CC				=	cc
-CFLAGS			=	-Wall -Wextra -g3
+CFLAGS			=	-Wall -Wextra -Werror -g3
 
 INC				=	-I ./inc/ \
 					-I ./libft/
@@ -26,11 +26,8 @@ EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \
-					srcs/expand/remove_quotes.c \
 					srcs/expand/expander_heredoc.c \
-					srcs/expand/expand_utils.c \
-					srcs/expand/expand_split.c \
-					srcs/expand/expand_clean.c
+					srcs/expand/expand_utils.c
 
 ERROR			=	srcs/err_handler/error_handler.c
 
@@ -47,13 +44,11 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/io_utils.c \
 					srcs/parsing/debug.c
 
-PIPEX			=	srcs/pipex/open_close.c \
-					srcs/pipex/main_pipex.c \
-					srcs/pipex/utils.c
-
 UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c \
 					# srcs/utils/signals.c
+
+SIGNALS			=	srcs/signals/signals_exec.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\
@@ -61,9 +56,9 @@ SRCS			=	$(BUILTINS)\
 					$(EXPAND)\
 					$(LEXER)\
 					$(PARSING)\
-					$(PIPEX)\
 					$(UTILS)\
 					$(ERROR)\
+					$(SIGNALS)\
 					srcs/main.c
 
 LIBFT_PATH 		=	srcs/libft/
@@ -88,8 +83,8 @@ $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 				@mkdir -p $(OBJ_PATH)/srcs/exec
 				@mkdir -p $(OBJ_PATH)/srcs/lexer
 				@mkdir -p $(OBJ_PATH)/srcs/parsing
-				@mkdir -p $(OBJ_PATH)/srcs/pipex
 				@mkdir -p $(OBJ_PATH)/srcs/utils
+				@mkdir -p $(OBJ_PATH)/srcs/signals
 				@mkdir -p $(OBJ_PATH)/srcs/err_handler
 				@$(CC) $(CFLAGS) -c $< -o $@ $(INC) -I$(READLINE_PATH)/include
 

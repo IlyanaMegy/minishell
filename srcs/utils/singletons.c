@@ -15,7 +15,7 @@
 /**
  * @note   update, clear or return current t_env linked list
  * @param  env: environment list
- * @param  mode: ADD - GET - RM
+ * @param  mode: ADD or GET
  * @retval return current t_env list
 */
 t_env	*single_env(t_env *env, int mode)

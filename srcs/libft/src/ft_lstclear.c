@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 16:18:30 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/20 16:18:32 by ilymegy          ###   ########.fr       */
+/*   Created: 2023/05/09 20:20:50 by ilymegy           #+#    #+#             */
+/*   Updated: 2023/05/09 20:20:52 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/libft.h"
 
-int	ft_isspace(int c)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\r'
-		|| c == '\v' || c == '\f')
-		return (c);
-	return (0);
+	t_list	*tmp;
+
+	if (lst)
+	{
+		while (*lst)
+		{
+			tmp = (*lst)->next;
+			ft_lstdelone(*lst, del);
+			(*lst) = tmp;
+		}
+	}
 }

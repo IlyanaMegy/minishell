@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_manip.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:25:58 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/04 16:26:03 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:25:49 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param 	lst: linked list to study
  * @retval	the size obviously...
 */
-int	ms_lstsize(t_env *lst)
+int	envlst_len(t_env *lst)
 {
 	size_t	count;
 	t_env	*clone;
@@ -53,6 +53,11 @@ t_env	*copy_my_lst(t_env *src)
 	}
 }
 
+/**
+ * @note   convert of t_env linked list to 2D array
+ * @param  env_lst: t_env linked list
+ * @retval 2D array of t_env linked list
+*/
 char	**env_to_tab(t_env *env_lst)
 {
 	t_env *tmp;
@@ -61,7 +66,7 @@ char	**env_to_tab(t_env *env_lst)
 	int i;
 
 	i = 0;
-	env_tab = ft_calloc((ms_lstsize(env_lst) + 1), sizeof(char *));
+	env_tab = ft_calloc((envlst_len(env_lst) + 1), sizeof(char *));
 	tmp = env_lst;
 	while (tmp)
 	{
@@ -78,6 +83,12 @@ char	**env_to_tab(t_env *env_lst)
 	return (env_tab);
 }
 
+/**
+ * @attention delete this function later...
+ * @note   display 2D array
+ * @param  tab: given 2D array
+ * @retval None
+*/
 void	print_tab(char **tab)
 {
 	int	i;
@@ -85,4 +96,19 @@ void	print_tab(char **tab)
 	i = -1;
 	while (tab[++i])
 		ft_printf("%s\n", tab[i]);
+}
+
+/**
+ * @note   get 2D array length
+ * @param  arr: given 2D array
+ * @retval its length
+*/
+int	double_array_len(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }

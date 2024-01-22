@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_structure.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:03:32 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/20 00:11:19 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/19 22:33:31 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-// static void	heredoc_sigint_handler(t_data *data, int signum)
-// {
-// 	(void)signum;
-// 	clean_program(data);
-// 	exit(SIGINT);
-// }
 
 /**
  * @note   handling here_doc
@@ -54,16 +47,21 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	exit(0);
 }
 
-// static bool	quit_da_cmd(t_data *data, int fd[2], int *pid)
-// {
-// 	waitpid(*pid, pid, 0);
-// 	signal(SIGQUIT, ft_sigquit_handler);
-// 	data->signint_child = false;
-// 	close(fd[1]);
-// 	if (WIFEXITED(*pid) && WEXITSTATUS(*pid) == SIGINT)
-// 		return (true);
-// 	return (false);
-// }
+/**
+ * @note   get io_expanded_value
+ * @param  io: t_io_cmd linked list
+ * @retval None
+*/
+void	get_io_expanded_value(t_io_cmd *io)
+{
+	char	**io_path_d;
+
+	io_path_d = malloc(sizeof(char *) * 2);
+	io_path_d[0] = ft_strdup(io->path);
+	io_path_d[1] = NULL;
+	io->expanded_value = expander(io_path_d);
+	free_tab(io_path_d);
+}
 
 /**
  * @note   initializing t_cmd lst and handling here_docs
@@ -75,15 +73,10 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 {
 	t_io_cmd	*io;
 	int			fd[2];
-	char		*args;
 	int			pid;
 
 	if (cmd->args)
-	{
-		args = ft_strsjoin(cmd->args, " ");
-		cmd->expanded_args = expander(args);
-		free(args);
-	}
+		cmd->expanded_args = expander(cmd->args);
 	io = cmd->io_list;
 	while (io)
 	{
@@ -99,7 +92,7 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 			io->here_doc = fd[0];
 		}
 		else
-			io->expanded_value = expander(io->path);
+			get_io_expanded_value(io);
 		io = io->next;
 	}
 }
@@ -122,5 +115,4 @@ void	init_cmdlst(t_data *data, t_cmd *cmd)
 	}
 	else
 		init_da_cmd(data, cmd);
-	remove_quotes(&data->cmd);
 }
