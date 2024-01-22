@@ -42,6 +42,7 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 			ft_putstr_fd(line, fd[1]);
 			ft_putstr_fd("\n", fd[1]);
 		}
+		free(line);
 	}
 	clean_program(data);
 	exit(0);
