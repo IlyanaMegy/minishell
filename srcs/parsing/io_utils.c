@@ -50,6 +50,7 @@ bool	init_io_cmd(t_cmd **cmd)
 			return (false);
 	}
 	temp->path = NULL;
+	temp->expanded_value = NULL;
 	temp->type = -1;
 	temp->here_doc = 0;
 	temp->next = NULL;
