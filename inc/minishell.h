@@ -348,7 +348,7 @@ char				**expander(char **args);
 //	expand/expand_utils.c
 char				*handle_single_quotes(char *s, int *i);
 char				*handle_double_quotes(char *s, int *i);
-char				*handle_dollar(char *s, int *i);
+char				*handle_dollar(char *s, int *i, int quotes);
 char				*handle_normal_str(char *s, int *i);
 
 // expand/expander_heredoc.c
@@ -359,5 +359,5 @@ void				heredoc_expander(char *str, int fd);
 //  --------------------------------------------------------------------------------
 
 // signals/signals_exec.c
-bool			quit_da_cmd(t_data *data, int fd[2], int *pid);
+bool				quit_da_cmd(t_data *data, int fd[2], int *pid);
 #endif

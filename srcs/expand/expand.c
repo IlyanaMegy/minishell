@@ -31,7 +31,7 @@ static char	*pre_handling(char *str)
 		else if (str[i] == '"')
 			res = ft_strjoin_n_free(res, handle_double_quotes(str, &i));
 		else if (str[i] == '$')
-			res = ft_strjoin_n_free(res, handle_dollar(str, &i));
+			res = ft_strjoin_n_free(res, handle_dollar(str, &i, 0));
 		else
 			res = ft_strjoin_n_free(res, handle_normal_str(str, &i));
 	}

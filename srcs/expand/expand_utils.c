@@ -60,7 +60,7 @@ char	*handle_double_quotes(char *s, int *i)
 	while (s[*i] != '"')
 	{
 		if (s[*i] == '$')
-			res = ft_strjoin_n_free(res, handle_dollar(s, i));
+			res = ft_strjoin_n_free(res, handle_dollar(s, i, 1));
 		else
 			res = ft_strjoin_n_free(res, handle_double_quotes_str(s, i));
 	}
@@ -72,9 +72,10 @@ char	*handle_double_quotes(char *s, int *i)
  * @note   handling string with dollar
  * @param  s: given string
  * @param  i: index
+ * @param  quotes: 0 false, 1 true
  * @retval cleaned and revealed str
  */
-char	*handle_dollar(char *s, int *i)
+char	*handle_dollar(char *s, int *i, int quotes)
 {
 	int		start;
 	char	*var;
@@ -88,7 +89,7 @@ char	*handle_dollar(char *s, int *i)
 		(*i)++;
 		return (ft_itoa(single_exit_s(0, GET)));
 	}
-	else if (!ft_isalnum(s[*i]) && s[*i] != '_')
+	else if (!(ft_isalnum(s[*i]) || s[*i] == '_') && quotes)
 		return (ft_strdup("$"));
 	start = *i;
 	while (ft_isalnum(s[*i]) || s[*i] == '_')
