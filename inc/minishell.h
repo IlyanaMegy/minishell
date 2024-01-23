@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/22 10:24:42 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/23 15:23:18 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ typedef enum e_token_type
 
 typedef enum e_err_msg
 {
-	ERR_SYNTAX = -1,
 	ERR_NOCMD = 0,
 	ERR_ARGS,
 	ERR_PATH,
@@ -207,7 +206,7 @@ void				clean_program(t_data *data);
 // err_handler/err_handler.c
 void				err_handler(int err, char *s);
 char				*complexe_err_msg(int err, char *cmd);
-void				err_syntax(int err, char *s);
+void				err_syntax(char *s);
 void				err_quote(char c);
 
 //  --------------------------------------------------------------------------------
@@ -280,9 +279,6 @@ int					single_exit_s(int exit_s, int mode);
 
 // lexer/token.c
 bool				tokenize_input(t_data *data, char *s);
-int					save_word(t_token **token_lst, char *s, int index);
-int					save_sep(t_token **token_lst, char *s, int index,
-						t_token_type sep_type);
 
 // lexer/token_utils.c
 int					ignore_spaces(char *s, int index);

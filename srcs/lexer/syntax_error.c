@@ -6,17 +6,20 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/22 12:14:36 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/23 15:24:10 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	sep_is_doubled(t_token *token_node)
+static bool	pipe_is_invalid(t_token *token_node)
 {
 	if ((token_node->type > PIPE
-			&& token_node->next
-			&& token_node->next->type > PIPE)
+			&& token_node->next && token_node->next->type == PIPE
+			&& token_node->next->next && token_node->next->next->type > PIPE)
+		|| (token_node->type > PIPE
+			&& token_node->next && token_node->next->type > PIPE
+			&& token_node->next->next && token_node->next->next->type == PIPE)
 		|| (token_node->type == PIPE
 			&& (!token_node->prev || !token_node->next))
 		|| (token_node->type == PIPE && !token_node->prev && !token_node->next))
@@ -24,9 +27,36 @@ static bool	sep_is_doubled(t_token *token_node)
 	return (false);
 }
 
-static bool	sep_is_before_newline(t_token *token_node)
+static bool	is_unexpected_token(t_token *token_node)
 {
-	if ((token_node->type > PIPE && !token_node->next))
+	if (pipe_is_invalid(token_node))
+		return (true);
+	else if ((token_node->type == INPUT
+			&& token_node->next
+			&& token_node->next->type == TRUNC
+			&& !token_node->next->next)
+		|| (token_node->type == HEREDOC
+			&& token_node->next
+			&& token_node->next->type == INPUT))
+		return (false);
+	else if ((token_node->type > PIPE
+			&& token_node->next
+			&& token_node->next->type > PIPE
+			&& !token_node->next->next))
+		return (true);
+	return (false);
+}
+
+static bool	is_before_newline(t_token *token_node)
+{
+	if ((token_node->type == INPUT
+			&& token_node->next
+			&& token_node->next->type == TRUNC
+			&& !token_node->next->next)
+		|| (token_node->type == HEREDOC
+			&& token_node->next
+			&& token_node->next->type == INPUT)
+		|| (token_node->type > PIPE && !token_node->next))
 		return (true);
 	return (false);
 }
@@ -35,21 +65,26 @@ static bool	check_sep(t_token *token_node)
 {
 	char	*value;
 
-	if (sep_is_doubled(token_node))
+	if (is_unexpected_token(token_node))
 	{
 		if ((token_node->type == PIPE
 				&& (!token_node->prev || !token_node->next))
 			|| (token_node->type == PIPE
 				&& !token_node->prev && !token_node->next))
 			value = token_node->value;
+		else if ((token_node->type > PIPE
+				&& token_node->next && token_node->next->type > PIPE
+				&& token_node->next->next
+				&& token_node->next->next->type == PIPE))
+			value = token_node->next->next->value;
 		else
 			value = token_node->next->value;
-		err_syntax(ERR_SYNTAX, value);
+		err_syntax(value);
 		return (false);
 	}
-	else if (sep_is_before_newline(token_node))
+	else if (is_before_newline(token_node))
 	{
-		err_syntax(ERR_SYNTAX, "newline");
+		err_syntax("newline");
 		return (false);
 	}
 	return (true);
@@ -61,13 +96,6 @@ bool	check_syntax(t_token *token_node)
 	{
 		if (!check_sep(token_node))
 			return (single_exit_s(2, ADD), false);
-		else if (ft_strcmp(token_node->value, "echo") == 0
-			&& (!token_node->next
-				|| (token_node->next->type >= PIPE && !token_node->next->next)))
-		{
-			ft_printf("\n");
-			return (single_exit_s(ERR_NOCMD, ADD), false);
-		}
 		token_node = token_node->next;
 	}
 	return (true);

@@ -6,13 +6,26 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/22 12:37:47 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/23 15:37:15 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	save_sep(t_token **token_lst, char *s, int index, t_token_type sep_type)
+static bool	pre_check_token(char *s, int index)
+{
+	if (!s[index + 1])
+	{
+		if (s[0] == '!')
+			return (single_exit_s(1, ADD), false);
+		else if (s[0] == ':')
+			return (single_exit_s(0, ADD), false);
+	}
+	return (true);
+}
+
+static int	save_sep(t_token **token_lst, char *s,
+	int index, t_token_type sep_type)
 {
 	int		len;
 	char	*sep;
@@ -33,7 +46,7 @@ int	save_sep(t_token **token_lst, char *s, int index, t_token_type sep_type)
 	return (index);
 }
 
-int	save_word(t_token **token_lst, char *s, int index)
+static int	save_word(t_token **token_lst, char *s, int index)
 {
 	int		start;
 	char	*word;
@@ -60,27 +73,34 @@ int	save_word(t_token **token_lst, char *s, int index)
 	return (index);
 }
 
+static int	save_token(t_data *data, char *s, int index)
+{
+	int		sep_type;
+
+	sep_type = is_separator(s, index);
+	if (ft_isspace(s[index]))
+		index = ignore_spaces(s, index);
+	else if (sep_type)
+		index = save_sep(&data->token, s, index, sep_type);
+	else
+		index = save_word(&data->token, s, index);
+	return (index);
+}
+
 bool	tokenize_input(t_data *data, char *s)
 {
 	int		i;
-	int		sep_type;
 	char	*str;
 
 	i = 0;
-	if (!s[i + 1] && (s[0] == '!' || s[0] == ':'))
-		return (false);
 	str = trim_end_spaces(s);
 	if (!str)
+		return (single_exit_s(1, ADD), false);
+	if (!pre_check_token(str, i))
 		return (false);
 	while (str[i])
 	{
-		sep_type = is_separator(str, i);
-		if (ft_isspace(str[i]))
-			i = ignore_spaces(s, i);
-		else if (sep_type)
-			i = save_sep(&data->token, str, i, sep_type);
-		else
-			i = save_word(&data->token, str, i);
+		i = save_token(data, str, i);
 		if (i == -1)
 			return (free_ptr(str), single_exit_s(1, ADD), false);
 	}

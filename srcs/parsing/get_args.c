@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/19 22:38:05 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/23 15:37:06 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ bool	set_cmd_without_args(t_data *data)
 		{
 			cmd->args = malloc(sizeof * cmd->args * 2);
 			if (!cmd->args)
-				return (false);
+				return (single_exit_s(1, ADD), false);
 			cmd->args[0] = ft_strdup(cmd->cmd);
 			if (!cmd->args[0])
-				return (false);
+				return (single_exit_s(1, ADD), false);
 			cmd->args[1] = NULL;
 		}
 		cmd = cmd->next;
@@ -55,7 +55,7 @@ bool	args_default(t_token **token_node, t_cmd **last_cmd, int *index)
 	{
 		(*last_cmd)->args[*index] = ft_strdup((*token_node)->value);
 		if (!(*last_cmd)->args[*index])
-			return (false);
+			return (single_exit_s(1, ADD), false);
 		*token_node = (*token_node)->next;
 		(*index)++;
 	}
@@ -72,7 +72,7 @@ bool	create_args(t_token **token_node, t_cmd *last_cmd)
 	n_args = count_args(temp);
 	last_cmd->args = malloc(sizeof(char *) * (n_args + 2));
 	if (!last_cmd->args)
-		return (false);
+		return (single_exit_s(1, ADD), false);
 	i = 0;
 	last_cmd->args[i] = ft_strdup(last_cmd->cmd);
 	if (!last_cmd->args[i])
