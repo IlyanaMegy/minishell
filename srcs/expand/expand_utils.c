@@ -98,7 +98,7 @@ char	*handle_dollar(char *s, int *i, int quotes)
 		return (ft_strdup(""));
 	env_content = get_var_content_from_env(var);
 	if (!env_content && !quotes)
-		return (free(var), (*i)++, ft_strdup("\"\""));
+		return (free(var), ft_strdup("\"\""));
 	if (!env_content && quotes)
 		return (free(var), ft_strdup(""));
 	return (free(var), ft_strdup(env_content));

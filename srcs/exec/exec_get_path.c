@@ -73,7 +73,7 @@ t_path	get_path(char *cmd)
 {
 	char	*content;
 
-	if (*cmd == '\0')
+	if (!cmd || *cmd == '\0' || !*cmd)
 		return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 	if (ft_strnstr(cmd, "/", ft_strlen(cmd)))
 		return ((t_path){check_exec(cmd, false), cmd});

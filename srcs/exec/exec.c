@@ -99,11 +99,9 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 		path = get_path(cmd->expanded_args[0]);
 		if (path.err.no != ENO_SUCCESS)
 			(err_handler(path.err.msg, path.err.cause),
-					get_out(data, single_exit_s(path.err.no, ADD), env));
+				get_out(data, single_exit_s(path.err.no, ADD), env));
 		if (execve(path.path, cmd->expanded_args, env) == -1)
-			return (free(path.path), get_out(data, single_exit_s(0, GET), env),
-				1);
-		free(path.path);
+			return (get_out(data, single_exit_s(0, GET), env), 1);
 	}
 	waitpid(fork_pid, &status, 0);
 	// signint_child = false

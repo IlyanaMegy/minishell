@@ -23,6 +23,8 @@ int	count_words(char *str)
 	char	*res;
 
 	i = 0;
+	if (!str || !str[i])
+		return (1);
 	res = ft_strdup("");
 	while (str[i])
 	{
@@ -52,6 +54,8 @@ static char	*pre_handling(char *str)
 
 	i = 0;
 	res = ft_strdup("");
+	if (!str || !str[i])
+		return (res);
 	while (str[i])
 	{
 		if (str[i] == '\'')
@@ -77,6 +81,7 @@ char	**expander(char **args)
 {
 	char	**exp_args;
 	int		i;
+	char	*tmp;
 	int		j;
 
 	i = -1;
@@ -84,17 +89,18 @@ char	**expander(char **args)
 	if (!args[0])
 		return (args);
 	while (args[++i])
-		j += count_words(args[i]);
+		j += count_words(args[0]);
+	if (j == 0)
+		return (NULL);
 	exp_args = malloc(sizeof(char *) * (j + 1));
 	if (!exp_args)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (args[i])
+	(i = -1, j = 0);
+	while (args[++i])
 	{
-		if (pre_handling(args[i]) != NULL)
-			exp_args[j++] = pre_handling(args[i]);
-		i++;
+		tmp = pre_handling(args[i]);
+		if (tmp != NULL)
+			(exp_args[j++] = pre_handling(args[i]), free(tmp));
 	}
 	exp_args[j] = NULL;
 	return (exp_args);
