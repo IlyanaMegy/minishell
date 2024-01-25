@@ -87,26 +87,28 @@ int	extract_var(char *arg, int *append)
  * @note   check if the argument is correct
  * @param  arg: variable
  * @param  append: is it += ?
- * @retval 1 is ok, 0 is an err
+ * @retval exit status
 */
-int	check_var_name(char *arg, int *append)
+int	invalid_var_name(char *arg, int *append)
 {
 	int	i;
 
 	i = 0;
+	if (arg[i] == '-')
+		return (2);
 	if (!ft_isalpha(*arg) && *arg != '_')
-		return (0);
+		return (1);
 	while (arg[i] && arg[i] != '=')
 	{
 		if (!ft_isalnum(arg[i]) && arg[i] != '_' && arg[i] != '+')
-			return (0);
+			return (1);
 		if (arg[i] == '+' && *append)
-			return (0);
+			return (1);
 		if (arg[i] == '+' && !(*append))
 			++(*append);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 /**
@@ -126,11 +128,11 @@ int	ft_export(char **cmd)
 	while (cmd[i])
 	{
 		append = 0;
-		if (!check_var_name(cmd[i], &append))
-		{
-			exit_status = 1;
+		exit_status = invalid_var_name(cmd[i], &append);
+		if (exit_status == 1)
 			err_handler(ERR_EXPORT, cmd[i]);
-		}
+		else if (exit_status == 2)
+			err_handler(ERR_EXPORT_OPT, cmd[i]);
 		else
 			extract_var(cmd[i], &append);
 		i++;

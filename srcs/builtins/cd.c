@@ -60,8 +60,10 @@ int	cd_home(void)
 int	ft_cd(char **cmd)
 {
 	int	i;
+	char *err_msg;
 
 	i = 0;
+	err_msg = NULL;
 	while (cmd[i])
 		i++;
 	if (i > 2)
@@ -69,6 +71,9 @@ int	ft_cd(char **cmd)
 	if (!cmd[1])
 		return (cd_home());
 	if (chdir(cmd[1]) != 0)
-		return (err_handler(ERR_NOFILEDIR, "cd"), 1);
+	{
+		err_msg = ft_strjoin("cd: ", cmd[1]);
+		return (err_handler(ERR_NOFILEDIR, err_msg), free(err_msg), 1);
+	}
 	return (change_pwd());
 }

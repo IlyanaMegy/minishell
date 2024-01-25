@@ -131,7 +131,9 @@ typedef enum e_err_msg
 	ERR_PATH,
 	ERR_NOFILEDIR,
 	ERR_EXPORT,
+	ERR_EXPORT_OPT,
 	ERR_UNSET,
+	ERR_UNSET_OPT,
 	ERR_EXIT_NB,
 	ERR_AMBIG_REDIR,
 	ERR_PERM_DENIED
@@ -164,7 +166,7 @@ int					get_env(char **arg_env);
 
 // builtins/export.c
 int					ft_export(char **av);
-int					check_var_name(char *arg, int *append);
+int					invalid_var_name(char *arg, int *append);
 void				display_export(void);
 
 // builtins/export_utils.c
@@ -203,11 +205,18 @@ void				clean_program(t_data *data);
 // |								ERROR_HANDLER									|
 //  --------------------------------------------------------------------------------
 
-// err_handler/err_handler.c
+// err_handler/error_handler.c
 void				err_handler(int err, char *s);
 char				*complexe_err_msg(int err, char *cmd);
 void				err_syntax(char *s);
 void				err_quote(char c);
+
+// err_handler/error_parsing.c
+void				err_quote(char c);
+void				err_syntax(int err, char *s);
+
+// err_handler/error_utils.c
+char				*two_first_char(char *cmd);
 
 //  --------------------------------------------------------------------------------
 // |								EXECUTION										|
@@ -254,6 +263,9 @@ int					open_append(t_io_cmd *io_lst, int *status);
 // exec/exec_get_path.c
 t_path				get_path(char *cmd);
 t_err				check_exec(char *file, bool cmd);
+
+// exec/exec_cmd_is_dir.c
+bool				cmd_is_dir(char *cmd);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
@@ -339,17 +351,24 @@ void				print_token(t_token *token);
 //  --------------------------------------------------------------------------------
 
 //	expand/expand.c
-char				**expander(char **args);
+char				**ft_expand(char *str);
+char				*ft_strjoin_f(char *s1, char *s2);
+char				*ft_handle_dollar(char *str, size_t *i, bool quotes);
 
 //	expand/expand_utils.c
-char				*handle_single_quotes(char *s, int *i);
-char				*handle_double_quotes(char *s, int *i);
-char				*handle_dollar(char *s, int *i, int quotes);
-char				*handle_normal_str(char *s, int *i);
+char				*ft_handle_dquotes(char *str, size_t *i);
+char				*ft_handle_squotes(char *str, size_t *i);
+char				*ft_handle_normal_str(char *str, size_t *i);
+bool				ft_is_valid_var_char(char c);
 
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
 
+char				*ft_clean_empty_strs(char *str);
+
+char				**ft_expander_split(char const *s);
+
+char				*ft_strip_quotes(char *str);
 //  --------------------------------------------------------------------------------
 // |									SIGNALS										|
 //  --------------------------------------------------------------------------------
