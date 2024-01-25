@@ -47,7 +47,11 @@ char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
 	var = ft_substr(str, start, *i - start);
 	env_val = get_var_content_from_env(var);
 	if (!env_val)
+	{
+		if (str[*i]!='\0' && !quotes)
+			(*i)++;
 		return (free(var), ft_strdup(""));
+	}
 	return (free(var), ft_strdup(env_val));
 }
 
@@ -80,13 +84,17 @@ char	**ft_expand(char *str)
 	str = ft_cmd_pre_expander(str);
 	if (!str)
 		return (NULL);
+	// ft_printf("str after pre = %s\n", str);
 	str = ft_clean_empty_strs(str);
 	if (!str)
 		return (NULL);
+	// ft_printf("str after clean = %s\n", str);
 	expanded = ft_expander_split(str);
 	free(str);
 	if (!expanded)
 		return (NULL);
+	// print_tab(expanded);
+	// ft_printf("\n");
 	i = 0;
 	while (expanded[i])
 	{

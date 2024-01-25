@@ -16,10 +16,9 @@ char	*ft_clean_empty_strs(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if ((str[i] == '"' && str[i + 1] == '"'))
-			i += 2;
-		else
-			tmp[j++] = str[i++];
+		// if ((str[i] == '\'' && str[i + 1] == '\'') || (str[i] == '"' && str[i + 1] == '"'))
+		// 	i += 2;
+		tmp[j++] = str[i++];
 	}
 	free(str);
 	dstsize = ft_strlen(tmp) + 1;
