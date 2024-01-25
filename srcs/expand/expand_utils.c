@@ -60,7 +60,7 @@ char	*ft_handle_dquotes(char *str, size_t *i)
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')
-			ret = ft_strjoin_f(ret, ft_handle_dollar(str, i));
+			ret = ft_strjoin_f(ret, ft_handle_dollar(str, i, true));
 		else
 			ret = ft_strjoin_f(ret, ft_handle_dquote_str(str, i));
 	}

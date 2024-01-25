@@ -354,7 +354,7 @@ void				print_token(t_token *token);
 //	expand/expand.c
 char				**ft_expand(char *str);
 char				*ft_strjoin_f(char *s1, char *s2);
-char				*ft_handle_dollar(char *str, size_t *i);
+char				*ft_handle_dollar(char *str, size_t *i, bool quotes);
 
 //	expand/expand_utils.c
 char				*ft_handle_dquotes(char *str, size_t *i);

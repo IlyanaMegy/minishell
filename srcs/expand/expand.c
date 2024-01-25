@@ -26,7 +26,7 @@ char	*ft_strjoin_f(char *s1, char *s2)
 	return (free(s1), free(s2), joined);
 }
 
-char	*ft_handle_dollar(char *str, size_t *i)
+char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
 {
 	size_t	start;
 	char	*var;
@@ -34,17 +34,13 @@ char	*ft_handle_dollar(char *str, size_t *i)
 
 	(*i)++;
 	if (ft_isdigit(str[*i]) || str[*i] == '@')
-	{
-		(*i)++;
-		return (ft_strdup(""));
-	}
+		return ((*i)++, ft_strdup(""));
 	else if (str[*i] == '?')
-	{
-		(*i)++;
-		return (ft_itoa(single_exit_s(0, GET)));
-	}
-	else if (!ft_is_valid_var_char(str[*i]))
+		return ((*i)++, ft_itoa(single_exit_s(0, GET)));
+	else if (!ft_is_valid_var_char(str[*i]) && !quotes)
 		return (ft_strdup(""));
+	else if (!ft_is_valid_var_char(str[*i])&& quotes)
+		return (ft_strdup("$"));
 	start = *i;
 	while (ft_is_valid_var_char(str[*i]))
 		(*i)++;
@@ -69,7 +65,7 @@ static char	*ft_cmd_pre_expander(char *str)
 		else if (str[i] == '"')
 			ret = ft_strjoin_f(ret, ft_handle_dquotes(str, &i));
 		else if (str[i] == '$')
-			ret = ft_strjoin_f(ret, ft_handle_dollar(str, &i));
+			ret = ft_strjoin_f(ret, ft_handle_dollar(str, &i, false));
 		else
 			ret = ft_strjoin_f(ret, ft_handle_normal_str(str, &i));
 	}
@@ -79,24 +75,18 @@ static char	*ft_cmd_pre_expander(char *str)
 char	**ft_expand(char *str)
 {
 	char	**expanded;
-	// char	**globbed;
 	size_t	i;
 
 	str = ft_cmd_pre_expander(str);
 	if (!str)
 		return (NULL);
-	ft_printf("str = %s\n", str);
 	str = ft_clean_empty_strs(str);
-	ft_printf("str = %s\n\n", str);
 	if (!str)
 		return (NULL);
 	expanded = ft_expander_split(str);
 	free(str);
 	if (!expanded)
 		return (NULL);
-	// globbed = ft_globber(expanded);
-	// if (!globbed)
-	// 	return (NULL);
 	i = 0;
 	while (expanded[i])
 	{
