@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/23 15:23:18 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 21:07:47 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,10 +289,10 @@ bool				ignore_quotes(char *s, int *index);
 
 // lexer/token_lst.c
 t_token				*lst_new_token(char *value, t_token_type type);
-void				lst_add_front_token(t_token **alst, t_token *node);
-void				lst_add_back_token(t_token **alst, t_token *node);
-void				lstdelone_token(t_token *lst, void (*del)(void *));
-void				lstclear_token(t_token **lst, void (*del)(void *));
+void				lst_add_front_token(t_token **token_lst, t_token *node);
+void				lst_add_back_token(t_token **token_lst, t_token *node);
+void				lstdelone_token(t_token *token, void (*del)(void *));
+void				lstclear_token(t_token **token_lst, void (*del)(void *));
 
 // lexer/syntax_error.c
 bool				check_syntax(t_token *token);
@@ -302,32 +302,32 @@ bool				check_syntax(t_token *token);
 //  --------------------------------------------------------------------------------
 
 // parsing/get_cmd.c
-bool				get_commands(t_data *data, t_token *token);
+bool				get_commands(t_data *data, t_token **token_lst);
 
 // parsing/handle_word.c
-bool				handle_word(t_cmd **cmd, t_token **token_lst);
+bool				handle_word(t_cmd **cmd_lst, t_token **token_lst);
 
 // parsing/handle_sep.c
-bool				handle_redir(t_cmd **last_cmd, t_token **token_lst,
+bool				handle_redir(t_cmd **cmd_lst, t_token **token_lst,
 						t_token_type type);
 
 // parsing/get_args.c
-bool				create_args(t_token **token_node, t_cmd *last_cmd);
-bool				args_default(t_token **token_node, t_cmd **last_cmd,
+bool				create_args(t_token **token_lst, t_cmd *last_cmd);
+bool				args_default(t_token **token_lst, t_cmd *last_cmd,
 						int *index);
-int					count_args(t_token *temp);
+int					count_args(t_token *token);
 bool				set_cmd_without_args(t_data *data);
 
 // parsing/cmd_lst.c
 t_cmd				*lst_new_cmd(void);
-void				lst_add_back_cmd(t_cmd **alst, t_cmd *node);
+void				lst_add_back_cmd(t_cmd **cmd_lst, t_cmd *cmd);
 t_cmd				*lst_last_cmd(t_cmd *cmd);
-void				lstdelone_cmd(t_cmd *lst, void (*del)(void *));
-void				lstclear_cmd(t_cmd **lst, void (*del)(void *));
+void				lstdelone_cmd(t_cmd *cmd, void (*del)(void *));
+void				lstclear_cmd(t_cmd **cmd_lst, void (*del)(void *));
 
 // parsing/io_utils.c
-bool				init_io_cmd(t_cmd **cmd);
-void				lstdelone_io_list(t_io_cmd *io_list, void (*del)(void *));
+bool				init_io_cmd(t_cmd *cmd);
+void				lstdelone_io_list(t_io_cmd *io_node, void (*del)(void *));
 void				lstclear_io_list(t_io_cmd **io_list, void (*del)(void *));
 
 // parsing/debug.c

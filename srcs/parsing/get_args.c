@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/23 15:37:06 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 21:10:48 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,62 +14,62 @@
 
 bool	set_cmd_without_args(t_data *data)
 {
-	t_cmd	*cmd;
+	t_cmd	*cmd_head;
 
 	if (!data || !data->cmd)
 		return (false);
-	cmd = data->cmd;
-	while (cmd && cmd->cmd)
+	cmd_head = data->cmd;
+	while (cmd_head && cmd_head->cmd)
 	{
-		if (!cmd->args)
+		if (!cmd_head->args)
 		{
-			cmd->args = malloc(sizeof * cmd->args * 2);
-			if (!cmd->args)
-				return (single_exit_s(1, ADD), false);
-			cmd->args[0] = ft_strdup(cmd->cmd);
-			if (!cmd->args[0])
-				return (single_exit_s(1, ADD), false);
-			cmd->args[1] = NULL;
+			cmd_head->args = malloc(sizeof * cmd_head->args * 2);
+			if (!cmd_head->args)
+				return (false);
+			cmd_head->args[0] = ft_strdup(cmd_head->cmd);
+			if (!cmd_head->args[0])
+				return (false);
+			cmd_head->args[1] = NULL;
 		}
-		cmd = cmd->next;
+		cmd_head = cmd_head->next;
 	}
 	return (true);
 }
 
-int	count_args(t_token *temp)
+int	count_args(t_token *token)
 {
 	int	i;
 
 	i = 0;
-	while (temp && (temp->type == WORD))
+	while (token && (token->type == WORD))
 	{
 		i++;
-		temp = temp->next;
+		token = token->next;
 	}
 	return (i);
 }
 
-bool	args_default(t_token **token_node, t_cmd **last_cmd, int *index)
+bool	args_default(t_token **token_lst, t_cmd *last_cmd, int *index)
 {
-	while (*token_node && ((*token_node)->type == WORD))
+	while (*token_lst && ((*token_lst)->type == WORD))
 	{
-		(*last_cmd)->args[*index] = ft_strdup((*token_node)->value);
-		if (!(*last_cmd)->args[*index])
-			return (single_exit_s(1, ADD), false);
-		*token_node = (*token_node)->next;
+		last_cmd->args[*index] = ft_strdup((*token_lst)->value);
+		if (!last_cmd->args[*index])
+			return (false);
+		*token_lst = (*token_lst)->next;
 		(*index)++;
 	}
 	return (true);
 }
 
-bool	create_args(t_token **token_node, t_cmd *last_cmd)
+bool	create_args(t_token **token_lst, t_cmd *last_cmd)
 {
 	int		i;
 	int		n_args;
-	t_token	*temp;
+	t_token	*head;
 
-	temp = *token_node;
-	n_args = count_args(temp);
+	head = *token_lst;
+	n_args = count_args(head);
 	last_cmd->args = malloc(sizeof(char *) * (n_args + 2));
 	if (!last_cmd->args)
 		return (single_exit_s(1, ADD), false);
@@ -78,9 +78,9 @@ bool	create_args(t_token **token_node, t_cmd *last_cmd)
 	if (!last_cmd->args[i])
 		return (false);
 	i++;
-	if (!args_default(&temp, &last_cmd, &i))
+	if (!args_default(&head, last_cmd, &i))
 		return (false);
 	last_cmd->args[i] = NULL;
-	*token_node = temp;
+	*token_lst = head;
 	return (true);
 }

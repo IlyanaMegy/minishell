@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/23 15:24:10 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 21:07:30 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ static bool	check_sep(t_token *token_node)
 	return (true);
 }
 
-bool	check_syntax(t_token *token_node)
+bool	check_syntax(t_token *token)
 {
-	while (token_node)
+	while (token)
 	{
-		if (!check_sep(token_node))
+		if (!check_sep(token))
 			return (single_exit_s(2, ADD), false);
-		token_node = token_node->next;
+		token = token->next;
 	}
 	return (true);
 }

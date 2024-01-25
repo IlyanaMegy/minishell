@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/19 21:54:28 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 20:35:10 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,32 @@ t_cmd	*lst_new_cmd(void)
 	t_cmd	*node;
 
 	node = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!(node))
+	if (!node)
 		return (NULL);
-	(node)->io_list = NULL;
-	(node)->cmd = NULL;
-	(node)->args = NULL;
-	(node)->prev = NULL;
-	(node)->next = NULL;
+	node->io_list = NULL;
+	node->cmd = NULL;
+	node->args = NULL;
+	node->prev = NULL;
+	node->next = NULL;
 	return (node);
 }
 
-void	lst_add_back_cmd(t_cmd **alst, t_cmd *node)
+void	lst_add_back_cmd(t_cmd **cmd_lst, t_cmd *cmd)
 {
 	t_cmd	*start;
 
-	start = *alst;
+	start = *cmd_lst;
 	if (!start)
 	{
-		*alst = node;
+		*cmd_lst = cmd;
 		return ;
 	}
-	if (alst && *alst && node)
+	if (cmd_lst && *cmd_lst && cmd)
 	{
 		while (start->next)
 			start = start->next;
-		start->next = node;
-		node->prev = start;
+		start->next = cmd;
+		cmd->prev = start;
 	}
 }
 
@@ -53,28 +53,28 @@ t_cmd	*lst_last_cmd(t_cmd *cmd)
 	return (cmd);
 }
 
-void	lstdelone_cmd(t_cmd *lst, void (*del)(void *))
+void	lstdelone_cmd(t_cmd *cmd, void (*del)(void *))
 {
-	if (lst->cmd)
-		(*del)(lst->cmd);
-	if (lst->args)
-		free_tab(lst->args);
-	if (lst->expanded_args)
-		free_tab(lst->expanded_args);
-	if (lst->io_list)
-		lstclear_io_list(&lst->io_list, del);
-	(*del)(lst);
+	if (cmd->cmd)
+		(*del)(cmd->cmd);
+	if (cmd->args)
+		free_tab(cmd->args);
+	if (cmd->expanded_args)
+		free_tab(cmd->expanded_args);
+	if (cmd->io_list)
+		lstclear_io_list(&cmd->io_list, del);
+	(*del)(cmd);
 }
 
-void	lstclear_cmd(t_cmd **lst, void (*del)(void *))
+void	lstclear_cmd(t_cmd **cmd_lst, void (*del)(void *))
 {
 	t_cmd	*temp;
 
 	temp = NULL;
-	while (*lst)
+	while (*cmd_lst)
 	{
-		temp = (*lst)->next;
-		lstdelone_cmd(*lst, del);
-		*lst = temp;
+		temp = (*cmd_lst)->next;
+		lstdelone_cmd(*cmd_lst, del);
+		*cmd_lst = temp;
 	}
 }

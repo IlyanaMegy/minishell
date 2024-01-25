@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/17 11:55:02 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 21:06:06 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,25 @@ t_token	*lst_new_token(char *value, t_token_type type)
 	return (node);
 }
 
-void	lst_add_front_token(t_token **alst, t_token *node)
+void	lst_add_front_token(t_token **token_lst, t_token *node)
 {
-	if (!alst || !node)
+	if (!token_lst || !node)
 		return ;
-	node->next = *alst;
-	*alst = node;
+	node->next = *token_lst;
+	*token_lst = node;
 }
 
-void	lst_add_back_token(t_token **alst, t_token *node)
+void	lst_add_back_token(t_token **token_lst, t_token *node)
 {
 	t_token	*start;
 
-	start = *alst;
+	start = *token_lst;
 	if (!start)
 	{
-		*alst = node;
+		*token_lst = node;
 		return ;
 	}
-	if (alst && *alst && node)
+	if (token_lst && *token_lst && node)
 	{
 		while (start->next)
 			start = start->next;
@@ -53,29 +53,29 @@ void	lst_add_back_token(t_token **alst, t_token *node)
 	}
 }
 
-void	lstdelone_token(t_token *lst, void (*del)(void *))
+void	lstdelone_token(t_token *token, void (*del)(void *))
 {
-	if (del && lst && lst->value)
+	if (del && token && token->value)
 	{
-		(*del)(lst->value);
-		lst->value = NULL;
+		(*del)(token->value);
+		token->value = NULL;
 	}
-	if (lst->prev)
-		lst->prev->next = lst->next;
-	if (lst->next)
-		lst->next->prev = lst->prev;
-	free_ptr(lst);
+	if (token->prev)
+		token->prev->next = token->next;
+	if (token->next)
+		token->next->prev = token->prev;
+	free_ptr(token);
 }
 
-void	lstclear_token(t_token **lst, void (*del)(void *))
+void	lstclear_token(t_token **token_lst, void (*del)(void *))
 {
-	t_token	*tmp;
+	t_token	*temp;
 
-	tmp = NULL;
-	while (*lst)
+	temp = NULL;
+	while (*token_lst)
 	{
-		tmp = (*lst)->next;
-		lstdelone_token(*lst, del);
-		*lst = tmp;
+		temp = (*token_lst)->next;
+		lstdelone_token(*token_lst, del);
+		*token_lst = temp;
 	}
 }

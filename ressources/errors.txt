@@ -1,3 +1,14 @@
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp -s ./minishell
+
+------commandes difficiles a traiter :
+export var=" -la" puis ls$var = KO
+./minishell | ./minishell = KO
+echo -nnnnnnnnnn "Hello" = OK
+
+------Test redirection complexe : (doit créer et remplir out1 avec Makefile et créer out2 à 5 vides)
+< Makefile < Makefile > out2 cat < ressources/errors.txt > out3 Makefile > out1 | > out4 cat > out5
+
+------Tests Alix :
 ➜  08_minishell git:(lee) ✗ ./minishell
 minishell$ exit 22222222222222222222222222222
 exit
@@ -13,7 +24,5 @@ minishell$ exit 6 oui
 exit
 minishell: exit: too many arguments
 ➜  08_minishell git:(lee) ✗
-
-
 
 pwd : check getcwd error

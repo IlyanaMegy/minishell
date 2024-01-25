@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:44:39 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/25 17:06:09 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 20:58:47 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,24 @@ static t_token	*get_next_token(t_token *token)
 		return (token->next);
 }
 
-bool	handle_redir(t_cmd **last_cmd, t_token **token_lst, t_token_type type)
+bool	handle_redir(t_cmd **cmd_lst, t_token **token_lst, t_token_type type)
 {
 	t_cmd		*cmd;
-	t_token		*token;
+	t_token		*head_token;
 	t_io_cmd	*last_io;
 
-	token = *token_lst;
-	cmd = lst_last_cmd(*last_cmd);
-	if (!init_io_cmd(&cmd))
+	head_token = *token_lst;
+	cmd = lst_last_cmd(*cmd_lst);
+	if (!init_io_cmd(cmd))
 		return (false);
-	last_io = (*cmd).io_list;
+	last_io = cmd->io_list;
 	while (last_io && last_io->next)
 		last_io = last_io->next;
-	last_io->path = ft_strdup(token->next->value);
+	last_io->path = ft_strdup(head_token->next->value);
 	if (!last_io->path)
 		return (false);
 	last_io->type = get_io_type(type);
-	token = get_next_token(token);
-	*token_lst = token;
+	head_token = get_next_token(head_token);
+	*token_lst = head_token;
 	return (true);
 }
