@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/25 15:13:29 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:40:32 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	tokenize_and_parse(t_data *data)
 	if (!tokenize_input(data, data->user_input))
 		return (false);
 	// ?	Parse the token list to extract commands and arguments
-	if (!get_commands(data, data->token))
+	if (!get_commands(single_exit_s(1, ADD), data, data->token))
 		return (false);
 	return (true);
 }
@@ -53,7 +53,7 @@ int	main(int ac, char **av, char **arg_env)
 		if (tokenize_and_parse(&data))
 		{
 			// *	DEBUG : Print the current command
-			print_cmd(data.cmd);
+			// print_cmd(data.cmd);
 			init_cmdlst(&data, data.cmd);
 			executie(&data, data.cmd, false);
 		}
