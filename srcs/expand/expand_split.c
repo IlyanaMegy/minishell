@@ -1,9 +1,11 @@
 #include "../../inc/minishell.h"
 
-static	void	ft_skip_word(char const *s, size_t	*i)
+static void	ft_skip_word(char const *s, size_t *i)
 {
 	char	quotes;
 
+	while (s[(*i)] && s[(*i)] == ' ')
+		(*i)++;
 	while (s[*i] && s[*i] != ' ')
 	{
 		if (s[*i] != '\'' && s[*i] != '"')
@@ -28,16 +30,16 @@ static char	**ft_allocater(char const *s, char **strs)
 	j = 0;
 	while (s[i])
 	{
-		if (s[i] != ' ')
-		{
-			start = i;
-			ft_skip_word(s, &i);
-			strs[j] = ft_calloc(i - start + 1, sizeof(char));
-			if (!strs[j])
-				return (NULL);
-			j++;
-		}
-		while (s[i] && s[i] == ' ')
+		// if (s[i] != ' ')
+		// {
+		start = i;
+		ft_skip_word(s, &i);
+		strs[j] = ft_calloc(i - start + 1, sizeof(char));
+		if (!strs[j])
+			return (NULL);
+		j++;
+		// }
+		if (s[i] && s[i] == ' ')
 			i++;
 	}
 	return (strs);
@@ -49,6 +51,8 @@ static void	ft_words_filler(const char *s, char **strs, size_t *i, size_t j)
 	size_t	k;
 
 	k = 0;
+	while (s[(*i)] && s[(*i)] == ' ')
+		strs[j][k++] = s[(*i)++];
 	while (s[(*i)] && s[(*i)] != ' ')
 	{
 		if (s[(*i)] != '\'' && s[(*i)] != '"')
@@ -73,12 +77,12 @@ static char	**ft_filler(char const *s, char **strs)
 	j = 0;
 	while (s[i] && strs[j])
 	{
-		if (s[i] != ' ')
-		{
-			ft_words_filler(s, strs, &i, j);
-			j++;
-		}
-		while (s[i] && s[i] == ' ')
+		// if (s[i] != ' ')
+		// {
+		ft_words_filler(s, strs, &i, j);
+		j++;
+		// }
+		if (s[i] && s[i] == ' ')
 			i++;
 	}
 	return (strs);
@@ -86,10 +90,10 @@ static char	**ft_filler(char const *s, char **strs)
 
 char	**ft_expander_split(char const *s)
 {
-	size_t		count;
-	char		**strs;
-	char		**tofree;
-	size_t		i;
+	size_t	count;
+	char	**strs;
+	char	**tofree;
+	size_t	i;
 
 	if (!s)
 		return (NULL);
@@ -97,9 +101,10 @@ char	**ft_expander_split(char const *s)
 	count = 0;
 	while (s[i])
 	{
-		if (s[i] != ' ' && ++count)
-			ft_skip_word(s, &i);
-		while (s[i] && s[i] == ' ')
+		// if (s[i] != ' ' && ++count)
+		++count;
+		ft_skip_word(s, &i);
+		if (s[i] && s[i] == ' ')
 			i++;
 	}
 	strs = ft_calloc(count + 1, sizeof(char *));
