@@ -55,13 +55,13 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 */
 void	get_io_expanded_value(t_io_cmd *io)
 {
-	char	**io_path_d;
+	// char	**io_path_d;
 
-	io_path_d = malloc(sizeof(char *) * 2);
-	io_path_d[0] = ft_strdup(io->path);
-	io_path_d[1] = NULL;
-	io->expanded_value = expander(io_path_d);
-	free_tab(io_path_d);
+	// io_path_d = malloc(sizeof(char *) * 2);
+	// io_path_d[0] = ft_strdup(io->path);
+	// io_path_d[1] = NULL;
+	io->expanded_value = ft_expand(io->path);
+	// free_tab(io_path_d);
 }
 
 /**
@@ -76,8 +76,9 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 	int			fd[2];
 	int			pid;
 
+	// create char * then free it
 	if (cmd->args)
-		cmd->expanded_args = expander(cmd->args);
+		cmd->expanded_args = ft_expand(ft_strsjoin(cmd->args, " "));
 	io = cmd->io_list;
 	while (io)
 	{

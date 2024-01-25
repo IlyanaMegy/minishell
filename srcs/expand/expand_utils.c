@@ -12,110 +12,58 @@
 
 #include "../../inc/minishell.h"
 
-/**
- * @note   handling string with single quotes
- * @param  s: given string
- * @param  i: index
- * @retval cleaned and revealed str
- */
-char	*handle_single_quotes(char *s, int *i)
+bool	ft_is_valid_var_char(char c)
 {
-	int	start;
-
-	start = ++(*i);
-	while (s[*i] != '\'')
-		(*i)++;
-	(*i)++;
-	return (ft_substr(s, start, *i - start - 1));
+	if (ft_isalnum(c) || c == '_')
+		return (true);
+	return (false);
 }
 
-/**
- * @note   handling string with double quotes
- * @param  s: given string
- * @param  i: index
- * @retval cleaned and revealed str
- */
-static char	*handle_double_quotes_str(char *s, int *i)
+char	*ft_handle_normal_str(char *str, size_t *i)
 {
-	int	start;
+	size_t	start;
 
 	start = *i;
-	while (s[*i] != '"' && s[*i] != '$')
+	while (str[*i] && str[*i] != '\'' && str[*i] != '"' && str[*i] != '$')
 		(*i)++;
-	return (ft_substr(s, start, *i - start));
+	return (ft_substr(str, start, *i - start));
 }
 
-/**
- * @note   handling string with double quotes or dollar
- * @param  s: given string
- * @param  i: index
- * @retval cleaned and revealed str
- */
-char	*handle_double_quotes(char *s, int *i)
+static char	*ft_handle_dquote_str(char *str, size_t *i)
 {
-	char	*res;
+	size_t	start;
 
-	res = ft_strdup("");
+	start = *i;
+	while (str[*i] != '"' && str[*i] != '$')
+		(*i)++;
+	return (ft_substr(str, start, *i - start));
+}
+
+char	*ft_handle_squotes(char *str, size_t *i)
+{
+	size_t	start;
+
+	start = *i;
 	(*i)++;
-	while (s[*i] != '"')
+	while (str[*i] != '\'')
+		(*i)++;
+	(*i)++;
+	return (ft_substr(str, start, *i - start));
+}
+
+char	*ft_handle_dquotes(char *str, size_t *i)
+{
+	char	*ret;
+
+	ret = ft_strdup("\"");
+	(*i)++;
+	while (str[*i] != '"')
 	{
-		if (s[*i] == '$')
-			res = ft_strjoin_n_free(res, handle_dollar(s, i, 1));
+		if (str[*i] == '$')
+			ret = ft_strjoin_f(ret, ft_handle_dollar(str, i));
 		else
-			res = ft_strjoin_n_free(res, handle_double_quotes_str(s, i));
+			ret = ft_strjoin_f(ret, ft_handle_dquote_str(str, i));
 	}
 	(*i)++;
-	return (res);
-}
-
-/**
- * @note   handling string with dollar
- * @param  s: given string
- * @param  i: index
- * @param  quotes: 0 false, 1 true
- * @retval cleaned and revealed str
- */
-char	*handle_dollar(char *s, int *i, int quotes)
-{
-	int		start;
-	char	*var;
-	char	*env_content;
-
-	(*i)++;
-	if (ft_isnullstr(s[*i], quotes))
-		return ( ft_strdup(""));
-	if (ft_isdigit(s[*i]) || s[*i] == '@')
-		return ((*i)++, ft_strdup(""));
-	else if (s[*i] == '?')
-		return ((*i)++, ft_itoa(single_exit_s(0, GET)));
-	else if (!(ft_isalnum(s[*i]) || s[*i] == '_'))
-		return (ft_strdup("$"));
-	start = *i;
-	while (ft_isalnum(s[*i]) || s[*i] == '_')
-		(*i)++;
-	var = ft_substr(s, start, *i - start);
-	if (!var)
-		return (ft_strdup(""));
-	env_content = get_var_content_from_env(var);
-	if (!env_content && !quotes)
-		return (free(var), ft_strdup("\"\""));
-	if (!env_content && quotes)
-		return (free(var), ft_strdup(""));
-	return (free(var), ft_strdup(env_content));
-}
-
-/**
- * @note   handling normal string
- * @param  s: given string
- * @param  i: index
- * @retval cleaned and revealed str
- */
-char	*handle_normal_str(char *s, int *i)
-{
-	int	start;
-
-	start = *i;
-	while (s[*i] && s[*i] != '\'' && s[*i] != '"' && s[*i] != '$')
-		(*i)++;
-	return (ft_substr(s, start, *i - start));
+	return (ft_strjoin_f(ret, ft_strdup("\"")));
 }
