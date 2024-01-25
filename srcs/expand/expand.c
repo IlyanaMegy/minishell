@@ -37,9 +37,9 @@ char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
 		return ((*i)++, ft_strdup(""));
 	else if (str[*i] == '?')
 		return ((*i)++, ft_itoa(single_exit_s(0, GET)));
-	else if (!ft_is_valid_var_char(str[*i]) && !quotes)
+	else if ((str[*i] == '"' || str[*i] == '\'') && !quotes)
 		return (ft_strdup(""));
-	else if (!ft_is_valid_var_char(str[*i]) && quotes)
+	else if (!ft_is_valid_var_char(str[*i]))
 		return (ft_strdup("$"));
 	start = *i;
 	while (ft_is_valid_var_char(str[*i]))
