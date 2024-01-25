@@ -13,18 +13,52 @@
 #include "../../inc/minishell.h"
 
 /**
- * @note   reveal string after handling simple and double quotes and dollars
+ * @note   clean string from ""
  * @param  str: given string
- * @retval cleaned and revealed string
- */
-static char	*pre_handling(char *str)
+ * @retval cleaned string
+*/
+char	*clean_empty_strs(char *str)
 {
-	char	*res;
+	size_t	i;
+	size_t	j;
+	char	*tmp;
+	char	*ret;
+	size_t	dstsize;
+
+	if ((str[0] == '\'' && str[1] == '\'' && !str[2]) || (str[0] == '"'
+			&& str[1] == '"' && !str[2]))
+		return (str);
+	tmp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if ((str[i] == '"' && str[i
+				+ 1] == '"'))
+			i += 2;
+		else
+			tmp[j++] = str[i++];
+	}
+	free(str);
+	dstsize = ft_strlen(tmp) + 1;
+	ret = ft_calloc(dstsize, sizeof(char));
+	return (ft_strlcpy(ret, tmp, dstsize), free(tmp), ret);
+}
+
+/**
+ * @note   count words after handling simple and double quotes and dollars
+ * @param  str: given string
+ * @retval words count of str
+ */
+int	count_words(char *str)
+{
 	int		i;
+	char	*res;
 
 	i = 0;
+	if (!str || !str[i])
+		return (1);
 	res = ft_strdup("");
-	ft_printf("s = \"%s\"\n", str);
 	while (str[i])
 	{
 		if (str[i] == '\'')
@@ -36,7 +70,39 @@ static char	*pre_handling(char *str)
 		else
 			res = ft_strjoin_n_free(res, handle_normal_str(str, &i));
 	}
-	return (res);
+	if (res[0] == '"' && res[1] == '"' && !res[2])
+		return (free(res), 0);
+	return (free(res), 1);
+}
+
+/**
+ * @note   reveal string after handling simple and double quotes and dollars
+ * @param  str: given string
+ * @retval cleaned and revealed string
+ */
+static char	*pre_handling(char *str)
+{
+	char	*res;
+	int		i;
+
+	i = 0;
+	res = ft_strdup("");
+	if (!str || !str[i])
+		return (res);
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			res = ft_strjoin_n_free(res, handle_single_quotes(str, &i));
+		else if (str[i] == '"')
+			res = ft_strjoin_n_free(res, handle_double_quotes(str, &i));
+		else if (str[i] == '$')
+			res = ft_strjoin_n_free(res, handle_dollar(str, &i, 0));
+		else
+			res = ft_strjoin_n_free(res, handle_normal_str(str, &i));
+	}
+	if (res[0] == '"' && res[1] == '"' && !res[2])
+		return (free(res), NULL);
+	return (clean_empty_strs(res));
 }
 
 /**
@@ -48,18 +114,27 @@ char	**expander(char **args)
 {
 	char	**exp_args;
 	int		i;
+	char	*tmp;
+	int		j;
 
-	i = 0;
+	i = -1;
+	j = 0;
 	if (!args[0])
 		return (args);
-	exp_args = malloc(sizeof(char *) * (double_array_len(args) + 1));
+	while (args[++i])
+		j += count_words(args[0]);
+	if (j == 0)
+		return (NULL);
+	exp_args = malloc(sizeof(char *) * (j + 1));
 	if (!exp_args)
 		return (NULL);
-	while (args[i])
+	(i = -1, j = 0);
+	while (args[++i])
 	{
-		exp_args[i] = pre_handling(args[i]);
-		i++;
+		tmp = pre_handling(args[i]);
+		if (tmp != NULL)
+			(exp_args[j++] = pre_handling(args[i]), free(tmp));
 	}
-	exp_args[i] = NULL;
+	exp_args[j] = NULL;
 	return (exp_args);
 }

@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:20:31 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/23 15:33:47 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 11:20:02 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,9 @@ int	ft_echo(char **args)
 	}
 	while (args[i] != NULL)
 	{
-		// if (*args[i])
-		// {
-			ft_putstr_fd(args[i], 1);
-			if (args[i + 1])
-				ft_putstr_fd(" ", 1);
-		// }
+		ft_putstr_fd(args[i], 1);
+		if (args[i + 1])
+			ft_putstr_fd(" ", 1);
 		i++;
 	}
 	if (opt == 0)
