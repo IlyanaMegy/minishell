@@ -265,6 +265,9 @@ int					open_append(t_io_cmd *io_lst, int *status);
 t_path				get_path(char *cmd);
 t_err				check_exec(char *file, bool cmd);
 
+// exec/exec_cmd_is_dir.c
+bool				cmd_is_dir(char *cmd);
+
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
 //  --------------------------------------------------------------------------------
