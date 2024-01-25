@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/25 21:07:47 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 21:27:46 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,6 @@ typedef enum e_token_type
 {
 	WHITESPACE = 1,
 	WORD,
-	VAR,     // $
 	PIPE,    // |
 	INPUT,   // <
 	TRUNC,   // >
@@ -213,7 +212,7 @@ void				err_quote(char c);
 
 // err_handler/error_parsing.c
 void				err_quote(char c);
-void				err_syntax(int err, char *s);
+void				err_syntax(char *s);
 
 // err_handler/error_utils.c
 char				*two_first_char(char *cmd);
