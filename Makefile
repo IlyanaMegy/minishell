@@ -23,11 +23,15 @@ EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_utils.c \
 					srcs/exec/exec_redir.c \
 					srcs/exec/exec_get_path.c \
+					srcs/exec/exec_cmd_is_dir.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \
 					srcs/expand/expander_heredoc.c \
-					srcs/expand/expand_utils.c
+					srcs/expand/expand_utils.c \
+					srcs/expand/expand_split.c \
+					srcs/expand/expand_strip.c \
+					srcs/expand/expand_clean.c
 
 ERROR			=	srcs/err_handler/error_handler.c \
 					srcs/err_handler/error_utils.c \

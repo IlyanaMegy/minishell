@@ -90,6 +90,8 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 
 	if (!fork_pid)
 	{
+		if (cmd_is_dir(cmd->expanded_args[0]))
+			get_out(data, ENO_CANT_EXEC, NULL);
 		env = env_to_tab(single_env(NULL, GET));
 		if (!env)
 			get_out(data, ENO_GENERAL, NULL);
