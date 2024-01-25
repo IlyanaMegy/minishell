@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/22 12:19:22 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 17:06:50 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ bool	get_commands(t_data *data, t_token *token)
 	while (temp_tkn)
 	{
 		if (!temp_tkn->prev || temp_tkn->type == PIPE
-			|| ((temp_tkn->type > PIPE) && (!temp_tkn->prev)))
+			|| (temp_tkn->type > PIPE && !temp_tkn->prev))
 		{
 			new_cmd = lst_new_cmd();
 			if (!new_cmd)

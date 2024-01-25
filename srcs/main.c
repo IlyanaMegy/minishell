@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/23 15:36:45 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/25 15:13:29 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int ac, char **av, char **arg_env)
 		if (tokenize_and_parse(&data))
 		{
 			// *	DEBUG : Print the current command
-			// print_cmd(data.cmd);
+			print_cmd(data.cmd);
 			init_cmdlst(&data, data.cmd);
 			executie(&data, data.cmd, false);
 		}
