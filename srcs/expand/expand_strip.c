@@ -18,10 +18,10 @@ static size_t	ft_unquoted_strlen(char *str)
 			else if (str[i] == quotes)
 				quotes = ((i++) && 0);
 			else
-				len += (i++ || 1);
+				len += (i++ || 1); // ?
 		}
 		else
-				len += (i++ || 1);
+			len += (i++ || 1);
 	}
 	return (len);
 }
@@ -38,9 +38,9 @@ static void	ft_unquote_filler(char *str, size_t *i, char *ret, size_t *j)
 
 char	*ft_strip_quotes(char *str)
 {
-	char	*ret;
-	size_t	i;
-	size_t	j;
+	char *ret;
+	size_t i;
+	size_t j;
 
 	i = 0;
 	j = 0;
