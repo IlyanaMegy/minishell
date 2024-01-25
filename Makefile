@@ -29,7 +29,9 @@ EXPAND			=	srcs/expand/expand.c \
 					srcs/expand/expander_heredoc.c \
 					srcs/expand/expand_utils.c
 
-ERROR			=	srcs/err_handler/error_handler.c
+ERROR			=	srcs/err_handler/error_handler.c \
+					srcs/err_handler/error_utils.c \
+					srcs/err_handler/error_parsing.c
 
 LEXER			=	srcs/lexer/token.c \
 					srcs/lexer/token_utils.c \

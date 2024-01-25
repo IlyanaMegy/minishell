@@ -71,14 +71,14 @@ int	ft_unset(char **args)
 	if (!args[1])
 		return (0);
 	i = 1;
-	exit_status = single_exit_s(0, GET);
+	exit_status = 0;
 	while (args[i])
 	{
-		if (!check_var_name(args[i], 0))
-		{
+		exit_status = invalid_var_name(args[i], 0);
+		if (exit_status == 1)
 			err_handler(ERR_UNSET, args[i]);
-			exit_status = single_exit_s(1, ADD);
-		}
+		else if (exit_status == 2)
+			err_handler(ERR_UNSET_OPT, args[i]);
 		else if (var_is_in_env(args[i]))
 			remove_var_from_env(args[i]);
 		i++;
