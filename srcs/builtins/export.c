@@ -104,6 +104,8 @@ int	invalid_var_name(char *arg, int *append)
 			return (1);
 		if (arg[i] == '+' && *append)
 			return (1);
+		if (arg[i] == '+' && !(*append) && arg[i + 1] != '=')
+			return (1);
 		if (arg[i] == '+' && !(*append))
 			++(*append);
 		i++;
