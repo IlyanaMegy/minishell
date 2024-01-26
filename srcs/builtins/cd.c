@@ -148,7 +148,7 @@ int	ft_cd(char **cmd)
 		i++;
 	if (i > 2)
 		return (err_handler(ERR_ARGS, "cd"), free(old_cwd), 1);
-	if (!cmd[1])
+	if (!cmd[1] || !ft_strcmp(cmd[1], "~"))
 		return (free(old_cwd), cd_home());
 	if (!ft_strcmp(cmd[1], "-"))
 		return (free(old_cwd), handle_cd_dash());
