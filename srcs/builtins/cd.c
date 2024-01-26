@@ -32,10 +32,11 @@ int	change_pwd(char *old_cwd)
 		free(old_cwd);
 		replace_var_in_env("OLDPWD", pwd_path, &i);
 		i = 0;
-		return (replace_var_in_env("PWD", cwd, &i),free(cwd),  0);
+		return (replace_var_in_env("PWD", cwd, &i), free(cwd), 0);
 	}
 	else
 	{
+		free(pwd_path);
 		free(cwd);
 		replace_var_in_env("OLDPWD", old_cwd, &i);
 		free(old_cwd);
@@ -76,6 +77,39 @@ int	cd_home(void)
 }
 
 /**
+ * @note   handling cd - command, inverting PWD && OLDPWD
+ * @retval exit status
+*/
+int	handle_cd_dash(void)
+{
+	char	*old_pwd;
+	int		i;
+	char	*pwd_path;
+	char	*null_path;
+
+	i = 0;
+	old_pwd = ft_strdup(get_var_content_from_env("OLDPWD"));
+	if (!old_pwd)
+		return (ft_putstr_fd("minishell: cd: OLDPWD not set", STDERR_FILENO),
+				1);
+	if (chdir(old_pwd) == 0)
+	{
+		(ft_putstr_fd(old_pwd, 2), ft_putchar_fd('\n', 2));
+		pwd_path = get_var_content_from_env("PWD");
+		if (pwd_path)
+		{
+			replace_var_in_env("OLDPWD", pwd_path, &i);
+			i = 0;
+			return (replace_var_in_env("PWD", old_pwd, &i), free(old_pwd), 0);
+		}
+		null_path = ft_strdup("");
+		replace_var_in_env("OLDPWD", null_path, &i);
+		return (free(null_path), free(old_pwd), 0);
+	}
+	return (1);
+}
+
+/**
  * @note   change directory
  * @param  cmd: path of destination directory
  * @retval 1 is err getcd or home path or too much args or no path, 0 is ok
@@ -97,7 +131,9 @@ int	ft_cd(char **cmd)
 		return (err_handler(ERR_ARGS, "cd"), free(old_cwd), 1);
 	if (!cmd[1])
 		return (free(old_cwd), cd_home());
-	if (chdir(cmd[1]) != 0)
+	if (!ft_strcmp(cmd[1], "-"))
+		return (free(old_cwd), handle_cd_dash());
+	else if (chdir(cmd[1]) != 0)
 	{
 		err_msg = ft_strjoin("cd: ", cmd[1]);
 		free(old_cwd);
