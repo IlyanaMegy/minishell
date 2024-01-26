@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/25 21:27:46 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:49:41 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,7 +313,7 @@ bool				check_syntax(t_token *token);
 //  --------------------------------------------------------------------------------
 
 // parsing/get_cmd.c
-bool				get_commands(t_data *data, t_token **token_lst);
+bool				set_commands(t_data *data, t_token **token_lst);
 
 // parsing/handle_word.c
 bool				handle_word(t_cmd **cmd_lst, t_token **token_lst);
@@ -323,11 +323,8 @@ bool				handle_redir(t_cmd **cmd_lst, t_token **token_lst,
 						t_token_type type);
 
 // parsing/get_args.c
-bool				create_args(t_token **token_lst, t_cmd *last_cmd);
-bool				args_default(t_token **token_lst, t_cmd *last_cmd,
-						int *index);
-int					count_args(t_token *token);
-bool				set_cmd_without_args(t_data *data);
+bool				set_args(t_token **token_lst, t_cmd *last_cmd);
+bool				add_more_args(t_token **token_lst, t_cmd *last_cmd);
 
 // parsing/cmd_lst.c
 t_cmd				*lst_new_cmd(void);

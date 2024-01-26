@@ -6,18 +6,42 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/25 20:55:42 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:19:57 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static bool	set_cmd_without_args(t_data *data)
+{
+	t_cmd	*cmd_head;
+
+	if (!data || !data->cmd)
+		return (false);
+	cmd_head = data->cmd;
+	while (cmd_head && cmd_head->cmd)
+	{
+		if (!cmd_head->args)
+		{
+			cmd_head->args = malloc(sizeof(char *) * 2);
+			if (!cmd_head->args)
+				return (false);
+			cmd_head->args[0] = ft_strdup(cmd_head->cmd);
+			if (!cmd_head->args[0])
+				return (false);
+			cmd_head->args[1] = NULL;
+		}
+		cmd_head = cmd_head->next;
+	}
+	return (true);
+}
 
 /**
  * @brief Extract commands from a sequence of tokens.
  * @param data Pointer to t_data structure.
  * @param token Pointer to the first token in the sequence.
  */
-bool	get_commands(t_data *data, t_token **token_lst)
+bool	set_commands(t_data *data, t_token **token_lst)
 {
 	t_token	*head;
 	t_cmd	*new_cmd;

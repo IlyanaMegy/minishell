@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:31:31 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/25 20:57:59 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:50:01 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ bool	handle_word(t_cmd **cmd_lst, t_token **token_lst)
 	while (head_token && head_token->type == WORD)
 	{
 		last_cmd = lst_last_cmd(*cmd_lst);
-		if (!head_token->prev || (head_token->prev && head_token->prev->type == PIPE)
+		if (!head_token->prev
+			|| (head_token->prev && head_token->prev->type == PIPE)
 			|| !last_cmd->cmd)
 		{
 			last_cmd->cmd = ft_strdup(head_token->value);
@@ -34,13 +35,15 @@ bool	handle_word(t_cmd **cmd_lst, t_token **token_lst)
 				return (false);
 			head_token = head_token->next;
 		}
-		else
+		else if (last_cmd && !(last_cmd->args))
 		{
-			if ((last_cmd && !(last_cmd->args)))
-			{
-				if (!create_args(&head_token, last_cmd))
-					return (false);
-			}
+			if (!set_args(&head_token, last_cmd))
+				return (false);
+		}
+		else if (last_cmd && last_cmd->args && last_cmd->io_list)
+		{
+			if (!add_more_args(&head_token, last_cmd))
+				return (false);
 		}
 	}
 	*token_lst = head_token;
