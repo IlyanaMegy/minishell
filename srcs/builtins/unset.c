@@ -81,7 +81,9 @@ int	ft_unset(char **args)
 			err_handler(ERR_UNSET_OPT, args[i]);
 		else if (var_is_in_env(args[i]))
 			remove_var_from_env(args[i]);
+		if (exit_status != 0)
+			single_exit_s(exit_status, ADD);
 		i++;
 	}
-	return (exit_status);
+	return (single_exit_s(0, GET));
 }
