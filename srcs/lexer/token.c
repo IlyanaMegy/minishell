@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/26 12:53:52 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/26 12:56:24 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,6 @@ bool	tokenize_input(t_data *data, char *s)
 	free_ptr(str);
 	if (!check_syntax(data->token))
 		return (false);
-	print_token(data->token);
+	// print_token(data->token);
 	return (true);
 }
