@@ -16,18 +16,31 @@
  * @note   changing environment's variable pwd content by the current pwd
  * @retval 1 is err getcwd, 0 is ok
 */
-int	change_pwd(void)
+int	change_pwd(char *old_cwd)
 {
 	char	*cwd;
 	int		i;
+	char	*pwd_path;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
-		return (1);
+		return (free(old_cwd), 1);
 	i = 0;
-	replace_var_in_env("OLDPWD", get_var_content_from_env("PWD"), &i);
-	i = 0;
-	return (replace_var_in_env("PWD", cwd, &i), 0);
+	pwd_path = get_var_content_from_env("PWD");
+	if (pwd_path)
+	{
+		free(old_cwd);
+		replace_var_in_env("OLDPWD", pwd_path, &i);
+		i = 0;
+		return (replace_var_in_env("PWD", cwd, &i),free(cwd),  0);
+	}
+	else
+	{
+		free(cwd);
+		replace_var_in_env("OLDPWD", old_cwd, &i);
+		free(old_cwd);
+	}
+	return (0);
 }
 
 /**
@@ -38,16 +51,26 @@ int	cd_home(void)
 {
 	char	*home;
 	int		i;
+	char	*pwd_path;
+	char	*null_path;
 
 	i = 0;
+	pwd_path = NULL;
 	home = get_var_content_from_env("HOME");
 	if (!home)
 		return (err_handler(ERR_PATH, "cd"), 1);
 	if (chdir(home) == 0)
 	{
-		replace_var_in_env("OLDPWD", get_var_content_from_env("PWD"), &i);
-		i = 0;
-		return (replace_var_in_env("PWD", home, &i), 0);
+		pwd_path = get_var_content_from_env("PWD");
+		if (pwd_path)
+		{
+			replace_var_in_env("OLDPWD", pwd_path, &i);
+			i = 0;
+			return (replace_var_in_env("PWD", home, &i), 0);
+		}
+		null_path = ft_strdup("");
+		replace_var_in_env("OLDPWD", null_path, &i);
+		return (free(null_path), 0);
 	}
 	return (1);
 }
@@ -59,21 +82,26 @@ int	cd_home(void)
 */
 int	ft_cd(char **cmd)
 {
-	int	i;
-	char *err_msg;
+	int		i;
+	char	*err_msg;
+	char	*old_cwd;
 
 	i = 0;
 	err_msg = NULL;
+	old_cwd = getcwd(NULL, 0);
+	if (!old_cwd)
+		return (1);
 	while (cmd[i])
 		i++;
 	if (i > 2)
-		return (err_handler(ERR_ARGS, "cd"), 1);
+		return (err_handler(ERR_ARGS, "cd"), free(old_cwd), 1);
 	if (!cmd[1])
-		return (cd_home());
+		return (free(old_cwd), cd_home());
 	if (chdir(cmd[1]) != 0)
 	{
 		err_msg = ft_strjoin("cd: ", cmd[1]);
+		free(old_cwd);
 		return (err_handler(ERR_NOFILEDIR, err_msg), free(err_msg), 1);
 	}
-	return (change_pwd());
+	return (change_pwd(old_cwd));
 }
