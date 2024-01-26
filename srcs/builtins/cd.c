@@ -91,7 +91,7 @@ int	handle_cd_dash(void)
 	old_pwd = ft_strdup(get_var_content_from_env("OLDPWD"));
 	if (!old_pwd)
 		return (ft_putstr_fd("minishell: cd: OLDPWD not set", STDERR_FILENO),
-				1);
+			1);
 	if (chdir(old_pwd) == 0)
 	{
 		(ft_putstr_fd(old_pwd, 2), ft_putchar_fd('\n', 2));
