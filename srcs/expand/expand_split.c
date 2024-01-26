@@ -12,9 +12,12 @@ static void	ft_skip_word(char const *s, size_t *i)
 			(*i)++;
 		else
 		{
-			quotes = s[(*i)++];
-			while (s[(*i)] != quotes)
-				(*i)++;
+			if (s[*i + 1])
+			{
+				quotes = s[(*i)++];
+				while (s[(*i)] && s[(*i)] != quotes)
+					(*i)++;
+			}
 			(*i)++;
 		}
 	}
@@ -59,13 +62,17 @@ static void	ft_words_filler(const char *s, char **strs, size_t *i, size_t j)
 			strs[j][k++] = s[(*i)++];
 		else
 		{
-			quotes = s[(*i)++];
-			strs[j][k++] = quotes;
-			while (s[(*i)] != quotes)
-				strs[j][k++] = s[(*i)++];
+			if (s[*i + 1])
+			{
+				quotes = s[(*i)++];
+				strs[j][k++] = quotes;
+				while (s[(*i)] != quotes)
+					strs[j][k++] = s[(*i)++];
+			}
 			strs[j][k++] = s[(*i)++];
 		}
 	}
+	strs[j][k] = '\0';
 }
 
 static char	**ft_filler(char const *s, char **strs)
@@ -85,6 +92,7 @@ static char	**ft_filler(char const *s, char **strs)
 		if (s[i] && s[i] == ' ')
 			i++;
 	}
+	strs[j] = NULL;
 	return (strs);
 }
 
