@@ -218,6 +218,7 @@ void				err_syntax(int err, char *s);
 
 // err_handler/error_utils.c
 char				*two_first_char(char *cmd);
+void				cdpwd_error_chdir_getcwd(int builtin);
 
 //  --------------------------------------------------------------------------------
 // |								EXECUTION										|
