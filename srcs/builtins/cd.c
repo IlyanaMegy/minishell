@@ -141,22 +141,22 @@ int	ft_cd(char **cmd)
 
 	i = 0;
 	err_msg = NULL;
-	old_cwd = getcwd(NULL, 0);
-	if (!old_cwd)
-		return (1);
 	while (cmd[i])
 		i++;
 	if (i > 2)
-		return (err_handler(ERR_ARGS, "cd"), free(old_cwd), 1);
+		return (err_handler(ERR_ARGS, "cd"), 1);
 	if (!cmd[1] || !ft_strcmp(cmd[1], "~"))
-		return (free(old_cwd), cd_home());
+		return (cd_home());
 	if (!ft_strcmp(cmd[1], "-"))
-		return (free(old_cwd), handle_cd_dash());
-	else if (chdir(cmd[1]) != 0)
+		return (handle_cd_dash());
+	old_cwd = getcwd(NULL, 0);
+	if (!old_cwd)
+		return (cdpwd_error_chdir_getcwd(1), 1);
+	if (chdir(cmd[1]) != 0)
 	{
 		err_msg = ft_strjoin("cd: ", cmd[1]);
-		free(old_cwd);
-		return (err_handler(ERR_NOFILEDIR, err_msg), free(err_msg), 1);
+		return (err_handler(ERR_NOFILEDIR, err_msg), free(old_cwd),
+			free(err_msg), 1);
 	}
 	return (change_pwd(old_cwd));
 }
