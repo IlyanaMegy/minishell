@@ -20,6 +20,7 @@ CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
 					srcs/exec/init_structure.c \
+					srcs/exec/init_env.c \
 					srcs/exec/exec_utils.c \
 					srcs/exec/exec_redir.c \
 					srcs/exec/exec_get_path.c \
