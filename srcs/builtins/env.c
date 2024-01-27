@@ -145,13 +145,23 @@ int	add_if_missing(char *var_name, char *var_content, int pwd)
 	char	*content;
 
 	name = ft_strdup(var_name);
+	if (!name)
+		return (1);
 	if (!pwd)
+	{
 		content = ft_strdup(var_content);
+		if (!content)
+			return (free(name), 1);
+	}
 	else
 		content = var_content;
 	if (!get_var_content_from_env(name))
+	{
 		if (add_var_to_env(name, content, 1))
 			return (free(name), free(content), 1);
+	}
+	else
+		return (free(name), free(content), 0);
 	return (0);
 }
 
@@ -178,10 +188,11 @@ int	get_env(char **arg_env)
 			return (free(tmp_env), 1);
 		if (add_var_to_env(tmp_env[0], tmp_env[1], 1))
 			return (free(tmp_env[0]), free(tmp_env[1]), free(tmp_env), 1);
-		free(tmp_env[0]);
-		free(tmp_env[1]);
+		(free(tmp_env[0]), free(tmp_env[1]));
 		i[0]++;
 	}
+	if (!var_is_in_env("OLD_PWD") && extract_var_no_content("OLDPWD", 0))
+		return (free(tmp_env), 1);
 	if (add_if_missing("PWD", getcwd(NULL, 0), 1) || add_if_missing("SHLVL",
 			"1", 0) || add_if_missing("_", "/usr/bin/env", 0))
 		return (free(tmp_env), 1);

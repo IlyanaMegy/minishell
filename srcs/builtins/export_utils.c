@@ -81,6 +81,8 @@ void	display_export(void)
 		{
 			if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
 				ft_printf("");
+			else if (e->print_it==0 && !e->content[0])
+				ft_printf("export %s\n", e->name);
 			else
 				ft_printf("export %s=\"%s\"\n", e->name, e->content);
 			e = e->next;

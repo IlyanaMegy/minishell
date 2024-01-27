@@ -168,6 +168,7 @@ int					get_env(char **arg_env);
 // builtins/export.c
 int					ft_export(char **av);
 int					invalid_var_name(char *arg, int *append);
+int					extract_var_no_content(char *arg, int *append);
 void				display_export(void);
 
 // builtins/export_utils.c
