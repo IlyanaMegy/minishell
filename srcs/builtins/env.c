@@ -115,6 +115,46 @@ int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 	return (0);
 }
 
+int	case_no_env_arg(char ***tmp_env, char **tmp_name, char **tmp_content)
+{
+	*tmp_name = ft_strdup("_");
+	*tmp_content = ft_strdup("/usr/bin/env");
+	if (add_var_to_env(*tmp_name, *tmp_content, 1))
+		return (free(*tmp_name), free(*tmp_content), free(*tmp_env), 1);
+	free(*tmp_name);
+	free(*tmp_content);
+	*tmp_name = ft_strdup("PWD");
+	*tmp_content = getcwd(NULL, 0);
+	if (add_var_to_env(*tmp_name, *tmp_content, 1))
+		return (free(*tmp_name), free(*tmp_content), free(*tmp_env), 1);
+	free(*tmp_name);
+	free(*tmp_content);
+	*tmp_name = ft_strdup("SHLVL");
+	*tmp_content = ft_strdup("1");
+	if (add_var_to_env(*tmp_name, *tmp_content, 1))
+		return (free(*tmp_name), free(*tmp_content), free(*tmp_env), 1);
+	free(*tmp_name);
+	free(*tmp_content);
+	free(*tmp_env);
+	return (0);
+}
+
+int	add_if_missing(char *var_name, char *var_content, int pwd)
+{
+	char	*name;
+	char	*content;
+
+	name = ft_strdup(var_name);
+	if (!pwd)
+		content = ft_strdup(var_content);
+	else
+		content = var_content;
+	if (!get_var_content_from_env(name))
+		if (add_var_to_env(name, content, 1))
+			return (free(name), free(content), 1);
+	return (0);
+}
+
 /**
  * @note   get environment from arg_env and stock to env list
  * @param  arg_env: environment origin from minishell argument
@@ -142,5 +182,8 @@ int	get_env(char **arg_env)
 		free(tmp_env[1]);
 		i[0]++;
 	}
+	if (add_if_missing("PWD", getcwd(NULL, 0), 1) || add_if_missing("SHLVL",
+			"1", 0) || add_if_missing("_", "/usr/bin/env", 0))
+		return (free(tmp_env), 1);
 	return (free(tmp_env), 0);
 }
