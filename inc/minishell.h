@@ -161,13 +161,11 @@ typedef enum e_cmd_direction
 
 // builtins/env.c
 void				ft_env(void);
-t_env				*create_var(char *name, char *content, int print_it);
-int					add_var_to_env(char *name, char *content, int print_it);
-int					get_env(char **arg_env);
 
 // builtins/export.c
 int					ft_export(char **av);
 int					invalid_var_name(char *arg, int *append);
+int					extract_var_no_content(char *arg, int *append);
 void				display_export(void);
 
 // builtins/export_utils.c
@@ -239,6 +237,11 @@ typedef struct s_path
 
 // exec/init_structure.c
 void				init_cmdlst(t_data *data, t_cmd *cmd);
+
+// exec/init_env.c
+t_env				*create_var(char *name, char *content, int print_it);
+int					add_var_to_env(char *name, char *content, int print_it);
+int					get_env(char **arg_env);
 
 // exec/exec.c
 int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
