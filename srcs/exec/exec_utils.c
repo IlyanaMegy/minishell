@@ -33,11 +33,12 @@ void	reset_stds(t_data *data, bool piped)
  * @param  env: environment 2D array to free
  * @retval None
 */
-void	get_out(t_data *data, int status, char **env)
+void	get_out(t_data *data, int status, char **env, int *status_waitpid)
 {
 	if (env)
 		free_tab(env);
 	clean_program(data);
+	*status_waitpid= status;
 	exit(status);
 }
 

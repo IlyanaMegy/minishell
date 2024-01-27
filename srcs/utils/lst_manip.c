@@ -60,13 +60,15 @@ t_env	*copy_my_lst(t_env *src)
 */
 char	**env_to_tab(t_env *env_lst)
 {
-	t_env *tmp;
-	char **env_tab;
-	char *joined;
-	int i;
+	t_env	*tmp;
+	char	**env_tab;
+	char	*joined;
+	int		i;
 
 	i = 0;
 	env_tab = ft_calloc((envlst_len(env_lst) + 1), sizeof(char *));
+	if (!env_tab)
+		return (NULL);
 	tmp = env_lst;
 	while (tmp)
 	{

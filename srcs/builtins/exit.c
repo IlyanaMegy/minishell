@@ -61,6 +61,8 @@ int	calcul_exit_status(t_data *data, char *number)
 	while (number[i])
 	{
 		res = (res * 10) + (number[i] - '0');
+		if (sign == -1 && res - 1 == LONG_MAX && !number[i + 1])
+			res = 0;
 		if (res > LONG_MAX)
 			clean_exit_exit(data, 2, ERR_EXIT_NB, number);
 		i++;
@@ -77,12 +79,12 @@ int	calcul_exit_status(t_data *data, char *number)
 void	ft_exit(t_data *data, t_cmd *cmd)
 {
 	ft_putstr_fd("exit\n", 1);
-	if (cmd->args[1])
+	if (cmd->expanded_args[1])
 	{
-		if (cmd->args[2] && ft_isnumber(cmd->args[1]))
+		if (cmd->expanded_args[2] && ft_isnumber(cmd->expanded_args[1]))
 			clean_exit_exit(data, 1, ERR_ARGS, "exit");
 		else
-			single_exit_s(calcul_exit_status(data, cmd->args[1]), ADD);
+			single_exit_s(calcul_exit_status(data, cmd->expanded_args[1]), ADD);
 	}
 	clean_program(data);
 	exit(single_exit_s(0, GET));

@@ -255,7 +255,8 @@ int					exec_builtin(t_data *data, t_cmd *cmd);
 int					close_n_wait(int fd[2], int p_first, int p_sec);
 int					get_exit_status(int status);
 int					check_redir(t_cmd *cmd);
-void				get_out(t_data *data, int status, char **env);
+void				get_out(t_data *data, int status, char **env,
+						int *status_waitpid);
 void				reset_stds(t_data *data, bool piped);
 
 // exec/exec_redir.c
