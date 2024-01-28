@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/25 20:35:10 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/28 20:00:22 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_cmd	*lst_new_cmd(void)
 	node->io_list = NULL;
 	node->cmd = NULL;
 	node->args = NULL;
+	node->expanded_args = NULL;
 	node->prev = NULL;
 	node->next = NULL;
 	return (node);

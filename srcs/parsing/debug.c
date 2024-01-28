@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:34:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/19 21:50:46 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/28 20:02:33 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	print_cmd(t_cmd *cmd)
 		while (temp->args[j])
 		{
 			dprintf(2, "- arg %d = %s\n", j, temp->args[j]);
+			// dprintf(2, "- expanded_arg %d = %s\n\n", j, temp->expanded_args[j]);
 			j++;
 		}
-		dprintf(2, "\n");
 		temp = temp->next;
 	}
 	// exit (0);

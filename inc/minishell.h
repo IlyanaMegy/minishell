@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/26 12:49:41 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:03:59 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # include <termios.h>
 
 # define PROMPT "minishell$ "
-# define HEREDOC_NAME "/tmp/.heredoc_"
 
 # define ADD 1
 # define RM 2

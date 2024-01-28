@@ -6,23 +6,20 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/26 12:56:16 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/28 20:04:48 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-// *	LEXER + PARSING -> true = success / false = error
 static bool	tokenize_and_parse(t_data *data)
 {
 	if (data->user_input[0])
 		add_history(data->user_input);
 	else
 		return (false);
-	// ?	Tokenize the user_input and store it in data->token
 	if (!tokenize_input(data, data->user_input))
 		return (false);
-	// ?	Parse the token list to extract commands and arguments
 	if (!set_commands(data, &data->token))
 		return (single_exit_s(1, ADD), false);
 	return (true);

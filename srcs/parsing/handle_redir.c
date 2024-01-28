@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:44:39 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/25 20:58:47 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:45:45 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ static t_io_type	get_io_type(t_token_type type)
 
 static t_token	*get_next_token(t_token *token)
 {
-	if (token->next->next
-		&& (token->next->next->type == WORD
-			|| token->next->next->type >= PIPE))
+	if (token->next->next)
 		return (token->next->next);
 	else
 		return (token->next);
