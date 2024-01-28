@@ -3,143 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 10:58:52 by ilymegy           #+#    #+#             */
-/*   Updated: 2023/08/17 22:26:29 by ilymegy          ###   ########.fr       */
+/*   Created: 2023/05/26 22:19:44 by ltorkia           #+#    #+#             */
+/*   Updated: 2024/01/28 21:15:46 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/libft.h"
 
-void	clean_me(t_gnl **str, t_gnl **clear)
+static char	*extract_line(char *line)
 {
-	t_gnl	*l;
-	int		i;
-	int		j;
+	size_t	count;
+	char	*next_line;
 
-	if (!(*clear) || !str)
-		return ;
-	(*clear)->next = NULL;
-	l = get_last(*str);
-	i = 0;
-	while (l->content[i] && l->content[i] != '\n')
-		i++;
-	if (l->content && l->content[i] == '\n')
-		i++;
-	(*clear)->content = malloc(sizeof(char) * ((ft_len(l->content) - i) + 1));
-	if (!((*clear)->content))
-		return ;
-	j = 0;
-	while (l->content[i])
-		(*clear)->content[j++] = l->content[i++];
-	(*clear)->content[j] = '\0';
-	free_str(*str);
-	*str = (*clear);
+	count = 0;
+	while (line[count] != '\n' && line[count] != '\0')
+		count++;
+	if (line[count] == '\0' || line[count + 1] == '\0')
+		return (0);
+	next_line = ft_substr(line, count + 1, ft_strlen(line) - count - 1);
+	if (!next_line)
+	{
+		free(next_line);
+		next_line = 0;
+	}
+	line[count + 1] = '\0';
+	return (next_line);
 }
 
-void	extract_me(t_gnl *str, char **line)
+static char	*read_and_save(int fd, char *buffer, char *save)
 {
-	int	i;
-	int	j;
+	int		read_bytes;
+	char	*temp_save;
 
-	create_line(str, line);
-	if (!(*line))
-		return ;
-	j = 0;
-	while (str)
+	read_bytes = 1;
+	while (read_bytes != 0)
 	{
-		i = 0;
-		while (str->content[i])
-		{
-			if (str->content[i] == '\n')
-			{
-				(*line)[j++] = str->content[i];
-				break ;
-			}
-			(*line)[j++] = str->content[i++];
-		}
-		str = str->next;
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (read_bytes == -1)
+			return (0);
+		if (read_bytes == 0)
+			break ;
+		buffer[read_bytes] = '\0';
+		if (!save)
+			save = ft_strdup("");
+		temp_save = save;
+		save = ft_strjoin(temp_save, buffer);
+		free(temp_save);
+		temp_save = 0;
+		if (ft_strchr(buffer, '\n'))
+			break ;
 	}
-	(*line)[j] = '\0';
+	return (save);
 }
 
-void	add_to_str(t_gnl **str, char *buffer, int size)
+char	*get_next_line(int fd)
 {
-	int		i;
-	t_gnl	*last;
-	t_gnl	*new;
-
-	new = malloc(sizeof(t_gnl));
-	if (!new)
-		return ;
-	new->next = NULL;
-	new->content = malloc(sizeof(char) * (size + 1));
-	if (!(new->content))
-		return ;
-	i = 0;
-	while (buffer[i] && i < size)
-	{
-		new->content[i] = buffer[i];
-		i++;
-	}
-	new->content[i] = '\0';
-	if (!(*str))
-	{
-		*str = new;
-		return ;
-	}
-	last = get_last(*str);
-	last->next = new;
-}
-
-void	read_me(int fd, t_gnl **str)
-{
-	char	*buffer;
-	int		size_readed;
-
-	size_readed = 1;
-	while (!is_newline(*str) && size_readed != 0)
-	{
-		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		if (!buffer)
-			return ;
-		size_readed = (int)read(fd, buffer, BUFFER_SIZE);
-		if ((size_readed == 0 && !(*str)) || size_readed == -1)
-		{
-			free(buffer);
-			return ;
-		}
-		buffer[size_readed] = '\0';
-		add_to_str(str, buffer, size_readed);
-		free(buffer);
-	}
-}
-
-char	*get_next_line(int fd, int *err, t_gnl **clear)
-{
-	static t_gnl	*str = NULL;
-	char			*line;
+	char		*buffer;
+	char		*line;
+	static char	*save_next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	line = NULL;
-	read_me(fd, &str);
-	if (!str)
-		return (NULL);
-	extract_me(str, &line);
+		return (0);
+	buffer = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buffer)
+		return (0);
+	line = read_and_save(fd, buffer, save_next_line);
+	free(buffer);
 	if (!line)
 	{
-		*err = 1;
-		return (NULL);
-	}
-	if (!line[0])
-	{
 		free(line);
-		free_str(str);
-		str = NULL;
-		return (NULL);
+		return (0);
 	}
-	clean_me(&str, clear);
+	save_next_line = extract_line(line);
 	return (line);
 }
