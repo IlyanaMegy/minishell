@@ -59,6 +59,29 @@ void	remove_var_from_env(char *var_name)
 }
 
 /**
+ * @note   check if the argument is correct
+ * @param  arg: variable
+ * @retval exit status
+*/
+int	invalid_unset_var_name(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (arg[i] == '-')
+		return (2);
+	if (!ft_isalpha(*arg) && *arg != '_')
+		return (1);
+	while (arg[i])
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+/**
  * @note   unset a variable from the environment
  * @param  args: variables to unset from the environment
  * @retval exit status
@@ -74,14 +97,16 @@ int	ft_unset(char **args)
 	exit_status = 0;
 	while (args[i])
 	{
-		exit_status = invalid_var_name(args[i], 0);
+		exit_status = invalid_unset_var_name(args[i]);
 		if (exit_status == 1)
 			err_handler(ERR_UNSET, args[i]);
 		else if (exit_status == 2)
 			err_handler(ERR_UNSET_OPT, args[i]);
 		else if (var_is_in_env(args[i]))
 			remove_var_from_env(args[i]);
+		if (exit_status != 0)
+			single_exit_s(exit_status, ADD);
 		i++;
 	}
-	return (exit_status);
+	return (single_exit_s(0, GET));
 }

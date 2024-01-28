@@ -11,7 +11,7 @@ static size_t	ft_unquoted_strlen(char *str)
 	quotes = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '"')
+		if ((str[i] == '\'' || str[i] == '"') && str[i + 1])
 		{
 			if (!quotes)
 				quotes = str[i++];
@@ -49,7 +49,7 @@ char	*ft_strip_quotes(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '"' || str[i] == '\'')
+		if ((str[i] == '"' || str[i] == '\'') && str[(i + 1)])
 			(ft_unquote_filler(str, &i, ret, &j));
 		else
 			ret[j++] = str[i++];

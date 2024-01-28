@@ -23,8 +23,11 @@ int	ft_pwd(void)
 	cwd = NULL;
 	cwd = getcwd(cwd, 0);
 	if (!cwd)
+	{
+		cdpwd_error_chdir_getcwd(2);
 		return (1);
+	}
 	ft_putstr_fd(cwd, 1);
 	ft_putstr_fd("\n", 1);
-	return (0);
+	return (free(cwd), 0);
 }
