@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/28 21:33:53 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/01/28 22:25:19 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static bool	tokenize_and_parse(t_data *data)
 
 static void non_interactive_mode(t_data *data)
 {
-	data->user_input = get_next_line(STDIN_FILENO);
+	data->user_input = get_next_line(data->stdin);
 	if (!data->user_input)
 		(clean_program(data), ft_putstr_fd("exit\n", 1), exit(1));
 	while (data->user_input)
@@ -38,15 +38,13 @@ static void non_interactive_mode(t_data *data)
 			executie(data, data->cmd, false);
 		}
 		free_data(data);
-		data->user_input = get_next_line(STDIN_FILENO);
+		data->user_input = get_next_line(data->stdin);
 	}
 }
 
 int	main(int ac, char **av, char **arg_env)
 {
 	t_data	data;
-	struct termios	initial_term;
-	struct termios	new_termios;
 
 	(void)ac;
 	(void)av;
@@ -60,11 +58,8 @@ int	main(int ac, char **av, char **arg_env)
 	// ?	init of exit status to 0 and save it in single_exit_s function
 	// TODO	use that single_exit_s function to get or update exit_s value
 	single_exit_s(0, ADD);
-	if (isatty(STDIN_FILENO))
+	if (isatty(data.stdin))
 	{
-		tcgetattr(STDIN_FILENO, &initial_term);
-		new_termios = initial_term;
-		tcsetattr(STDIN_FILENO, TCSANOW, &new_termios);
 		while (1)
 		{
 			// ?	stocking the freshly entered input into data.user_input and verify parsing
@@ -80,7 +75,6 @@ int	main(int ac, char **av, char **arg_env)
 			}
 			free_data(&data);
 		}
-		tcsetattr(STDIN_FILENO, TCSANOW, &initial_term);
 	}
 	else
 		non_interactive_mode(&data);
