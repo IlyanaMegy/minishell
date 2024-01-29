@@ -1,130 +1,6 @@
 #include "../../inc/minishell.h"
 
-// static void	ft_skip_word(char const *s, size_t *i)
-// {
-// 	char	quotes;
-
-// 	while (s[(*i)] && s[(*i)] == ' ')
-// 		(*i)++;
-// 	while (s[*i] && s[*i] != ' ')
-// 	{
-// 		if (s[*i] != '\'' && s[*i] != '"')
-// 			(*i)++;
-// 		else
-// 		{
-// 			if (s[*i + 1])
-// 			{
-// 				quotes = s[(*i)++];
-// 				while (s[(*i)] && s[(*i)] != quotes)
-// 					(*i)++;
-// 			}
-// 			(*i)++;
-// 		}
-// 	}
-// }
-
-// static char	**ft_allocater(char const *s, char **strs)
-// {
-// 	size_t	start;
-// 	size_t	i;
-// 	size_t	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (s[i])
-// 	{
-// 		// if (s[i] != ' ')
-// 		// {
-// 		start = i;
-// 		ft_skip_word(s, &i);
-// 		strs[j] = ft_calloc(i - start + 1, sizeof(char));
-// 		if (!strs[j])
-// 			return (NULL);
-// 		j++;
-// 		// }
-// 		if (s[i] && s[i] == ' ')
-// 			i++;
-// 	}
-// 	return (strs);
-// }
-
-// static void	ft_words_filler(const char *s, char **strs, size_t *i, size_t j)
-// {
-// 	char	quotes;
-// 	size_t	k;
-
-// 	k = 0;
-// 	while (s[(*i)] && s[(*i)] == ' ')
-// 		strs[j][k++] = s[(*i)++];
-// 	while (s[(*i)] && s[(*i)] != ' ')
-// 	{
-// 		if (s[(*i)] != '\'' && s[(*i)] != '"')
-// 			strs[j][k++] = s[(*i)++];
-// 		else
-// 		{
-// 			if (s[*i + 1])
-// 			{
-// 				quotes = s[(*i)++];
-// 				strs[j][k++] = quotes;
-// 				while (s[(*i)] != quotes)
-// 					strs[j][k++] = s[(*i)++];
-// 			}
-// 			strs[j][k++] = s[(*i)++];
-// 		}
-// 	}
-// 	strs[j][k] = '\0';
-// }
-
-// static char	**ft_filler(char const *s, char **strs)
-// {
-// 	size_t	i;
-// 	size_t	j;
-
-// 	i = 0;
-// 	j = 0;
-// 	while (s[i] && strs[j])
-// 	{
-// 		// if (s[i] != ' ')
-// 		// {
-// 		ft_words_filler(s, strs, &i, j);
-// 		j++;
-// 		// }
-// 		if (s[i] && s[i] == ' ')
-// 			i++;
-// 	}
-// 	strs[j] = NULL;
-// 	return (strs);
-// }
-
-// char	**ft_expander_split(char const *s)
-// {
-// 	size_t	count;
-// 	char	**strs;
-// 	char	**tofree;
-// 	size_t	i;
-
-// 	if (!s)
-// 		return (NULL);
-// 	i = 0;
-// 	count = 0;
-// 	while (s[i])
-// 	{
-// 		// if (s[i] != ' ' && ++count)
-// 		++count;
-// 		ft_skip_word(s, &i);
-// 		if (s[i] && s[i] == ' ')
-// 			i++;
-// 	}
-// 	strs = ft_calloc(count + 1, sizeof(char *));
-// 	tofree = strs;
-// 	strs = ft_allocater(s, strs);
-// 	if (!strs || !count)
-// 		return (free_tab(tofree), NULL);
-// 	return (ft_filler(s, strs));
-// }
-
-
-static	void	ft_skip_word(char const *s, size_t	*i)
+static	void	skip_word(char const *s, size_t	*i)
 {
 	char	quotes;
 
@@ -142,7 +18,7 @@ static	void	ft_skip_word(char const *s, size_t	*i)
 	}
 }
 
-static char	**ft_allocater(char const *s, char **strs)
+static char	**allocate_size(char const *s, char **strs)
 {
 	size_t	start;
 	size_t	i;
@@ -155,7 +31,7 @@ static char	**ft_allocater(char const *s, char **strs)
 		if (s[i] != ' ')
 		{
 			start = i;
-			ft_skip_word(s, &i);
+			skip_word(s, &i);
 			strs[j] = ft_calloc(i - start + 1, sizeof(char));
 			if (!strs[j])
 				return (NULL);
@@ -167,7 +43,7 @@ static char	**ft_allocater(char const *s, char **strs)
 	return (strs);
 }
 
-static void	ft_words_filler(const char *s, char **strs, size_t *i, size_t j)
+static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 {
 	char	quotes;
 	size_t	k;
@@ -188,7 +64,7 @@ static void	ft_words_filler(const char *s, char **strs, size_t *i, size_t j)
 	}
 }
 
-static char	**ft_filler(char const *s, char **strs)
+static char	**fill_it(char const *s, char **strs)
 {
 	size_t	i;
 	size_t	j;
@@ -199,7 +75,7 @@ static char	**ft_filler(char const *s, char **strs)
 	{
 		if (s[i] != ' ')
 		{
-			ft_words_filler(s, strs, &i, j);
+			gimme_that(s, strs, &i, j);
 			j++;
 		}
 		while (s[i] && s[i] == ' ')
@@ -208,11 +84,11 @@ static char	**ft_filler(char const *s, char **strs)
 	return (strs);
 }
 
-char	**ft_expander_split(char const *s)
+char	**expander_split(char const *s)
 {
 	size_t		count;
 	char		**strs;
-	char		**tofree;
+	char		**free_me;
 	size_t		i;
 
 	if (!s)
@@ -222,14 +98,14 @@ char	**ft_expander_split(char const *s)
 	while (s[i])
 	{
 		if (s[i] != ' ' && ++count)
-			ft_skip_word(s, &i);
+			skip_word(s, &i);
 		while (s[i] && s[i] == ' ')
 			i++;
 	}
 	strs = ft_calloc(count + 1, sizeof(char *));
-	tofree = strs;
-	strs = ft_allocater(s, strs);
+	free_me = strs;
+	strs = allocate_size(s, strs);
 	if (!strs || !count)
-		return (free_tab(tofree), NULL);
-	return (ft_filler(s, strs));
+		return (free_tab(free_me), NULL);
+	return (fill_it(s, strs));
 }

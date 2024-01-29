@@ -78,7 +78,8 @@ int	calcul_exit_status(t_data *data, char *number)
 */
 void	ft_exit(t_data *data, t_cmd *cmd)
 {
-	ft_putstr_fd("exit\n", 1);
+	if (!cmd->prev && !cmd->next)
+		ft_putstr_fd("exit\n", 1);
 	if (cmd->expanded_args[1])
 	{
 		if (cmd->expanded_args[2] && ft_isnumber(cmd->expanded_args[1]))

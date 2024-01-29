@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-char	*ft_strjoin_f(char *s1, char *s2)
+char	*strjoin_f(char *s1, char *s2)
 {
 	char	*joined;
 	size_t	total_length;
@@ -26,7 +26,7 @@ char	*ft_strjoin_f(char *s1, char *s2)
 	return (free(s1), free(s2), joined);
 }
 
-char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
+char	*handle_dollar(char *str, size_t *i, bool quotes)
 {
 	size_t	start;
 	char	*var;
@@ -39,10 +39,10 @@ char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
 		return ((*i)++, ft_itoa(single_exit_s(0, GET)));
 	else if ((str[*i] == '"' || str[*i] == '\'') && !quotes)
 		return (ft_strdup(""));
-	else if (!ft_is_valid_var_char(str[*i]))
+	else if (!is_valid_var_char(str[*i]))
 		return (ft_strdup("$"));
 	start = *i;
-	while (ft_is_valid_var_char(str[*i]))
+	while (is_valid_var_char(str[*i]))
 		(*i)++;
 	var = ft_substr(str, start, *i - start);
 	env_val = get_var_content_from_env(var);
@@ -55,7 +55,7 @@ char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
 	return (free(var), ft_strdup(env_val));
 }
 
-static char	*ft_cmd_pre_expander(char *str)
+static char	*pre_expand(char *str)
 {
 	char	*ret;
 	size_t	i;
@@ -65,31 +65,31 @@ static char	*ft_cmd_pre_expander(char *str)
 	while (str[i])
 	{
 		if (str[i] == '\'')
-			ret = ft_strjoin_f(ret, ft_handle_squotes(str, &i));
+			ret = strjoin_f(ret, handle_squotes(str, &i));
 		else if (str[i] == '"')
-			ret = ft_strjoin_f(ret, ft_handle_dquotes(str, &i));
+			ret = strjoin_f(ret, handle_dquotes(str, &i));
 		else if (str[i] == '$')
-			ret = ft_strjoin_f(ret, ft_handle_dollar(str, &i, false));
+			ret = strjoin_f(ret, handle_dollar(str, &i, false));
 		else
-			ret = ft_strjoin_f(ret, ft_handle_normal_str(str, &i));
+			ret = strjoin_f(ret, handle_normal_str(str, &i));
 	}
 	return (ret);
 }
 
-char	**ft_expand(char *str)
+char	**expand(char *str)
 {
 	char	**expanded;
 	size_t	i;
 
-	str = ft_cmd_pre_expander(str);
+	str = pre_expand(str);
 	if (!str)
 		return (NULL);
 	// ft_printf("str after pre = %s\n", str);
-	str = ft_clean_empty_strs(str);
+	str = clean_empty_strs(str);
 	if (!str)
 		return (NULL);
 	// ft_printf("str after clean = %s\n", str);
-	expanded = ft_expander_split(str);
+	expanded = expander_split(str);
 	free(str);
 	if (!expanded)
 		return (NULL);
@@ -98,7 +98,7 @@ char	**ft_expand(char *str)
 	i = 0;
 	while (expanded[i])
 	{
-		expanded[i] = ft_strip_quotes(expanded[i]);
+		expanded[i] = strip_quotes(expanded[i]);
 		i++;
 	}
 	return (expanded);

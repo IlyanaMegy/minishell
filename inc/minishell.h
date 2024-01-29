@@ -351,24 +351,24 @@ void				print_token(t_token *token);
 //  --------------------------------------------------------------------------------
 
 //	expand/expand.c
-char				**ft_expand(char *str);
-char				*ft_strjoin_f(char *s1, char *s2);
-char				*ft_handle_dollar(char *str, size_t *i, bool quotes);
+char				**expand(char *str);
+char				*strjoin_f(char *s1, char *s2);
+char				*handle_dollar(char *str, size_t *i, bool quotes);
 
 //	expand/expand_utils.c
-char				*ft_handle_dquotes(char *str, size_t *i);
-char				*ft_handle_squotes(char *str, size_t *i);
-char				*ft_handle_normal_str(char *str, size_t *i);
-bool				ft_is_valid_var_char(char c);
+char				*handle_dquotes(char *str, size_t *i);
+char				*handle_squotes(char *str, size_t *i);
+char				*handle_normal_str(char *str, size_t *i);
+bool				is_valid_var_char(char c);
 
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
 
-char				*ft_clean_empty_strs(char *str);
+char				*clean_empty_strs(char *str);
 
-char				**ft_expander_split(char const *s);
+char				**expander_split(char const *s);
 
-char				*ft_strip_quotes(char *str);
+char				*strip_quotes(char *str);
 //  --------------------------------------------------------------------------------
 // |									SIGNALS										|
 //  --------------------------------------------------------------------------------

@@ -49,18 +49,17 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 }
 
 /**
- * @note   get io_expanded_value
- * @param  io: t_io_cmd linked list
+ * @note   get expanded value of commands
+ * @param  io: t_cmd linked list
  * @retval None
 */
-void	get_io_expanded_value(t_io_cmd *io)
+void	get_expanded_value(t_cmd *cmd)
 {
-	// char	**io_path_d;
-	// io_path_d = malloc(sizeof(char *) * 2);
-	// io_path_d[0] = ft_strdup(io->path);
-	// io_path_d[1] = NULL;
-	io->expanded_value = ft_expand(io->path);
-	// free_tab(io_path_d);
+	char	*joined_args;
+
+	joined_args = ft_strsjoin(cmd->args, " ");
+	cmd->expanded_args = expand(joined_args);
+	free(joined_args);
 }
 
 /**
@@ -74,14 +73,9 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 	t_io_cmd	*io;
 	int			fd[2];
 	int			pid;
-	char		*joined_args;
 
 	if (cmd->args)
-	{
-		joined_args = ft_strsjoin(cmd->args, " ");
-		cmd->expanded_args = ft_expand(joined_args);
-		free(joined_args);
-	}
+		get_expanded_value(cmd);
 	io = cmd->io_list;
 	while (io)
 	{
@@ -97,7 +91,7 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 			io->here_doc = fd[0];
 		}
 		else
-			get_io_expanded_value(io);
+			io->expanded_value = expand(io->path);
 		io = io->next;
 	}
 }

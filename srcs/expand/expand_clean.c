@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-char	*ft_clean_empty_strs(char *str)
+char	*clean_empty_strs(char *str)
 {
 	size_t	i;
 	size_t	j;
