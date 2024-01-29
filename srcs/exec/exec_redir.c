@@ -39,7 +39,6 @@ int	check_read(char *file)
 {
 	if (!*file)
 		return (err_handler(ERR_NOFILEDIR, file), 1);
-	ft_printf("file = %s\n\n", file);
 	if (access(file, F_OK) == 0)
 	{
 		if (access(file, R_OK) == -1)
