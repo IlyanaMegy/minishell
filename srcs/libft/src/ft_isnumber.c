@@ -17,6 +17,8 @@ int	ft_isnumber(char *s)
 	int	i;
 
 	i = 0;
+	if (s[i] == '-')
+		i++;
 	while (s[i])
 	{
 		if (!ft_isdigit(s[i]))

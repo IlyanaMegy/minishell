@@ -48,7 +48,7 @@ char	*ft_handle_dollar(char *str, size_t *i, bool quotes)
 	env_val = get_var_content_from_env(var);
 	if (!env_val)
 	{
-		if (str[*i]!='\0' && !quotes)
+		if (str[*i] != '\0' && !quotes)
 			(*i)++;
 		return (free(var), ft_strdup(""));
 	}
