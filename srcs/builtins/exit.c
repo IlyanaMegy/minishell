@@ -38,6 +38,7 @@ void	clean_exit_exit(t_data *data, int exit_status, int err_state, char *msg)
 	exit_s = single_exit_s(exit_status, ADD);
 	err_handler(err_state, msg);
 	clean_program(data);
+	ft_printf("here\n\n");
 	exit(exit_s);
 }
 

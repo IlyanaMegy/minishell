@@ -57,5 +57,5 @@ int	main(int ac, char **av, char **arg_env)
 		free_data(&data);
 	}
 	clean_program(&data);
-	return (single_exit_s(0, 0));
+	return (single_exit_s(0, GET));
 }

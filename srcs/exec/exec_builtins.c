@@ -32,7 +32,7 @@ int	exec_builtin(t_data *data, t_cmd *cmd)
 		return (ft_export(cmd->expanded_args));
 	if (ft_strcmp(cmd->expanded_args[0], "unset") == 0)
 		return (ft_unset(cmd->expanded_args));
-	ft_exit(data, data->cmd);
+	ft_exit(data, cmd);
 	return (0);
 }
 
