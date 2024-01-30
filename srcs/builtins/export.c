@@ -78,7 +78,7 @@ int	extract_var(char *arg, int *append)
 			return (free(var[0]), 1);
 		return (add_var_to_env_list(var, 1, append));
 	}
-	else if (!arg[i])
+	else if (!arg[i] && !var_is_in_env(arg))
 		return (extract_var_no_content(arg, append));
 	return (0);
 }
