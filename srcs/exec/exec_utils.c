@@ -38,7 +38,7 @@ void	get_out(t_data *data, int status, char **env, int *status_waitpid)
 	if (env)
 		free_tab(env);
 	clean_program(data);
-	*status_waitpid= status;
+	*status_waitpid = status;
 	exit(status);
 }
 

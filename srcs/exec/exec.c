@@ -90,13 +90,14 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 
 	if (!fork_pid)
 	{
+		if (cmd_is_dot(cmd->expanded_args[0]))
+			get_out(data, ENO_MISS_CMD, NULL, &status);
 		if (cmd_is_dir(cmd->expanded_args[0]))
 			get_out(data, ENO_CANT_EXEC, NULL, &status);
 		env = env_to_tab(single_env(NULL, GET));
 		if (!env)
 			get_out(data, ENO_GENERAL, NULL, &status);
-		status = check_redir(cmd);
-		if (status != ENO_SUCCESS)
+		if (check_redir(cmd) != ENO_SUCCESS)
 			get_out(data, ENO_GENERAL, env, &status);
 		path = get_path(cmd->expanded_args[0]);
 		if (path.err.no != ENO_SUCCESS)

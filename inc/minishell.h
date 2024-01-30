@@ -141,6 +141,7 @@ typedef enum e_err_no
 {
 	ENO_SUCCESS,
 	ENO_GENERAL,
+	ENO_MISS_CMD,
 	ENO_CANT_EXEC = 126,
 	ENO_NOT_FOUND,
 	ENO_EXEC_255 = 255
@@ -267,8 +268,9 @@ int					open_append(t_io_cmd *io_lst, int *status);
 t_path				get_path(char *cmd);
 t_err				check_exec(char *file, bool cmd);
 
-// exec/exec_cmd_is_dir.c
+// exec/exec_errors.c
 bool				cmd_is_dir(char *cmd);
+bool				cmd_is_dot(char *cmd);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|

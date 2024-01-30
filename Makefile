@@ -24,7 +24,7 @@ EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_utils.c \
 					srcs/exec/exec_redir.c \
 					srcs/exec/exec_get_path.c \
-					srcs/exec/exec_cmd_is_dir.c \
+					srcs/exec/exec_errors.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \

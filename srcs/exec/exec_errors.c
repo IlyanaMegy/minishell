@@ -26,3 +26,22 @@ bool	cmd_is_dir(char *cmd)
 	(free(start_msg), free(err_msg), free(msg));
 	return (closedir(dir), false);
 }
+
+bool	cmd_is_dot(char *cmd)
+{
+	char	*start_msg;
+	char	*err_msg;
+	char	*msg;
+
+	start_msg = ft_strdup("minishell: ");
+	err_msg = ft_strjoin(cmd, ": filename argument required\n");
+	msg = ft_strjoin(start_msg, err_msg);
+	if (!ft_strcmp(cmd, "."))
+	{
+		ft_putstr_fd(msg, STDERR_FILENO);
+		(free(start_msg), free(err_msg), free(msg));
+		return (true);
+	}
+	(free(start_msg), free(err_msg), free(msg));
+	return (false);
+}
