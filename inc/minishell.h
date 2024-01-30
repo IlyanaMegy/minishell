@@ -365,6 +365,7 @@ bool				is_valid_var_char(char c);
 
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
+char				*expand_heredoc_delim(char *path);
 
 char				*clean_empty_strs(char *str);
 
