@@ -1,0 +1,13 @@
+
+
+
+minishell$ exit‚
+SHLVL=2‚minishell$ ‚minishell$ ‚minishell$ env | grep SHLVL‚SHLVL=4‚minishell$ ‚minishell$ ‚minishell$ exit‚exit‚SHLVL=2‚
+
+52‚
+
+2‚
+0‚
+~~‚
+~lol‚
+lol~‚
