@@ -15,7 +15,7 @@
 /**
  * @note   skip thes spaces and find the sign if there is one
  * @param  number: given exit_status arg
- * @param  i: index
+ * @param  *i: index
  * @param  sign: well is a sign
  * @retval None
 */
@@ -31,6 +31,14 @@ void	skip_spaces_get_sign(char *number, int *i, int *sign)
 	}
 }
 
+/**
+ * @note   clean and exit exit builtin
+ * @param  data: t_data structure
+ * @param  exit_status: exit status
+ * @param  err_state: error state
+ * @param  msg: error message
+ * @retval None
+*/
 void	clean_exit_exit(t_data *data, int exit_status, int err_state, char *msg)
 {
 	int	exit_s;
@@ -43,6 +51,7 @@ void	clean_exit_exit(t_data *data, int exit_status, int err_state, char *msg)
 
 /**
  * @note   verify is correct number, find sign, convert to int 
+ * @param  data: t_data structure
  * @param  number: given exit_status arg
  * @retval 255 if not int number and exit, int number is good exit status
 */
@@ -72,7 +81,7 @@ int	calcul_exit_status(t_data *data, char *number)
 
 /**
  * @note   nicely exit the program minishell
- * @param  data: all of data list
+ * @param  data: t_data structure
  * @param  cmd : current command
  * @retval None
 */

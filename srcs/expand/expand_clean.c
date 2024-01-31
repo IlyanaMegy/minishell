@@ -1,5 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_clean.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 12:12:13 by ilymegy           #+#    #+#             */
+/*   Updated: 2024/01/31 12:12:14 by ilymegy          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
+/**
+ * @note   do clean empty strings or quotes from str
+ * @param  str: given string
+ * @retval cleaned string
+*/
 char	*clean_empty_strs(char *str)
 {
 	size_t	i;
@@ -15,11 +32,7 @@ char	*clean_empty_strs(char *str)
 	i = 0;
 	j = 0;
 	while (str[i])
-	{
-		// if ((str[i] == '\'' && str[i + 1] == '\'') || (str[i] == '"' && str[i + 1] == '"'))
-		// 	i += 2;
 		tmp[j++] = str[i++];
-	}
 	free(str);
 	dstsize = ft_strlen(tmp) + 1;
 	ret = ft_calloc(dstsize, sizeof(char));

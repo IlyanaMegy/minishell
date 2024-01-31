@@ -42,21 +42,16 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	// signal(SIGINT, heredoc_sigint_handler);
 	get_expander_heredoc_delim(io);
 	quotes = io->expanded_value[0];
-	ft_printf("delim = %s\n\n", quotes);
+	// ft_printf("delim = %s\n\n", quotes);
 	while (*quotes && *quotes != '"' && *quotes != '\'')
 		quotes++;
-	ft_printf("delim = %s\n\n", quotes);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
 		if (ft_isdelimiter(io->expanded_value[0], line))
-		{
-			free(line);
-			line = NULL;
-			break;
-		}
+			break ;
 		if (!*quotes)
 			heredoc_expander(line, fd[1]);
 		else
@@ -65,7 +60,6 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 			ft_putstr_fd("\n", fd[1]);
 		}
 		free(line);
-		line = NULL;
 	}
 	(clean_program(data), exit(0));
 }

@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_errors.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 12:13:52 by ilymegy           #+#    #+#             */
+/*   Updated: 2024/01/31 12:13:53 by ilymegy          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 /**
- * @note   check is first argument is a directory
+ * @note   check if first argument is a directory
  * @param  cmd: given first argument
  * @retval true or false
 */
@@ -27,6 +39,11 @@ bool	cmd_is_dir(char *cmd)
 	return (closedir(dir), false);
 }
 
+/**
+ * @note   check if first argument is alone dot
+ * @param  cmd: given first argument
+ * @retval true or false
+*/
 bool	cmd_is_dot(char *cmd)
 {
 	char	*start_msg;

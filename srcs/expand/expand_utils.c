@@ -12,6 +12,11 @@
 
 #include "../../inc/minishell.h"
 
+/**
+ * @note   is the character a valid one or not ?
+ * @param  c: given character
+ * @retval true or false
+*/
 bool	is_valid_var_char(char c)
 {
 	if (ft_isalnum(c) || c == '_')
@@ -19,6 +24,13 @@ bool	is_valid_var_char(char c)
 	return (false);
 }
 
+/**
+ * @brief  
+ * @note   handle normal string
+ * @param  str: given string
+ * @param  *i: index
+ * @retval substring found
+*/
 char	*handle_normal_str(char *str, size_t *i)
 {
 	size_t	start;
@@ -29,6 +41,13 @@ char	*handle_normal_str(char *str, size_t *i)
 	return (ft_substr(str, start, *i - start));
 }
 
+/**
+ * @brief  
+ * @note   handle double quotes string
+ * @param  str: given string
+ * @param  *i: index
+ * @retval substring found
+*/
 static char	*handle_dquote_str(char *str, size_t *i)
 {
 	size_t	start;
@@ -39,6 +58,13 @@ static char	*handle_dquote_str(char *str, size_t *i)
 	return (ft_substr(str, start, *i - start));
 }
 
+/**
+ * @brief  
+ * @note   handle simple quotes string
+ * @param  str: given string
+ * @param  *i: index
+ * @retval substring found
+*/
 char	*handle_squotes(char *str, size_t *i)
 {
 	size_t	start;
@@ -51,6 +77,13 @@ char	*handle_squotes(char *str, size_t *i)
 	return (ft_substr(str, start, *i - start));
 }
 
+/**
+ * @brief  
+ * @note   handle double quotes or dollars string
+ * @param  str: given string
+ * @param  *i: index
+ * @retval substring found
+*/
 char	*handle_dquotes(char *str, size_t *i)
 {
 	char	*ret;

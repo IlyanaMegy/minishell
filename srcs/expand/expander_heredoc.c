@@ -90,6 +90,12 @@ char	*cleaned_heredoc_delim(char *res)
 	return (free(res), cleaned);
 }
 
+/**
+ * @note   handling dollar in heredoc delimiter
+ * @param  path: delimiter
+ * @param  *i: index
+ * @retval keep the dollar or not
+*/
 char	*handle_dollar_delim(char *path, int *i)
 {
 	if ((path[*i + 1] == '"' || path[*i + 1] == '\''))

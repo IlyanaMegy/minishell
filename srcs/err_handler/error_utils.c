@@ -37,10 +37,11 @@ void	cdpwd_error_chdir_getcwd(int builtin)
 {
 	if (builtin == 1)
 		ft_putstr_fd("chdir: error retrieving current directory: ",
-				STDERR_FILENO);
+			STDERR_FILENO);
 	else
 		ft_putstr_fd("pwd: error retrieving current directory: ",
-				STDERR_FILENO);
-	ft_putstr_fd("getcwd: cannot access parent directories: No such file or directory\n",
 			STDERR_FILENO);
+	ft_putstr_fd("getcwd: cannot access parent directories: ",
+		STDERR_FILENO);
+	ft_putstr_fd("No such file or directory\n", STDERR_FILENO);
 }

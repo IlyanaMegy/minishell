@@ -14,7 +14,7 @@
 
 /**
  * @note   clean the env list
- * @param  e:	environment list to clear
+ * @param  e: environment list to clear
  * @retval NULL env
 */
 t_env	*clean_env(t_env *e)
@@ -38,10 +38,9 @@ t_env	*clean_env(t_env *e)
 
 /**
  * @note   clean the data struct
- * @param  e:	struct to clear
+ * @param  e: struct to clear
  * @retval NULL data
 */
-
 void	free_data(t_data *data)
 {
 	if (data && data->user_input)
@@ -52,6 +51,11 @@ void	free_data(t_data *data)
 		lstclear_cmd(&data->cmd, &free_ptr);
 }
 
+/**
+ * @note   free double array string
+ * @param  map: given double array string
+ * @retval None
+*/
 void	free_tab(char **map)
 {
 	int	i;
@@ -70,6 +74,12 @@ void	free_tab(char **map)
 	return ;
 }
 
+/**
+ * @brief  
+ * @note   free pointer
+ * @param  ptr: given pointer
+ * @retval None
+*/
 void	free_ptr(void *ptr)
 {
 	if (ptr)
@@ -79,6 +89,11 @@ void	free_ptr(void *ptr)
 	}
 }
 
+/**
+ * @note   clean up all t_data structure, env and history
+ * @param  data: t_data structure
+ * @retval None
+*/
 void	clean_program(t_data *data)
 {
 	free_data(data);

@@ -16,7 +16,7 @@
  * @note   is this variable already in the environment ?
  * @param  var_name: variable name
  * @retval 1 is yes, 0 is no
- */
+*/
 int	var_is_in_env(char *var_name)
 {
 	t_env	*e;

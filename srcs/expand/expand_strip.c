@@ -1,5 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_strip.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 11:53:55 by ilymegy           #+#    #+#             */
+/*   Updated: 2024/01/31 11:53:57 by ilymegy          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
+/**
+ * @note   get length of result string cleaned from quotes
+ * @param  str: given string
+ * @retval length
+*/
 static size_t	unquoted_strlen(char *str)
 {
 	size_t	i;
@@ -26,6 +43,14 @@ static size_t	unquoted_strlen(char *str)
 	return (len);
 }
 
+/**
+ * @note   add characters to result string
+ * @param  str: given string
+ * @param  *i: index given str
+ * @param  res: result string
+ * @param  *j: index res str
+ * @retval None
+*/
 static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 {
 	char	quotes;
@@ -36,11 +61,16 @@ static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 	(*i)++;
 }
 
+/**
+ * @note   remove quotes from string
+ * @param  str: given string
+ * @retval cleaned string
+*/
 char	*strip_quotes(char *str)
 {
-	char *res;
-	size_t i;
-	size_t j;
+	char	*res;
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
