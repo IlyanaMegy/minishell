@@ -12,6 +12,11 @@
 
 #include "../../inc/minishell.h"
 
+/**
+ * @note   get expanded heredoc delimiter
+ * @param  io_cmd: t_io_cmd linked list
+ * @retval None
+*/
 void	get_expander_heredoc_delim(t_io_cmd *io_cmd)
 {
 	io_cmd->expanded_value = malloc(sizeof(char *) * 2);
@@ -40,13 +45,18 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	ft_printf("delim = %s\n\n", quotes);
 	while (*quotes && *quotes != '"' && *quotes != '\'')
 		quotes++;
+	ft_printf("delim = %s\n\n", quotes);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 			break ;
 		if (ft_isdelimiter(io->expanded_value[0], line))
-			break ;
+		{
+			free(line);
+			line = NULL;
+			break;
+		}
 		if (!*quotes)
 			heredoc_expander(line, fd[1]);
 		else
@@ -55,6 +65,7 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 			ft_putstr_fd("\n", fd[1]);
 		}
 		free(line);
+		line = NULL;
 	}
 	(clean_program(data), exit(0));
 }

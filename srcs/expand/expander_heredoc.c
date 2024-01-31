@@ -37,7 +37,6 @@ static int	heredoc_expander_w(char *str, int i, int fd)
 		free(tmp1);
 		if (tmp2)
 			ft_putstr_fd(tmp2, fd);
-		// free tmp2 ?
 	}
 	return (i);
 }
@@ -50,11 +49,10 @@ static int	heredoc_expander_w(char *str, int i, int fd)
 */
 void	heredoc_expander(char *str, int fd)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	ft_printf("str = %s\n", str);
-	while (str[i])
+	while (i < ft_strlen(str))
 	{
 		if (str[i] == '$')
 			i += heredoc_expander_w(str, i, fd);
@@ -101,7 +99,7 @@ char	*handle_dollar_delim(char *path, int *i)
 			(*i)++;
 			return (ft_strdup(""));
 		}
-		else if (!(path[*i - 1] && path[*i - 1] == '$'))
+		else if (path[*i - 1] && path[*i - 1] != '$')
 		{
 			(*i)++;
 			return (ft_strdup(""));
