@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:22:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 17:22:15 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/05 06:03:36 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 			(err_handler(path.err.msg, path.err.cause),
 				get_out(data, single_exit_s(path.err.no, ADD), env, &status));
 		if (execve(path.path, cmd->expanded_args, env) == -1)
-			return (get_out(data, single_exit_s(0, GET), env, &status), 1);
+			get_out(data, single_exit_s(1, ADD), env, &status);
 	}
 	waitpid(fork_pid, &status, 0);
 	// signint_child = false
