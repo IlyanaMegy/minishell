@@ -12,14 +12,14 @@
 
 #include "../../inc/minishell.h"
 
-bool	ft_is_valid_var_char(char c)
+bool	is_valid_var_char(char c)
 {
 	if (ft_isalnum(c) || c == '_')
 		return (true);
 	return (false);
 }
 
-char	*ft_handle_normal_str(char *str, size_t *i)
+char	*handle_normal_str(char *str, size_t *i)
 {
 	size_t	start;
 
@@ -29,7 +29,7 @@ char	*ft_handle_normal_str(char *str, size_t *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-static char	*ft_handle_dquote_str(char *str, size_t *i)
+static char	*handle_dquote_str(char *str, size_t *i)
 {
 	size_t	start;
 
@@ -39,7 +39,7 @@ static char	*ft_handle_dquote_str(char *str, size_t *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-char	*ft_handle_squotes(char *str, size_t *i)
+char	*handle_squotes(char *str, size_t *i)
 {
 	size_t	start;
 
@@ -51,7 +51,7 @@ char	*ft_handle_squotes(char *str, size_t *i)
 	return (ft_substr(str, start, *i - start));
 }
 
-char	*ft_handle_dquotes(char *str, size_t *i)
+char	*handle_dquotes(char *str, size_t *i)
 {
 	char	*ret;
 
@@ -60,10 +60,10 @@ char	*ft_handle_dquotes(char *str, size_t *i)
 	while (str[*i] != '"')
 	{
 		if (str[*i] == '$')
-			ret = ft_strjoin_f(ret, ft_handle_dollar(str, i, true));
+			ret = strjoin_f(ret, handle_dollar(str, i, true));
 		else
-			ret = ft_strjoin_f(ret, ft_handle_dquote_str(str, i));
+			ret = strjoin_f(ret, handle_dquote_str(str, i));
 	}
 	(*i)++;
-	return (ft_strjoin_f(ret, ft_strdup("\"")));
+	return (strjoin_f(ret, ft_strdup("\"")));
 }

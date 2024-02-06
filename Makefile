@@ -55,7 +55,8 @@ UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c \
 					# srcs/utils/signals.c
 
-SIGNALS			=	srcs/signals/signals_exec.c
+SIGNALS			=	srcs/signals/signals_exec.c \
+					srcs/signals/signals_utils.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\

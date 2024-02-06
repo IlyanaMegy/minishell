@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:39:39 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/11 15:39:41 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/01 13:57:30 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void	reset_stds(t_data *data, bool piped)
  * @param  env: environment 2D array to free
  * @retval None
 */
-void	get_out(t_data *data, int status, char **env)
+void	get_out(t_data *data, int status, char **env, int *status_waitpid)
 {
 	if (env)
 		free_tab(env);
 	clean_program(data);
+	*status_waitpid = status;
 	exit(status);
 }
 
@@ -72,7 +73,7 @@ int	check_redir(t_cmd *cmd)
 
 /**
  * @note   get right exit status
- * @param  status: 
+ * @param  status:
  * @retval exit status
 */
 int	get_exit_status(int status)
@@ -97,6 +98,6 @@ int	close_n_wait(int fd[2], int p_first, int p_sec)
 	close(fd[1]);
 	waitpid(p_first, &status, 0);
 	waitpid(p_sec, &status, 0);
-	// signint_child = false
+	single_sign_child(false, ADD);
 	return (get_exit_status(status));
 }

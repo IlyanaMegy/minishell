@@ -58,16 +58,16 @@ int	open_in(t_io_cmd *io_lst, int *status)
 {
 	int	fdi;
 
-	if (!io_lst->path)
+	if (!io_lst->expanded_value[0])
 	{
-		err_handler(ERR_AMBIG_REDIR, io_lst->path);
+		err_handler(ERR_AMBIG_REDIR, io_lst->expanded_value[0]);
 		*status = 1;
 		return (*status);
 	}
-	fdi = open(io_lst->path, O_RDONLY);
+	fdi = open(io_lst->expanded_value[0], O_RDONLY);
 	if (fdi == -1)
 	{
-		*status = check_read(io_lst->path);
+		*status = check_read(io_lst->expanded_value[0]);
 		return (*status);
 	}
 	dup2(fdi, STDIN_FILENO);
@@ -86,16 +86,16 @@ int	open_out(t_io_cmd *io_lst, int *status)
 {
 	int	fdo;
 
-	if (!io_lst->path)
+	if (!io_lst->expanded_value[0])
 	{
-		err_handler(ERR_AMBIG_REDIR, io_lst->path);
+		err_handler(ERR_AMBIG_REDIR, io_lst->expanded_value[0]);
 		*status = 1;
 		return (*status);
 	}
-	fdo = open(io_lst->path, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fdo = open(io_lst->expanded_value[0], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fdo == -1)
 	{
-		*status = check_write(io_lst->path);
+		*status = check_write(io_lst->expanded_value[0]);
 		return (*status);
 	}
 	dup2(fdo, STDOUT_FILENO);
@@ -114,16 +114,16 @@ int	open_append(t_io_cmd *io_lst, int *status)
 {
 	int	fdo;
 
-	if (!io_lst->path)
+	if (!io_lst->expanded_value[0])
 	{
-		err_handler(ERR_AMBIG_REDIR, io_lst->path);
+		err_handler(ERR_AMBIG_REDIR, io_lst->expanded_value[0]);
 		*status = 1;
 		return (*status);
 	}
-	fdo = open(io_lst->path, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	fdo = open(io_lst->expanded_value[0], O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fdo == -1)
 	{
-		*status = check_write(io_lst->path);
+		*status = check_write(io_lst->expanded_value[0]);
 		return (*status);
 	}
 	dup2(fdo, STDOUT_FILENO);

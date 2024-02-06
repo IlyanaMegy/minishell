@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:22:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 17:22:15 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/01 13:57:20 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	exec_pipe(t_data *data, t_cmd *cmd)
 	int	pid_first;
 	int	pid_sec;
 
-	// signint_child = true
+	single_sign_child(true, ADD);
 	if (pipe(fd) != 0)
 		return (ft_putstr_fd(strerror(3), 2), 3);
 	// return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 1);
@@ -91,22 +91,22 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 	if (!fork_pid)
 	{
 		if (cmd_is_dir(cmd->expanded_args[0]))
-			get_out(data, ENO_CANT_EXEC, NULL);
+			get_out(data, ENO_CANT_EXEC, NULL, &status);
 		env = env_to_tab(single_env(NULL, GET));
 		if (!env)
-			get_out(data, ENO_GENERAL, NULL);
+			get_out(data, ENO_GENERAL, NULL, &status);
 		status = check_redir(cmd);
 		if (status != ENO_SUCCESS)
-			get_out(data, ENO_GENERAL, env);
+			get_out(data, ENO_GENERAL, env, &status);
 		path = get_path(cmd->expanded_args[0]);
 		if (path.err.no != ENO_SUCCESS)
 			(err_handler(path.err.msg, path.err.cause),
-				get_out(data, single_exit_s(path.err.no, ADD), env));
+				get_out(data, single_exit_s(path.err.no, ADD), env, &status));
 		if (execve(path.path, cmd->expanded_args, env) == -1)
-			return (get_out(data, single_exit_s(0, GET), env), 1);
+			return (get_out(data, single_exit_s(0, GET), env, &status), 1);
 	}
 	waitpid(fork_pid, &status, 0);
-	// signint_child = false
+	single_sign_child(false, ADD);
 	return (get_exit_status(status));
 }
 
@@ -137,7 +137,7 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 	}
 	else
 	{
-		// signint_child = true
+		single_sign_child(true, ADD);
 		fork_pid = fork();
 		if (fork_pid < 0)
 			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);

@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-static size_t	ft_unquoted_strlen(char *str)
+static size_t	unquoted_strlen(char *str)
 {
 	size_t	i;
 	size_t	len;
@@ -18,7 +18,7 @@ static size_t	ft_unquoted_strlen(char *str)
 			else if (str[i] == quotes)
 				quotes = ((i++) && 0);
 			else
-				len += (i++ || 1); // ?
+				len += (i++ || 1);
 		}
 		else
 			len += (i++ || 1);
@@ -26,33 +26,33 @@ static size_t	ft_unquoted_strlen(char *str)
 	return (len);
 }
 
-static void	ft_unquote_filler(char *str, size_t *i, char *ret, size_t *j)
+static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 {
 	char	quotes;
 
 	quotes = str[(*i)++];
 	while (str[*i] != quotes)
-		ret[(*j)++] = str[(*i)++];
+		res[(*j)++] = str[(*i)++];
 	(*i)++;
 }
 
-char	*ft_strip_quotes(char *str)
+char	*strip_quotes(char *str)
 {
-	char *ret;
+	char *res;
 	size_t i;
 	size_t j;
 
 	i = 0;
 	j = 0;
-	ret = ft_calloc(1 + ft_unquoted_strlen(str), sizeof(char));
-	if (!ret)
+	res = ft_calloc(1 + unquoted_strlen(str), sizeof(char));
+	if (!res)
 		return (NULL);
 	while (str[i])
 	{
 		if ((str[i] == '"' || str[i] == '\'') && str[(i + 1)])
-			(ft_unquote_filler(str, &i, ret, &j));
+			(unquote_fill_it(str, &i, res, &j));
 		else
-			ret[j++] = str[i++];
+			res[j++] = str[i++];
 	}
-	return (free(str), ret);
+	return (free(str), res);
 }

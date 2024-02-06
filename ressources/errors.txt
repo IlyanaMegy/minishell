@@ -1,4 +1,4 @@
-valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp -s ./minishell
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp -s --track-fds=yes ./minishell
 
 ------commandes difficiles a traiter :
 export var=" -la" puis ls$var = KO

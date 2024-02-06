@@ -6,11 +6,13 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/28 22:25:19 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/06 09:58:04 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+int	g_sig_exit;
 
 static bool	tokenize_and_parse(t_data *data)
 {
@@ -25,7 +27,7 @@ static bool	tokenize_and_parse(t_data *data)
 	return (true);
 }
 
-static void non_interactive_mode(t_data *data)
+static void	non_interactive_mode(t_data *data)
 {
 	data->user_input = get_next_line(data->stdin);
 	if (!data->user_input)
@@ -42,6 +44,15 @@ static void non_interactive_mode(t_data *data)
 	}
 }
 
+static void	init_data_and_env(t_data *data)
+{
+	ft_memset(data, 0, sizeof(t_data));
+	g_sig_exit = 0;
+	set_signal();
+	data->stdin = dup(0);
+	data->stdout = dup(1);
+}
+
 int	main(int ac, char **av, char **arg_env)
 {
 	t_data	data;
@@ -49,9 +60,7 @@ int	main(int ac, char **av, char **arg_env)
 	(void)ac;
 	(void)av;
 	// ?	init data to NULL
-	ft_memset(&data, 0, sizeof(t_data));
-	data.stdin = dup(0);
-	data.stdout = dup(1);
+	init_data_and_env(&data);
 	// ?	stock environment into the linked list t_env thanks to single_env function
 	// TODO	use that single_env function to get, update or clear t_env list
 	get_env(arg_env);
@@ -68,10 +77,8 @@ int	main(int ac, char **av, char **arg_env)
 				(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
 			if (tokenize_and_parse(&data))
 			{
-				// *	DEBUG : Print the current command
-				// print_cmd(data.cmd);
-				init_cmdlst(&data, data.cmd);
-				executie(&data, data.cmd, false);
+				if (init_cmdlst(&data, data.cmd))
+					executie(&data, data.cmd, false);
 			}
 			free_data(&data);
 		}
@@ -79,5 +86,5 @@ int	main(int ac, char **av, char **arg_env)
 	else
 		non_interactive_mode(&data);
 	clean_program(&data);
-	return (single_exit_s(0, 0));
+	return (single_exit_s(0, GET));
 }

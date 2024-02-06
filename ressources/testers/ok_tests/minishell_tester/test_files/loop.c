@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isnumber.c                                      :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lalex-ku <lalex-ku@42sp.org.br>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/20 16:18:20 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/20 16:18:22 by ilymegy          ###   ########.fr       */
+/*   Created: 2022/06/22 17:32:45 by lalex-ku          #+#    #+#             */
+/*   Updated: 2022/06/22 17:32:50 by lalex-ku         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../inc/libft.h"
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
 
-int	ft_isnumber(char *s)
+int	main(int argc, char const *argv[])
 {
-	int	i;
+	int	pid;
 
-	i = 0;
-	if (s[i] == '-')
-		i++;
-	while (s[i])
+	pid = fork();
+	open("infile", O_RDONLY);
+	while (1)
 	{
-		if (!ft_isdigit(s[i]))
-			return (0);
-		i++;
+		printf("Helloo miniHELL %i\n", pid);
+		sleep(1);
 	}
-	return (1);
+	return (0);
 }
