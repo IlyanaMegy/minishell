@@ -1,3 +1,0 @@
-minishell$ export | grep "HOME"
-export HOME="/mnt/nfs/homes/ilymegy"
-minishell$ exit

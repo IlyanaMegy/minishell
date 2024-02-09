@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/09 15:43:04 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 17:33:20 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 static bool	pre_check_token(char *s, int index)
 {
-	if (!s[index + 1])
+	if (ignore_spaces(s, 0) == -1)
+		return (single_exit_s(0, ADD), false);
+	else if (s[index] && !s[index + 1])
 	{
 		if (s[0] == '!')
 			return (single_exit_s(1, ADD), false);

@@ -19,6 +19,7 @@
 */
 void	get_expander_heredoc_delim(t_io_cmd *io_cmd)
 {
+	signal(SIGINT, heredoc_handler);
 	io_cmd->expanded_value = malloc(sizeof(char *) * 2);
 	if (!io_cmd->expanded_value)
 		return ;
@@ -39,7 +40,6 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	char	*line;
 	char	*quotes;
 
-	signal(SIGINT, heredoc_handler);
 	get_expander_heredoc_delim(io);
 	quotes = io->expanded_value[0];
 	while (*quotes && *quotes != '"' && *quotes != '\'')

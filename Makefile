@@ -48,8 +48,7 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/handle_redir.c \
 					srcs/parsing/cmd_lst.c \
 					srcs/parsing/get_args.c \
-					srcs/parsing/io_utils.c \
-					srcs/parsing/debug.c
+					srcs/parsing/io_utils.c
 
 UTILS			=	srcs/utils/lst_manip.c \
 					srcs/utils/singletons.c

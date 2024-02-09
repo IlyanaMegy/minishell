@@ -102,17 +102,13 @@ char	**expand(char *str)
 	str = pre_expand(str);
 	if (!str)
 		return (NULL);
-	// ft_printf("str after pre = %s\n", str);
 	str = clean_empty_strs(str);
 	if (!str)
 		return (NULL);
-	// ft_printf("str after clean = %s\n", str);
 	expanded = expander_split(str);
 	free(str);
 	if (!expanded)
 		return (NULL);
-	// print_tab(expanded);
-	// ft_printf("\n");
 	i = 0;
 	while (expanded[i])
 	{
