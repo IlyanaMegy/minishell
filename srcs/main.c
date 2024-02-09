@@ -12,7 +12,7 @@
 
 #include "../inc/minishell.h"
 
-int	g_sig_exit;
+int			g_sig_exit;
 
 static bool	tokenize_and_parse(t_data *data)
 {
@@ -47,7 +47,7 @@ static void	non_interactive_mode(t_data *data)
 
 static void	set_atty_mode(t_data *data)
 {
-	int		fd;
+	int	fd;
 
 	if (!isatty(STDIN_FILENO))
 		non_interactive_mode(data);
@@ -58,6 +58,7 @@ static void	set_atty_mode(t_data *data)
 			exit(1);
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			(close(fd), exit(1));
+		close(fd);
 	}
 }
 
@@ -65,8 +66,8 @@ static void	init_data_and_env(t_data *data, char **arg_env)
 {
 	ft_memset(data, 0, sizeof(t_data));
 	g_sig_exit = 0;
-	data->stdin = dup(0);
-	data->stdout = dup(1);
+	// data->stdin = dup(0);
+	// data->stdout = dup(1);
 	// ?	stock environment into the linked list t_env thanks to single_env function
 	// TODO	use that single_env function to get, update or clear t_env list
 	get_env(arg_env);

@@ -20,10 +20,11 @@
 */
 void	reset_stds(t_data *data, bool piped)
 {
+	(void)data;
 	if (piped)
 		return ;
-	dup2(data->stdin, 0);
-	dup2(data->stdout, 1);
+	// dup2(data->stdin, 0);
+	// dup2(data->stdout, 1);
 }
 
 /**
