@@ -1,3 +1,0 @@
-minishell$ echo $9HOME
-HOME
-minishell$ exit
