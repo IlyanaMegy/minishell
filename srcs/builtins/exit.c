@@ -92,7 +92,11 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 	if (cmd->expanded_args[1])
 	{
 		if (cmd->expanded_args[2] && ft_isnumber(cmd->expanded_args[1]))
-			clean_exit_exit(data, 1, ERR_ARGS, "exit");
+		{
+			single_exit_s(10, ADD);
+			err_handler(ERR_ARGS, "exit");
+			return ;
+		}
 		else
 			single_exit_s(calcul_exit_status(data, cmd->expanded_args[1]), ADD);
 	}
