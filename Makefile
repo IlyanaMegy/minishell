@@ -52,10 +52,10 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/debug.c
 
 UTILS			=	srcs/utils/lst_manip.c \
-					srcs/utils/singletons.c \
-					# srcs/utils/signals.c
+					srcs/utils/singletons.c
 
-SIGNALS			=	srcs/signals/signals_exec.c
+SIGNALS			=	srcs/signals/signals_parent.c \
+					srcs/signals/signals_exec.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\

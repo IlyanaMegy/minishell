@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   singletons.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:26:09 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/04 16:26:11 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/06 10:18:45 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,25 @@ t_env	*single_env(t_env *env, int mode)
 }
 
 /**
+ * @note   update or return current sigint_child status
+ * @param  sign_child_s: sigint_child status
+ * @param  mode: ADD or GET
+ * @retval return current sigint_child status
+*/
+bool	single_sign_child(bool sign_child_s, int mode)
+{
+	static bool	single_sign_child = 0;
+
+	if (mode == ADD)
+		single_sign_child = sign_child_s;
+	if (mode == GET)
+		return (single_sign_child);
+	return (single_sign_child);
+}
+
+/**
  * @note   update or return current exit status
- * @param  exit_s: exit status 
+ * @param  exit_s: exit status
  * @param  mode: ADD or GET
  * @retval return current exit status
 */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:39:39 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/11 15:39:41 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/09 10:31:13 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	check_redir(t_cmd *cmd)
 
 /**
  * @note   get right exit status
- * @param  status: 
+ * @param  status:
  * @retval exit status
 */
 int	get_exit_status(int status)
@@ -98,6 +98,5 @@ int	close_n_wait(int fd[2], int p_first, int p_sec)
 	close(fd[1]);
 	waitpid(p_first, &status, 0);
 	waitpid(p_sec, &status, 0);
-	// signint_child = false
 	return (get_exit_status(status));
 }

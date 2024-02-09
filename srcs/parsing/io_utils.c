@@ -6,28 +6,28 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/28 20:01:25 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/06 10:20:59 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	init_io_cmd_node(t_io_cmd *io_node) 
+static void	init_io_cmd_node(t_io_cmd *io_node)
 {
-    io_node->path = NULL;
-    io_node->expanded_value = NULL;
-    io_node->type = -1;
-    io_node->here_doc = 0;
-    io_node->next = NULL;
-    io_node->prev = NULL;
+	io_node->path = NULL;
+	io_node->expanded_value = NULL;
+	io_node->type = -1;
+	io_node->here_doc = 0;
+	io_node->next = NULL;
+	io_node->prev = NULL;
 }
 
 bool	init_io_cmd(t_cmd *cmd)
 {
 	t_io_cmd	*temp;
-	
+
 	if (!cmd->io_list)
-	{	
+	{
 		cmd->io_list = (t_io_cmd *)malloc(sizeof(t_io_cmd));
 		if (!(cmd->io_list))
 			return (false);

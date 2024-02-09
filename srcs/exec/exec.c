@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:22:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/05 06:03:36 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/09 10:25:44 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 static void	exec_pipe_child(t_data *data, t_cmd *cmd, int fd[2],
 		t_cmd_direction dir)
 {
+	set_sig_child();
 	if (dir == LEFT)
 	{
 		close(fd[0]);
@@ -53,10 +54,10 @@ static int	exec_pipe(t_data *data, t_cmd *cmd)
 	int	pid_first;
 	int	pid_sec;
 
-	// signint_child = true
 	if (pipe(fd) != 0)
 		return (ft_putstr_fd(strerror(3), 2), 3);
 	// return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 1);
+	signal(SIGINT, SIG_IGN);
 	pid_first = fork();
 	if (pid_first == -1)
 		return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);
@@ -88,6 +89,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 	t_path	path;
 	char	**env;
 
+	set_sig_child();
 	if (!fork_pid)
 	{
 		if (cmd_is_dot(cmd->expanded_args[0]))
@@ -107,7 +109,6 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 			get_out(data, single_exit_s(1, ADD), env, &status);
 	}
 	waitpid(fork_pid, &status, 0);
-	// signint_child = false
 	return (get_exit_status(status));
 }
 
@@ -138,7 +139,7 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 	}
 	else
 	{
-		// signint_child = true
+		signal(SIGINT, SIG_IGN);
 		fork_pid = fork();
 		if (fork_pid < 0)
 			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);

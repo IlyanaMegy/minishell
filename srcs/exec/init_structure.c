@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structure.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:03:32 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 22:33:31 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:19:41 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	char	*line;
 	char	*quotes;
 
-	// signal(SIGINT, heredoc_sigint_handler);
+	signal(SIGINT, heredoc_handler);
 	get_expander_heredoc_delim(io);
 	quotes = io->expanded_value[0];
-	// ft_printf("delim = %s\n\n", quotes);
 	while (*quotes && *quotes != '"' && *quotes != '\'')
 		quotes++;
 	while (1)
 	{
 		line = readline("> ");
+		catch_sigint_exit(data);
 		if (!line)
 			break ;
 		if (ft_isdelimiter(io->expanded_value[0], line))
@@ -84,7 +84,7 @@ void	get_expanded_value(t_cmd *cmd)
  * @param  cmd: t_cmd linked list
  * @retval None
 */
-static void	init_da_cmd(t_data *data, t_cmd *cmd)
+static bool	init_da_cmd(t_data *data, t_cmd *cmd)
 {
 	t_io_cmd	*io;
 	int			fd[2];
@@ -98,18 +98,19 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
 		if (io->type == IO_HEREDOC)
 		{
 			pipe(fd);
-			data->signint_child = true;
-			pid = (signal(SIGQUIT, SIG_IGN), fork());
+			signal(SIGINT, SIG_IGN);
+			pid = fork();
 			if (!pid)
 				come_heredoc(data, io, fd);
-			if (quit_da_cmd(data, fd, &pid))
-				return ;
+			if (quit_da_cmd(fd, &pid))
+				return (false);
 			io->here_doc = fd[0];
 		}
 		else
 			io->expanded_value = expand(io->path);
 		io = io->next;
 	}
+	return (true);
 }
 
 /**
@@ -118,16 +119,20 @@ static void	init_da_cmd(t_data *data, t_cmd *cmd)
  * @param  cmd: t_cmd linked list
  * @retval None
 */
-void	init_cmdlst(t_data *data, t_cmd *cmd)
+bool	init_cmdlst(t_data *data, t_cmd *cmd)
 {
 	if (!cmd)
-		return ;
+		return (false);
 	if (cmd->next)
 	{
-		init_da_cmd(data, cmd);
-		// if (!data->heredoc_sigint)
+		if (!init_da_cmd(data, cmd))
+			return (false);
 		init_cmdlst(data, cmd->next);
 	}
 	else
-		init_da_cmd(data, cmd);
+	{
+		if (!init_da_cmd(data, cmd))
+			return (false);
+	}
+	return (true);
 }

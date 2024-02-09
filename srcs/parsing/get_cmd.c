@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 23:08:22 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/28 19:56:59 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:10:09 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static bool	set_cmd_without_args(t_data *data)
 static bool	set_new_cmd(t_data *data, t_token **token_lst)
 {
 	t_cmd	*new_cmd;
-	
+
 	if (!(*token_lst)->prev || (*token_lst)->type == PIPE)
 	{
 		new_cmd = lst_new_cmd();

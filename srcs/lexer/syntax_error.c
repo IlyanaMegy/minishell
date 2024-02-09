@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/26 12:53:45 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:29:35 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static bool	pipe_is_invalid(t_token *token_node)
 		|| (token_node->type > PIPE
 			&& token_node->next && token_node->next->type > PIPE
 			&& token_node->next->next && token_node->next->next->type == PIPE)
+		|| (token_node->type == PIPE
+			&& token_node->next && token_node->next->type == PIPE)
 		|| (token_node->type == PIPE
 			&& (!token_node->prev || !token_node->next))
 		|| (token_node->type == PIPE && !token_node->prev && !token_node->next))
@@ -41,8 +43,7 @@ static bool	is_unexpected_token(t_token *token_node)
 		return (false);
 	else if ((token_node->type > PIPE
 			&& token_node->next
-			&& token_node->next->type > PIPE
-			&& !token_node->next->next))
+			&& token_node->next->type > PIPE))
 		return (true);
 	return (false);
 }
