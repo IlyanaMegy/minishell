@@ -86,21 +86,6 @@ char	**env_to_tab(t_env *env_lst)
 }
 
 /**
- * @attention delete this function later...
- * @note   display 2D array
- * @param  tab: given 2D array
- * @retval None
-*/
-void	print_tab(char **tab)
-{
-	int	i;
-
-	i = -1;
-	while (tab[++i])
-		ft_printf("%s\n", tab[i]);
-}
-
-/**
  * @note   get 2D array length
  * @param  arr: given 2D array
  * @retval its length

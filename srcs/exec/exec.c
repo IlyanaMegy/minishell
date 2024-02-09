@@ -29,14 +29,14 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int fd[2],
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		exec_simple_cmd(data, cmd, true);
+		exec_simple_cmd(data, cmd);
 	}
 	else if (dir == RIGHT)
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
-		executie(data, cmd, true);
+		executie(data, cmd);
 	}
 	clean_program(data);
 	exit(single_exit_s(0, GET));
@@ -55,8 +55,7 @@ static int	exec_pipe(t_data *data, t_cmd *cmd)
 	int	pid_sec;
 
 	if (pipe(fd) != 0)
-		return (ft_putstr_fd(strerror(3), 2), 3);
-	// return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 1);
+		return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 3);
 	signal(SIGINT, SIG_IGN);
 	pid_first = fork();
 	if (pid_first == -1)
@@ -115,27 +114,25 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 /**
  * @note   execution as simple command
  * @param  data: t_data linked list
- * @param  piped: is it piped ?
  * @param  cmd: current command to execute
  * @retval exit status
 */
-int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
+int	exec_simple_cmd(t_data *data, t_cmd *cmd)
 {
 	int	fork_pid;
 
 	if (!cmd->expanded_args)
 	{
 		single_exit_s(check_redir(cmd), ADD);
-		reset_stds(data, piped);
 		return ((single_exit_s(0, GET) && ENO_GENERAL));
 	}
 	else if (is_builtin(cmd->expanded_args[0]))
 	{
 		single_exit_s(check_redir(cmd), ADD);
 		if (single_exit_s(0, GET) != ENO_SUCCESS)
-			return (reset_stds(data, piped), ENO_GENERAL);
+			return (ENO_GENERAL);
 		single_exit_s(exec_builtin(data, cmd), ADD);
-		return (reset_stds(data, piped), single_exit_s(0, GET));
+		return (single_exit_s(0, GET));
 	}
 	else
 	{
@@ -153,12 +150,12 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
  * @param  cmd : current command to execute
  * @retval None
 */
-void	executie(t_data *data, t_cmd *cmd, bool piped)
+void	executie(t_data *data, t_cmd *cmd)
 {
 	if (!cmd)
 		single_exit_s(ENO_GENERAL, ADD);
 	if (cmd->next)
 		single_exit_s(exec_pipe(data, cmd), ADD);
 	else
-		single_exit_s(exec_simple_cmd(data, cmd, piped), ADD);
+		single_exit_s(exec_simple_cmd(data, cmd), ADD);
 }

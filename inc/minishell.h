@@ -21,7 +21,6 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <sys/wait.h>
-# include <termios.h>
 
 # define PROMPT "minishell$ "
 
@@ -101,10 +100,6 @@ typedef struct s_data
 	char			*user_input;
 	t_token			*token;
 	t_cmd			*cmd;
-	int				stdin;
-	int				stdout;
-	bool			signint_child;
-	bool			heredoc_sigint;
 }					t_data;
 
 //  --------------------------------------------------------------------------------
@@ -242,8 +237,8 @@ int					add_var_to_env(char *name, char *content, int print_it);
 int					get_env(char **arg_env);
 
 // exec/exec.c
-int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
-void				executie(t_data *data, t_cmd *cmd, bool piped);
+int					exec_simple_cmd(t_data *data, t_cmd *cmd);
+void				executie(t_data *data, t_cmd *cmd);
 
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
@@ -255,7 +250,6 @@ int					get_exit_status(int status);
 int					check_redir(t_cmd *cmd);
 void				get_out(t_data *data, int status, char **env,
 						int *status_waitpid);
-void				reset_stds(t_data *data, bool piped);
 
 // exec/exec_redir.c
 int					check_write(char *file);
@@ -280,12 +274,10 @@ bool				cmd_is_dot(char *cmd);
 int					envlst_len(t_env *lst);
 t_env				*copy_my_lst(t_env *src);
 char				**env_to_tab(t_env *env_lst);
-void				print_tab(char **tab);
 int					double_array_len(char **arr);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);
-bool				single_sign_child(bool sign_child_s, int mode);
 int					single_exit_s(int exit_s, int mode);
 
 //  --------------------------------------------------------------------------------
@@ -341,10 +333,6 @@ void				lstclear_cmd(t_cmd **cmd_lst, void (*del)(void *));
 bool				init_io_cmd(t_cmd *cmd);
 void				lstdelone_io_list(t_io_cmd *io_node, void (*del)(void *));
 void				lstclear_io_list(t_io_cmd **io_list, void (*del)(void *));
-
-// parsing/debug.c
-void				print_cmd(t_cmd *cmd);
-void				print_token(t_token *token);
 
 //  --------------------------------------------------------------------------------
 // |									EXPAND										|

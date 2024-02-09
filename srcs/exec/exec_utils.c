@@ -12,20 +12,20 @@
 
 #include "../../inc/minishell.h"
 
-/**
- * @note   reset stdin and stdout if not piped
- * @param  data: t_data linked list
- * @param  piped: is it piped or not
- * @retval None
-*/
-void	reset_stds(t_data *data, bool piped)
-{
-	(void)data;
-	if (piped)
-		return ;
-	// dup2(data->stdin, 0);
-	// dup2(data->stdout, 1);
-}
+// /**
+//  * @note   reset stdin and stdout if not piped
+//  * @param  data: t_data linked list
+//  * @param  piped: is it piped or not
+//  * @retval None
+// */
+// void	reset_stds(t_data *data, bool piped)
+// {
+// 	(void)data;
+// 	if (piped)
+// 		return ;
+// 	// dup2(data->stdin, 0);
+// 	// dup2(data->stdout, 1);
+// }
 
 /**
  * @note   let's free everything before exit with the right status

@@ -37,7 +37,7 @@ static void	non_interactive_mode(t_data *data)
 		if (tokenize_and_parse(data))
 		{
 			if (init_cmdlst(data, data->cmd))
-				executie(data, data->cmd, false);
+				executie(data, data->cmd);
 		}
 		free_data(data);
 		data->user_input = get_next_line(STDIN_FILENO);
@@ -62,27 +62,16 @@ static void	set_atty_mode(t_data *data)
 	}
 }
 
-static void	init_data_and_env(t_data *data, char **arg_env)
-{
-	ft_memset(data, 0, sizeof(t_data));
-	g_sig_exit = 0;
-	// data->stdin = dup(0);
-	// data->stdout = dup(1);
-	// ?	stock environment into the linked list t_env thanks to single_env function
-	// TODO	use that single_env function to get, update or clear t_env list
-	get_env(arg_env);
-	// ?	init of exit status to 0 and save it in single_exit_s function
-	// TODO	use that single_exit_s function to get or update exit_s value
-	single_exit_s(0, ADD);
-}
-
 int	main(int ac, char **av, char **arg_env)
 {
 	t_data	data;
 
 	(void)ac;
 	(void)av;
-	init_data_and_env(&data, arg_env);
+	ft_memset(&data, 0, sizeof(t_data));
+	g_sig_exit = 0;
+	get_env(arg_env);
+	single_exit_s(0, ADD);
 	set_atty_mode(&data);
 	while (1)
 	{
@@ -93,7 +82,7 @@ int	main(int ac, char **av, char **arg_env)
 		if (tokenize_and_parse(&data))
 		{
 			if (init_cmdlst(&data, data.cmd))
-				executie(&data, data.cmd, false);
+				executie(&data, data.cmd);
 		}
 		free_data(&data);
 	}
