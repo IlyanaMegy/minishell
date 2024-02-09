@@ -1,5 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 12:51:31 by ilymegy           #+#    #+#             */
+/*   Updated: 2024/01/31 12:51:33 by ilymegy          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
+/**
+ * @note   join first and second strings into one and free them
+ * @param  s1: first string
+ * @param  s2: second string
+ * @retval joined string
+*/
 char	*strjoin_f(char *s1, char *s2)
 {
 	char	*joined;
@@ -48,7 +66,7 @@ char	*handle_dollar(char *str, size_t *i, bool quotes)
 	env_val = get_var_content_from_env(var);
 	if (!env_val)
 	{
-		if (str[*i] != '\0' && !quotes)
+		if (str[*i] != '\0' && !str[*i + 1] && !quotes)
 			(*i)++;
 		return (free(var), ft_strdup(""));
 	}

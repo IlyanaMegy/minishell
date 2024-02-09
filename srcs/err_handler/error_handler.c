@@ -29,7 +29,7 @@ void	err_handler(int err, char *s)
 	if (err == ERR_ARGS)
 		err_msg = ft_strjoin(s, ": too many arguments\n");
 	else if (err == ERR_EXPORT || err == ERR_EXPORT_OPT || err == ERR_UNSET
-			|| err == ERR_UNSET_OPT || err == ERR_EXIT_NB)
+		|| err == ERR_UNSET_OPT || err == ERR_EXIT_NB)
 		err_msg = complexe_err_msg(err, s);
 	else if (err == ERR_PATH)
 		err_msg = ft_strjoin(s, ": HOME not set\n");

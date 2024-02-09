@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/06 10:00:05 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:09:35 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ typedef enum e_err_no
 {
 	ENO_SUCCESS,
 	ENO_GENERAL,
+	ENO_MISS_CMD,
 	ENO_CANT_EXEC = 126,
 	ENO_NOT_FOUND,
 	ENO_EXEC_255 = 255
@@ -267,8 +268,9 @@ int					open_append(t_io_cmd *io_lst, int *status);
 t_path				get_path(char *cmd);
 t_err				check_exec(char *file, bool cmd);
 
-// exec/exec_cmd_is_dir.c
+// exec/exec_errors.c
 bool				cmd_is_dir(char *cmd);
+bool				cmd_is_dot(char *cmd);
 
 //  --------------------------------------------------------------------------------
 // |									UTILS										|
@@ -283,6 +285,7 @@ int					double_array_len(char **arr);
 
 // utils/singletons.c
 t_env				*single_env(t_env *env, int mode);
+bool				single_sign_child(bool sign_child_s, int mode);
 int					single_exit_s(int exit_s, int mode);
 
 //  --------------------------------------------------------------------------------
@@ -360,25 +363,23 @@ bool				is_valid_var_char(char c);
 
 // expand/expander_heredoc.c
 void				heredoc_expander(char *str, int fd);
-
+char				*expand_heredoc_delim(char *path);
 char				*clean_empty_strs(char *str);
-
 char				**expander_split(char const *s);
-
 char				*strip_quotes(char *str);
 
 //  --------------------------------------------------------------------------------
 // |									SIGNALS										|
 //  --------------------------------------------------------------------------------
 
-// signals/signals_exec.c
+// signals/signals_parent.c
 void				set_signal(void);
 void				reset_prompt_handler(int signal);
+
+// signals/signals_exec.c
+void				set_sig_child(void);
 void				heredoc_handler(int signal);
-void				sigquit_handler(int signal);
+void				catch_sigint_exit(t_data *data);
 bool				quit_da_cmd(int fd[2], int *pid);
 
-// signals/signals_utils.c
-bool				single_sign_child(bool sign_child_s, int mode);
-bool				single_heredoc_sigint(bool heredoc_sigint_s, int mode);
 #endif

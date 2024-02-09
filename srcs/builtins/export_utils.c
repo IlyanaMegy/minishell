@@ -18,7 +18,7 @@
  * @param  content: variable content
  * @param  append: is there += ?
  * @retval 1 is err malloc, 0 is ok
- */
+*/
 int	replace_var_in_env(char *name, char *content, int *append)
 {
 	t_env	*e;
@@ -47,7 +47,7 @@ int	replace_var_in_env(char *name, char *content, int *append)
  * @note   get variable content from the environment
  * @param  var_name: variable name
  * @retval content is yes, NULL is no variable with that name
- */
+*/
 char	*get_var_content_from_env(char *var_name)
 {
 	t_env	*e;
@@ -65,7 +65,7 @@ char	*get_var_content_from_env(char *var_name)
 /**
  * @note   simply display environment, print_it == 0 vars included
  * @retval None
- */
+*/
 void	display_export(void)
 {
 	t_env	*e;
@@ -81,7 +81,7 @@ void	display_export(void)
 		{
 			if (!(strcmp(e->name, "_")) && strlen(e->name) == 1)
 				ft_printf("");
-			else if (e->print_it==0 && !e->content[0])
+			else if (e->print_it == 0 && !e->content[0])
 				ft_printf("export %s\n", e->name);
 			else
 				ft_printf("export %s=\"%s\"\n", e->name, e->content);
@@ -96,7 +96,7 @@ void	display_export(void)
  * @param  head: pointer to first element of the list
  * @param  node: element to compare to
  * @retval None
- */
+*/
 void	sorted_var(t_env **head, t_env *node)
 {
 	t_env	tmp;
@@ -114,8 +114,8 @@ void	sorted_var(t_env **head, t_env *node)
 /**
  * @note   get a alphabetically sorted env
  * @param  head: pointer to first element of the list
- * @retval None
- */
+ * @retval sorted environment
+*/
 t_env	*get_sorted_env(t_env **head)
 {
 	t_env	*res;

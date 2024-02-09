@@ -6,11 +6,26 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:03:32 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/06 10:04:40 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 11:19:41 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+/**
+ * @note   get expanded heredoc delimiter
+ * @param  io_cmd: t_io_cmd linked list
+ * @retval None
+*/
+void	get_expander_heredoc_delim(t_io_cmd *io_cmd)
+{
+	io_cmd->expanded_value = malloc(sizeof(char *) * 2);
+	if (!io_cmd->expanded_value)
+		return ;
+	io_cmd->expanded_value[0] = expand_heredoc_delim(io_cmd->path);
+	io_cmd->expanded_value[1] = NULL;
+	return ;
+}
 
 /**
  * @note   handling here_doc
@@ -25,17 +40,17 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	char	*quotes;
 
 	signal(SIGINT, heredoc_handler);
-	quotes = io->path;
+	get_expander_heredoc_delim(io);
+	quotes = io->expanded_value[0];
 	while (*quotes && *quotes != '"' && *quotes != '\'')
 		quotes++;
 	while (1)
 	{
-		if (g_sig_exit)
-			(clean_program(data), g_sig_exit = 0, exit(2));
 		line = readline("> ");
+		catch_sigint_exit(data);
 		if (!line)
 			break ;
-		if (ft_isdelimiter(io->path, line))
+		if (ft_isdelimiter(io->expanded_value[0], line))
 			break ;
 		if (!*quotes)
 			heredoc_expander(line, fd[1]);
@@ -83,8 +98,8 @@ static bool	init_da_cmd(t_data *data, t_cmd *cmd)
 		if (io->type == IO_HEREDOC)
 		{
 			pipe(fd);
-			single_sign_child(true, ADD);
-			pid = (signal(SIGQUIT, SIG_IGN), fork());
+			signal(SIGINT, SIG_IGN);
+			pid = fork();
 			if (!pid)
 				come_heredoc(data, io, fd);
 			if (quit_da_cmd(fd, &pid))

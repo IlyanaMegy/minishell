@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:39:39 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/01 13:57:30 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 10:31:13 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ int	close_n_wait(int fd[2], int p_first, int p_sec)
 	close(fd[1]);
 	waitpid(p_first, &status, 0);
 	waitpid(p_sec, &status, 0);
-	single_sign_child(false, ADD);
 	return (get_exit_status(status));
 }

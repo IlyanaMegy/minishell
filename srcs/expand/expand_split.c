@@ -1,5 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_split.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/31 12:11:03 by ilymegy           #+#    #+#             */
+/*   Updated: 2024/01/31 12:11:05 by ilymegy          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
+/**
+ * @note   do skip word from string to increment index
+ * @param  s: given string 
+ * @param  *i: s index
+ * @retval None
+*/
 static	void	skip_word(char const *s, size_t	*i)
 {
 	char	quotes;
@@ -18,6 +36,12 @@ static	void	skip_word(char const *s, size_t	*i)
 	}
 }
 
+/**
+ * @note   allocate size from s to strs
+ * @param  s: given string
+ * @param  strs: result double array
+ * @retval allocated double array
+*/
 static char	**allocate_size(char const *s, char **strs)
 {
 	size_t	start;
@@ -43,6 +67,14 @@ static char	**allocate_size(char const *s, char **strs)
 	return (strs);
 }
 
+/**
+ * @note   fill double array from string
+ * @param  s: given string
+ * @param  strs: result double array
+ * @param  *i: s index
+ * @param  j: strs index
+ * @retval None
+*/
 static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 {
 	char	quotes;
@@ -64,6 +96,12 @@ static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 	}
 }
 
+/**
+ * @note   fill double array from string
+ * @param  s: given string
+ * @param  strs: result double array
+ * @retval filled double array
+*/
 static char	**fill_it(char const *s, char **strs)
 {
 	size_t	i;
@@ -84,6 +122,11 @@ static char	**fill_it(char const *s, char **strs)
 	return (strs);
 }
 
+/**
+ * @note   split string into double array string
+ * @param  s: given string
+ * @retval splitted string into double array string
+*/
 char	**expander_split(char const *s)
 {
 	size_t		count;

@@ -16,7 +16,7 @@
  * @note   get variable content from the environment for cd builtin
  * @param  var_name: variable name
  * @retval content is yes, NULL is no variable with that name
- */
+*/
 char	*get_var_content_from_env_cd(char *var_name)
 {
 	t_env	*e;
@@ -33,6 +33,7 @@ char	*get_var_content_from_env_cd(char *var_name)
 
 /**
  * @note   changing environment's variable pwd content by the current pwd
+ * @param  old_cmd: old current directory
  * @retval 1 is err getcwd, 0 is ok
 */
 int	change_pwd(char *old_cwd)
@@ -96,7 +97,7 @@ int	cd_home(void)
 }
 
 /**
- * @note   handling cd - command, inverting PWD && OLDPWD
+ * @note   handling "cd -" command, inverting PWD && OLDPWD
  * @retval exit status
 */
 int	handle_cd_dash(void)
@@ -110,7 +111,7 @@ int	handle_cd_dash(void)
 	old_pwd = ft_strdup(get_var_content_from_env_cd("OLDPWD"));
 	if (!old_pwd)
 		return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", STDERR_FILENO),
-				1);
+			1);
 	if (chdir(old_pwd) == 0)
 	{
 		(ft_putstr_fd(old_pwd, 2), ft_putchar_fd('\n', 2));

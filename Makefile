@@ -24,7 +24,7 @@ EXEC			=	srcs/exec/exec.c \
 					srcs/exec/exec_utils.c \
 					srcs/exec/exec_redir.c \
 					srcs/exec/exec_get_path.c \
-					srcs/exec/exec_cmd_is_dir.c \
+					srcs/exec/exec_errors.c \
 					srcs/exec/exec_builtins.c
 
 EXPAND			=	srcs/expand/expand.c \
@@ -52,11 +52,10 @@ PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/debug.c
 
 UTILS			=	srcs/utils/lst_manip.c \
-					srcs/utils/singletons.c \
-					# srcs/utils/signals.c
+					srcs/utils/singletons.c
 
-SIGNALS			=	srcs/signals/signals_exec.c \
-					srcs/signals/signals_utils.c
+SIGNALS			=	srcs/signals/signals_parent.c \
+					srcs/signals/signals_exec.c
 
 SRCS			=	$(BUILTINS)\
 					$(CLEANING)\

@@ -58,9 +58,9 @@ int	open_in(t_io_cmd *io_lst, int *status)
 {
 	int	fdi;
 
-	if (!io_lst->expanded_value[0])
+	if (!io_lst->expanded_value || io_lst->expanded_value[1])
 	{
-		err_handler(ERR_AMBIG_REDIR, io_lst->expanded_value[0]);
+		err_handler(ERR_AMBIG_REDIR, io_lst->path);
 		*status = 1;
 		return (*status);
 	}
@@ -86,9 +86,9 @@ int	open_out(t_io_cmd *io_lst, int *status)
 {
 	int	fdo;
 
-	if (!io_lst->expanded_value[0])
+	if (!io_lst->expanded_value || io_lst->expanded_value[1])
 	{
-		err_handler(ERR_AMBIG_REDIR, io_lst->expanded_value[0]);
+		err_handler(ERR_AMBIG_REDIR, io_lst->path);
 		*status = 1;
 		return (*status);
 	}
@@ -114,9 +114,9 @@ int	open_append(t_io_cmd *io_lst, int *status)
 {
 	int	fdo;
 
-	if (!io_lst->expanded_value[0])
+	if (!io_lst->expanded_value || io_lst->expanded_value[1])
 	{
-		err_handler(ERR_AMBIG_REDIR, io_lst->expanded_value[0]);
+		err_handler(ERR_AMBIG_REDIR, io_lst->path);
 		*status = 1;
 		return (*status);
 	}
