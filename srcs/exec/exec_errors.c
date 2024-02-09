@@ -62,3 +62,16 @@ bool	cmd_is_dot(char *cmd)
 	(free(start_msg), free(err_msg), free(msg));
 	return (false);
 }
+
+/**
+ * @note   close here_doc's fd if exist get and return exit status
+ * @param  cmd: current command
+ * @param  status: given exit status
+ * @retval exit status
+*/
+int	close_n_exit_s(t_cmd *cmd, int status)
+{
+	if (cmd->io_list && cmd->io_list->here_doc)
+		close(cmd->io_list->here_doc);
+	return (get_exit_status(status));
+}

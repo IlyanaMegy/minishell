@@ -108,9 +108,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 			get_out(data, single_exit_s(1, ADD), env, &status);
 	}
 	waitpid(fork_pid, &status, 0);
-	if (cmd->io_list && cmd->io_list->here_doc)
-		close(cmd->io_list->here_doc);
-	return (get_exit_status(status));
+	return (close_n_exit_s(cmd, status));
 }
 
 /**
@@ -134,9 +132,9 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 	{
 		single_exit_s(check_redir(cmd), ADD);
 		if (single_exit_s(0, GET) != ENO_SUCCESS)
-			return (reset_stds(data, piped),ENO_GENERAL);
+			return (reset_stds(data, piped), ENO_GENERAL);
 		single_exit_s(exec_builtin(data, cmd), ADD);
-		return (reset_stds(data, piped),single_exit_s(0, GET));
+		return (reset_stds(data, piped), single_exit_s(0, GET));
 	}
 	else
 	{

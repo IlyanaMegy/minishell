@@ -82,10 +82,8 @@ int	main(int ac, char **av, char **arg_env)
 		if (!data.user_input)
 			(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
 		if (tokenize_and_parse(&data))
-		{
 			if (init_cmdlst(&data, data.cmd))
 				executie(&data, data.cmd, false);
-		}
 		free_data(&data);
 	}
 	clean_program(&data);
