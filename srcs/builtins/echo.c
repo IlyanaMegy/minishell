@@ -25,6 +25,8 @@ int	check_option(char *s)
 	if (s[0] != '-')
 		return (0);
 	i++;
+	if (!s[i])
+		return (0);
 	while (s[i])
 	{
 		if (s[i] != 'n')
