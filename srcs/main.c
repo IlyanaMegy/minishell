@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/09 11:28:28 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 14:06:06 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void	set_atty_mode(t_data *data)
 			exit(1);
 		if (dup2(fd, STDOUT_FILENO) == -1)
 			(close(fd), exit(1));
+		close(fd);
 	}
 }
 
