@@ -100,6 +100,8 @@ typedef struct s_data
 	char			*user_input;
 	t_token			*token;
 	t_cmd			*cmd;
+	int				stdin;
+	int				stdout;
 }					t_data;
 
 //  --------------------------------------------------------------------------------
@@ -237,8 +239,8 @@ int					add_var_to_env(char *name, char *content, int print_it);
 int					get_env(char **arg_env);
 
 // exec/exec.c
-int					exec_simple_cmd(t_data *data, t_cmd *cmd);
-void				executie(t_data *data, t_cmd *cmd);
+int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
+void				executie(t_data *data, t_cmd *cmd, bool piped);
 
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
@@ -250,6 +252,7 @@ int					get_exit_status(int status);
 int					check_redir(t_cmd *cmd);
 void				get_out(t_data *data, int status, char **env,
 						int *status_waitpid);
+void				reset_stds(t_data *data, bool piped);
 
 // exec/exec_redir.c
 int					check_write(char *file);

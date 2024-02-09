@@ -37,7 +37,7 @@ static void	non_interactive_mode(t_data *data)
 		if (tokenize_and_parse(data))
 		{
 			if (init_cmdlst(data, data->cmd))
-				executie(data, data->cmd);
+				executie(data, data->cmd, false);
 		}
 		free_data(data);
 		data->user_input = get_next_line(STDIN_FILENO);
@@ -70,6 +70,8 @@ int	main(int ac, char **av, char **arg_env)
 	(void)av;
 	ft_memset(&data, 0, sizeof(t_data));
 	g_sig_exit = 0;
+	data.stdin = dup(0);
+	data.stdout = dup(1);
 	get_env(arg_env);
 	single_exit_s(0, ADD);
 	set_atty_mode(&data);
@@ -82,7 +84,7 @@ int	main(int ac, char **av, char **arg_env)
 		if (tokenize_and_parse(&data))
 		{
 			if (init_cmdlst(&data, data.cmd))
-				executie(&data, data.cmd);
+				executie(&data, data.cmd, false);
 		}
 		free_data(&data);
 	}

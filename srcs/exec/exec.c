@@ -29,14 +29,14 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int fd[2],
 		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		exec_simple_cmd(data, cmd);
+		exec_simple_cmd(data, cmd, true);
 	}
 	else if (dir == RIGHT)
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[0]);
-		executie(data, cmd);
+		executie(data, cmd, true);
 	}
 	clean_program(data);
 	exit(single_exit_s(0, GET));
@@ -108,6 +108,8 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 			get_out(data, single_exit_s(1, ADD), env, &status);
 	}
 	waitpid(fork_pid, &status, 0);
+	if (cmd->io_list && cmd->io_list->here_doc)
+		close(cmd->io_list->here_doc);
 	return (get_exit_status(status));
 }
 
@@ -117,22 +119,24 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
  * @param  cmd: current command to execute
  * @retval exit status
 */
-int	exec_simple_cmd(t_data *data, t_cmd *cmd)
+int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 {
 	int	fork_pid;
 
 	if (!cmd->expanded_args)
 	{
+		ft_printf("here\n\n");
 		single_exit_s(check_redir(cmd), ADD);
+		reset_stds(data, piped);
 		return ((single_exit_s(0, GET) && ENO_GENERAL));
 	}
 	else if (is_builtin(cmd->expanded_args[0]))
 	{
 		single_exit_s(check_redir(cmd), ADD);
 		if (single_exit_s(0, GET) != ENO_SUCCESS)
-			return (ENO_GENERAL);
+			return (reset_stds(data, piped),ENO_GENERAL);
 		single_exit_s(exec_builtin(data, cmd), ADD);
-		return (single_exit_s(0, GET));
+		return (reset_stds(data, piped),single_exit_s(0, GET));
 	}
 	else
 	{
@@ -150,12 +154,12 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd)
  * @param  cmd : current command to execute
  * @retval None
 */
-void	executie(t_data *data, t_cmd *cmd)
+void	executie(t_data *data, t_cmd *cmd, bool piped)
 {
 	if (!cmd)
 		single_exit_s(ENO_GENERAL, ADD);
 	if (cmd->next)
 		single_exit_s(exec_pipe(data, cmd), ADD);
 	else
-		single_exit_s(exec_simple_cmd(data, cmd), ADD);
+		single_exit_s(exec_simple_cmd(data, cmd, piped), ADD);
 }

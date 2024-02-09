@@ -61,7 +61,7 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 		}
 		free(line);
 	}
-	(clean_program(data), exit(0));
+	(clean_program(data), close(fd[1]), close(fd[0]), exit(0));
 }
 
 /**
