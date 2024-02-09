@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/09 11:04:50 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/09 15:48:12 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ bool	tokenize_input(t_data *data, char *s)
 	if (!str)
 		return (single_exit_s(1, ADD), false);
 	if (!pre_check_token(str, i))
-		return (false);
+		return (free_ptr(str), false);
 	while (str[i])
 	{
 		i = save_token(data, str, i);
