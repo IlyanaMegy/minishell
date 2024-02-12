@@ -19,6 +19,7 @@ BUILTINS		=	srcs/builtins/cd.c \
 CLEANING		=	srcs/clean/clean_it.c
 
 EXEC			=	srcs/exec/exec.c \
+					srcs/exec/exec_pipe.c \
 					srcs/exec/init_structure.c \
 					srcs/exec/init_env.c \
 					srcs/exec/exec_utils.c \

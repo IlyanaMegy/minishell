@@ -87,6 +87,7 @@ typedef struct s_cmd
 	char			*cmd;
 	char			**args;
 	char			**expanded_args;
+	int				pid;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -241,6 +242,9 @@ int					get_env(char **arg_env);
 // exec/exec.c
 int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
 void				executie(t_data *data, t_cmd *cmd, bool piped);
+
+// exec/exec_pipe.c
+int					exec_pipe(t_data *data, t_cmd *cmd);
 
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
