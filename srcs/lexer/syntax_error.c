@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/01 14:29:35 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/12 15:58:36 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ bool	check_syntax(t_token *token)
 	while (token)
 	{
 		if (!check_sep(token))
-			return (single_exit_s(2, ADD), false);
+			return (false);
 		token = token->next;
 	}
 	return (true);

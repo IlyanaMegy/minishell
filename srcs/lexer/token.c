@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/09 17:33:20 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/12 15:58:21 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static bool	pre_check_token(char *s, int index)
 {
 	if (ignore_spaces(s, 0) == -1)
 		return (single_exit_s(0, ADD), false);
-	else if (s[index] && !s[index + 1])
+	if (s[index] && !s[index + 1])
 	{
 		if (s[0] == '!')
 			return (single_exit_s(1, ADD), false);
@@ -95,11 +95,11 @@ bool	tokenize_input(t_data *data, char *s)
 	char	*str;
 
 	i = 0;
+	if (!pre_check_token(s, i))
+		return (false);
 	str = trim_end_spaces(s);
 	if (!str)
 		return (single_exit_s(1, ADD), false);
-	if (!pre_check_token(str, i))
-		return (free_ptr(str), false);
 	while (str[i])
 	{
 		i = save_token(data, str, i);
@@ -108,6 +108,6 @@ bool	tokenize_input(t_data *data, char *s)
 	}
 	free_ptr(str);
 	if (!check_syntax(data->token))
-		return (false);
+		return (single_exit_s(2, ADD), false);
 	return (true);
 }
