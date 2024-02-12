@@ -244,14 +244,14 @@ int					exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped);
 void				executie(t_data *data, t_cmd *cmd, bool piped);
 
 // exec/exec_pipe.c
-int					exec_pipe(t_data *data, t_cmd *cmd);
+int					exec_pipe(t_data *data);
 
 // exec/exec_builtin.c
 int					is_builtin(char *arg);
 int					exec_builtin(t_data *data, t_cmd *cmd);
 
 // exec/exec_utils.c
-int					close_n_wait(int fd[2], int p_first, int p_sec);
+void				swap_pipes(int fd[4]);
 int					get_exit_status(int status);
 int					check_redir(t_cmd *cmd);
 void				get_out(t_data *data, int status, char **env,

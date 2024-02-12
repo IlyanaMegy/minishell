@@ -83,20 +83,9 @@ int	get_exit_status(int status)
 	return (WEXITSTATUS(status));
 }
 
-/**
- * @note   do close fds and waitpid first and second fork
- * @param  fd[2]: fds tab
- * @param  p_first: first fork
- * @param  p_sec: second fork
- * @retval exit status
-*/
-int	close_n_wait(int fd[2], int p_first, int p_sec)
+void	swap_pipes(int fd[4])
 {
-	int	status;
-
+	dup2(fd[0], fd[2]);
 	close(fd[0]);
 	close(fd[1]);
-	waitpid(p_first, &status, 0);
-	waitpid(p_sec, &status, 0);
-	return (get_exit_status(status));
 }

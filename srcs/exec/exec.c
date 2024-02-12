@@ -12,69 +12,6 @@
 
 #include "../../inc/minishell.h"
 
-// /**
-//  * @note   executing pipe child
-//  * @param  data: t_data linked list
-//  * @param  cmd : current command to execute
-//  * @param  fd[2]: pipes
-//  * @param  dir: LEFT or RIGHT command
-//  * @retval None
-// */
-// static void	exec_pipe_child(t_data *data, t_cmd *cmd, int fd[2],
-// 		t_cmd_direction dir)
-// {
-// 	set_sig_child();
-// 	if (dir == LEFT)
-// 	{
-// 		close(fd[0]);
-// 		dup2(fd[1], STDOUT_FILENO);
-// 		close(fd[1]);
-// 		exec_simple_cmd(data, cmd, true);
-// 	}
-// 	else if (dir == RIGHT)
-// 	{
-// 		close(fd[1]);
-// 		dup2(fd[0], STDIN_FILENO);
-// 		close(fd[0]);
-// 		executie(data, cmd, true);
-// 	}
-// 	clean_program(data);
-// 	exit(single_exit_s(0, GET));
-// }
-
-// /**
-//  * @note   executing when pipe
-//  * @param  data: t_data linked list
-//  * @param  cmd : current command to execute
-//  * @retval exit status
-// */
-// static int	exec_pipe(t_data *data, t_cmd *cmd)
-// {
-// 	int	fd[2];
-// 	int	pid_first;
-// 	int	pid_sec;
-
-// 	if (pipe(fd) != 0)
-// 		return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 3);
-// 	signal(SIGINT, SIG_IGN);
-// 	pid_first = fork();
-// 	if (pid_first == -1)
-// 		return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);
-// 	if (!pid_first)
-// 		exec_pipe_child(data, cmd, fd, LEFT);
-// 	else
-// 	{
-// 		pid_sec = fork();
-// 		if (pid_sec == -1)
-// 			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);
-// 		if (!pid_sec)
-// 			exec_pipe_child(data, cmd->next, fd, RIGHT);
-// 		else
-// 			return (close_n_wait(fd, pid_first, pid_sec));
-// 	}
-// 	return (ENO_GENERAL);
-// }
-
 /**
  * @note   execution of child
  * @param  data: t_data linked list
@@ -156,7 +93,7 @@ void	executie(t_data *data, t_cmd *cmd, bool piped)
 	if (!cmd)
 		single_exit_s(ENO_GENERAL, ADD);
 	if (cmd->next)
-		single_exit_s(exec_pipe(data, cmd), ADD);
+		single_exit_s(exec_pipe(data), ADD);
 	else
 		single_exit_s(exec_simple_cmd(data, cmd, piped), ADD);
 }

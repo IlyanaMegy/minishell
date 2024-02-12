@@ -1,53 +1,65 @@
 #include "../../inc/minishell.h"
 
-void	ft_close_all(int fd[4])
+void	ft_waitpid(t_data *data)
+{
+	t_cmd	*c;
+	int		err;
+
+	c = data->cmd;
+	while (c)
+	{
+		waitpid(c->pid, &err, 0);
+		c = c->next;
+	}
+}
+
+void	ft_close_all(int fd[3])
 {
 	close(fd[0]);
 	close(fd[1]);
 	close(fd[2]);
 }
 
-void	ft_dup2(int fdin, int fdout, int close_it)
+void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 {
-	dup2(fdin, STDIN_FILENO);
-	dup2(fdout, STDOUT_FILENO);
-	if (close_it != -1)
-		close(close_it);
+	if (!cmd->expanded_args)
+	{
+		if (check_redir(cmd) != ENO_SUCCESS)
+			single_exit_s(ENO_GENERAL, ADD);
+		clean_program(data);
+		exit(single_exit_s(0, GET));
+	}
+	else if (is_builtin(cmd->expanded_args[0]))
+	{
+		if (check_redir(cmd) == ENO_SUCCESS)
+			single_exit_s(exec_builtin(data, cmd), ADD);
+		else
+			single_exit_s(ENO_GENERAL, ADD);
+		clean_program(data);
+		exit(single_exit_s(0, GET));
+	}
+	if (cmd_is_dot(cmd->expanded_args[0]))
+		get_out(data, ENO_MISS_CMD, NULL, status);
+	if (cmd_is_dir(cmd->expanded_args[0]))
+		get_out(data, ENO_CANT_EXEC, NULL, status);
 }
 
-void	swap_pipes(int fd[4])
-{
-	dup2(fd[0], fd[2]);
-	close(fd[0]);
-	close(fd[1]);
-}
-
-void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[4])
+void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 {
 	t_path	path;
 	char	**env;
 
 	if (!cmd->prev)
-	{
-		// dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
 		dup2(fd[1], STDOUT_FILENO);
-	}
-	// ft_dup2(fd[0], fd[1], fd[0]);
 	if (!cmd->next)
+		dup2(fd[2], STDIN_FILENO);
+	else if (cmd->next && cmd->prev)
 	{
 		dup2(fd[2], STDIN_FILENO);
-		close(fd[1]);
-		// dup2(fd[1], STDOUT_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
 	}
-	// ft_dup2(fd[2], fd[1], fd[1]);
-	else if (cmd->next && cmd->prev)
-		ft_dup2(fd[2], fd[1], -1);
 	ft_close_all(fd);
-	if (cmd_is_dot(cmd->expanded_args[0]))
-		get_out(data, ENO_MISS_CMD, NULL, status);
-	if (cmd_is_dir(cmd->expanded_args[0]))
-		get_out(data, ENO_CANT_EXEC, NULL, status);
+	handle_weird_cases(data, cmd, status);
 	env = env_to_tab(single_env(NULL, GET));
 	if (!env)
 		get_out(data, ENO_GENERAL, NULL, status);
@@ -61,19 +73,17 @@ void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[4])
 		get_out(data, single_exit_s(1, ADD), env, status);
 }
 
-int	exec_pipe(t_data *data, t_cmd *cmd)
+int	exec_pipe(t_data *data)
 {
 	t_cmd	*c;
-	int		fd[4];
+	int		fd[3];
 	int		status;
 
-	(void)cmd;
 	status = 0;
 	c = data->cmd;
 	fd[2] = dup(STDIN_FILENO);
 	while (c)
 	{
-		ft_printf("cmd = %s\n\n", c->expanded_args[0]);
 		if (pipe(fd) != 0)
 			return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 3);
 		// signal(SIGINT, SIG_IGN);
@@ -82,34 +92,12 @@ int	exec_pipe(t_data *data, t_cmd *cmd)
 		if (c->pid == -1)
 			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);
 		if (!c->pid)
-		{
-			if (!c->expanded_args)
-			{
-				if (check_redir(c) != ENO_SUCCESS)
-					single_exit_s(ENO_GENERAL, ADD);
-				clean_program(data);
-				exit(single_exit_s(0, GET));
-				// return ((single_exit_s(0, GET) && ENO_GENERAL));
-			}
-			else if (is_builtin(c->expanded_args[0]))
-			{
-				if (check_redir(c) == ENO_SUCCESS)
-					single_exit_s(exec_builtin(data, c), ADD);
-				else
-					single_exit_s(ENO_GENERAL, ADD);
-				clean_program(data);
-				exit(single_exit_s(0, GET));
-			}
 			exec_pipe_child(data, c, &status, fd);
-		}
 		swap_pipes(fd);
 		single_exit_s(close_n_exit_s(c, status), ADD);
 		c = c->next;
 	}
 	close(fd[2]);
-	c = data->cmd;
-	ft_printf("here\n\n");
-	while (c)
-		waitpid(c->pid, &fd[3], 0);
+	ft_waitpid(data);
 	return (get_exit_status(single_exit_s(0, GET)));
 }
