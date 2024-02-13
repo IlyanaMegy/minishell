@@ -29,6 +29,8 @@ char	*clean_empty_strs(char *str)
 		|| (str[0] == '"' && str[1] == '"' && !str[2]))
 		return (str);
 	tmp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (!tmp)
+		return (free(str), NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
@@ -36,5 +38,7 @@ char	*clean_empty_strs(char *str)
 	free(str);
 	dstsize = ft_strlen(tmp) + 1;
 	ret = ft_calloc(dstsize, sizeof(char));
+	if (!ret)
+		return (free(tmp), NULL);
 	return (ft_strlcpy(ret, tmp, dstsize), free(tmp), ret);
 }

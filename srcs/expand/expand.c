@@ -25,6 +25,8 @@ char	*strjoin_f(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
+	if (s1 && !s2)
+		return (free(s1), NULL);
 	if (!s1 || !s2)
 		return (NULL);
 	total_length = ft_strlen(s1) + ft_strlen(s2) + 1;
@@ -79,6 +81,8 @@ static char	*pre_expand(char *str)
 	size_t	i;
 
 	ret = ft_strdup("");
+	if (!ret)
+		return (NULL);
 	i = 0;
 	while (str[i])
 	{
@@ -90,6 +94,8 @@ static char	*pre_expand(char *str)
 			ret = strjoin_f(ret, handle_dollar(str, &i, false));
 		else
 			ret = strjoin_f(ret, handle_normal_str(str, &i));
+		if (!ret)
+			return (NULL);
 	}
 	return (ret);
 }

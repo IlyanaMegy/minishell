@@ -18,7 +18,7 @@
  * @param  *i: s index
  * @retval None
 */
-static	void	skip_word(char const *s, size_t	*i)
+static void	skip_word(char const *s, size_t *i)
 {
 	char	quotes;
 
@@ -129,10 +129,10 @@ static char	**fill_it(char const *s, char **strs)
 */
 char	**expander_split(char const *s)
 {
-	size_t		count;
-	char		**strs;
-	char		**free_me;
-	size_t		i;
+	size_t	count;
+	char	**strs;
+	char	**free_me;
+	size_t	i;
 
 	if (!s)
 		return (NULL);
@@ -146,6 +146,8 @@ char	**expander_split(char const *s)
 			i++;
 	}
 	strs = ft_calloc(count + 1, sizeof(char *));
+	if (!strs)
+		return (NULL);
 	free_me = strs;
 	strs = allocate_size(s, strs);
 	if (!strs || !count)
