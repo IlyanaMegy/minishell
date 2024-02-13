@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-void	ft_waitpid(t_data *data)
+static int	ft_waitpid(t_data *data)
 {
 	t_cmd	*c;
 	int		err;
@@ -11,16 +11,17 @@ void	ft_waitpid(t_data *data)
 		waitpid(c->pid, &err, 0);
 		c = c->next;
 	}
+	return (err);
 }
 
-void	ft_close_all(int fd[3])
+static void	ft_close_all(int fd[3])
 {
 	close(fd[0]);
 	close(fd[1]);
 	close(fd[2]);
 }
 
-void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
+static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 {
 	if (!cmd->expanded_args)
 	{
@@ -97,6 +98,6 @@ int	exec_pipe(t_data *data)
 		c = c->next;
 	}
 	close(fd[2]);
-	ft_waitpid(data);
-	return (get_exit_status(single_exit_s(0, GET)));
+	status = ft_waitpid(data);
+	return (get_exit_status(status));
 }
