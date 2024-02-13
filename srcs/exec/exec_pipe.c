@@ -86,13 +86,12 @@ int	exec_pipe(t_data *data)
 	{
 		if (pipe(fd) != 0)
 			return (ft_putstr_fd("__ERROR_PIPE__:\nError pipe.\n", 2), 3);
-		// signal(SIGINT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
 		c->pid = fork();
-		// set_sig_child();
 		if (c->pid == -1)
 			return (ft_putstr_fd("__ERROR_FORK__:\nError fork.\n", 2), 4);
 		if (!c->pid)
-			exec_pipe_child(data, c, &status, fd);
+			(set_sig_child(), exec_pipe_child(data, c, &status, fd));
 		swap_pipes(fd);
 		single_exit_s(close_n_exit_s(c, status), ADD);
 		c = c->next;
