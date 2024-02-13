@@ -67,15 +67,20 @@ void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 /**
  * @note   get expanded value of commands
  * @param  io: t_cmd linked list
- * @retval None
+ * @retval false if err malloc, true is ok
 */
-void	get_expanded_value(t_cmd *cmd)
+static bool	get_expanded_value(t_cmd *cmd)
 {
 	char	*joined_args;
 
 	joined_args = ft_strsjoin(cmd->args, " ");
+	if (!joined_args)
+		return (false);
 	cmd->expanded_args = expand(joined_args);
 	free(joined_args);
+	if (!cmd->expanded_args)
+		return (false);
+	return (true);
 }
 
 /**
@@ -90,8 +95,8 @@ static bool	init_da_cmd(t_data *data, t_cmd *cmd)
 	int			fd[2];
 	int			pid;
 
-	if (cmd->args)
-		get_expanded_value(cmd);
+	if (cmd->args && !get_expanded_value(cmd))
+		return (false);
 	io = cmd->io_list;
 	while (io)
 	{
@@ -127,7 +132,7 @@ bool	init_cmdlst(t_data *data, t_cmd *cmd)
 	{
 		if (!init_da_cmd(data, cmd))
 			return (false);
-		init_cmdlst(data, cmd->next);
+		return (init_cmdlst(data, cmd->next));
 	}
 	else
 	{

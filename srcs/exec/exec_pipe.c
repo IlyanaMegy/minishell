@@ -8,6 +8,11 @@ static int	ft_waitpid(t_data *data)
 	c = data->cmd;
 	while (c)
 	{
+		c->path_err = get_path(c->expanded_args[0]);
+		if (c->path_err.err.no != ENO_SUCCESS)
+			err_handler(c->path_err.err.msg, c->path_err.err.cause);
+		if (c->path_err.path)
+			free(c->path_err.path);
 		waitpid(c->pid, &err, 0);
 		c = c->next;
 	}
@@ -45,9 +50,8 @@ static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 		get_out(data, ENO_CANT_EXEC, NULL, status);
 }
 
-void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
+static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 {
-	t_path	path;
 	char	**env;
 
 	if (!cmd->prev)
@@ -66,11 +70,10 @@ void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 		get_out(data, ENO_GENERAL, NULL, status);
 	if (check_redir(cmd) != ENO_SUCCESS)
 		get_out(data, ENO_GENERAL, env, status);
-	path = get_path(cmd->expanded_args[0]);
-	if (path.err.no != ENO_SUCCESS)
-		(err_handler(path.err.msg, path.err.cause),
-			get_out(data, single_exit_s(path.err.no, ADD), env, status));
-	if (execve(path.path, cmd->expanded_args, env) == -1)
+	cmd->path_err = get_path(cmd->expanded_args[0]);
+	if (cmd->path_err.err.no != ENO_SUCCESS)
+		get_out(data, single_exit_s(cmd->path_err.err.no, ADD), env, status);
+	if (execve(cmd->path_err.path, cmd->expanded_args, env) == -1)
 		get_out(data, single_exit_s(1, ADD), env, status);
 }
 

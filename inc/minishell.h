@@ -63,6 +63,44 @@ typedef struct s_token
 // |								PARSING									|
 // -------------------------------------------------------------------------
 
+typedef enum e_err_msg
+{
+	ERR_NOCMD = 0,
+	ERR_ARGS,
+	ERR_PATH,
+	ERR_NOFILEDIR,
+	ERR_EXPORT,
+	ERR_EXPORT_OPT,
+	ERR_UNSET,
+	ERR_UNSET_OPT,
+	ERR_EXIT_NB,
+	ERR_AMBIG_REDIR,
+	ERR_PERM_DENIED
+}					t_err_msg;
+
+typedef enum e_err_no
+{
+	ENO_SUCCESS,
+	ENO_GENERAL,
+	ENO_MISS_CMD,
+	ENO_CANT_EXEC = 126,
+	ENO_NOT_FOUND,
+	ENO_EXEC_255 = 255
+}					t_err_no;
+
+typedef struct s_err
+{
+	t_err_no		no;
+	t_err_msg		msg;
+	char			*cause;
+}					t_err;
+
+typedef struct s_path
+{
+	t_err			err;
+	char			*path;
+}					t_path;
+
 typedef enum e_io_type
 {
 	IO_IN,
@@ -88,6 +126,7 @@ typedef struct s_cmd
 	char			**args;
 	char			**expanded_args;
 	int				pid;
+	t_path			path_err;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }					t_cmd;
@@ -119,31 +158,6 @@ typedef enum e_token_type
 	HEREDOC,
 	APPEND
 }					t_token_type;
-
-typedef enum e_err_msg
-{
-	ERR_NOCMD = 0,
-	ERR_ARGS,
-	ERR_PATH,
-	ERR_NOFILEDIR,
-	ERR_EXPORT,
-	ERR_EXPORT_OPT,
-	ERR_UNSET,
-	ERR_UNSET_OPT,
-	ERR_EXIT_NB,
-	ERR_AMBIG_REDIR,
-	ERR_PERM_DENIED
-}					t_err_msg;
-
-typedef enum e_err_no
-{
-	ENO_SUCCESS,
-	ENO_GENERAL,
-	ENO_MISS_CMD,
-	ENO_CANT_EXEC = 126,
-	ENO_NOT_FOUND,
-	ENO_EXEC_255 = 255
-}					t_err_no;
 
 typedef enum e_cmd_direction
 {
@@ -217,19 +231,6 @@ void				cdpwd_error_chdir_getcwd(int builtin);
 //  -------------------------------------------------------------------------
 // |								EXECUTION								|
 // -------------------------------------------------------------------------
-
-typedef struct s_err
-{
-	t_err_no		no;
-	t_err_msg		msg;
-	char			*cause;
-}					t_err;
-
-typedef struct s_path
-{
-	t_err			err;
-	char			*path;
-}					t_path;
 
 // exec/init_structure.c
 bool				init_cmdlst(t_data *data, t_cmd *cmd);

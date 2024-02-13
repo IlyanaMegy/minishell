@@ -18,21 +18,25 @@
  * @param  path: PATH in the environment
  * @retval path of cmd
 */
-static t_path	get_env_path(char *cmd, char *path)
+static t_path	get_env_path(char *cmd, char *path, int i)
 {
-	int		i;
 	t_err	err;
 	char	*exec;
 	char	*path_part;
 	char	**split_path;
 
-	i = -1;
 	split_path = ft_split(path, ':');
+	if (!split_path)
+		return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 	while (split_path[++i])
 	{
 		path_part = ft_strjoin(split_path[i], "/");
+		if (!path_part)
+			break ;
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
+		if (!exec)
+			break ;
 		err = check_exec(exec, true);
 		if (err.no == ENO_SUCCESS)
 			return (free_tab(split_path), (t_path){(t_err){ENO_SUCCESS, 55,
@@ -72,13 +76,15 @@ t_err	check_exec(char *file, bool cmd)
 t_path	get_path(char *cmd)
 {
 	char	*content;
+	int i;
 
+	i = -1;
 	if (!cmd || *cmd == '\0' || !*cmd)
 		return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 	if (ft_strnstr(cmd, "/", ft_strlen(cmd)))
 		return ((t_path){check_exec(cmd, false), cmd});
 	content = get_var_content_from_env("PATH");
 	if (content)
-		return (get_env_path(cmd, content));
+		return (get_env_path(cmd, content, i));
 	return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOFILEDIR, cmd}, NULL});
 }
