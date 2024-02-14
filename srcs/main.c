@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/12 15:56:33 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/14 16:38:10 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	non_interactive_mode(t_data *data)
 {
 	data->user_input = get_next_line(STDIN_FILENO);
 	if (!data->user_input)
-		(clean_program(data), exit(0));
+		exit(single_exit_s(0, GET));
 	while (data->user_input)
 	{
 		if (tokenize_and_parse(data))
@@ -47,19 +47,19 @@ static void	non_interactive_mode(t_data *data)
 
 static void	set_atty_mode(t_data *data)
 {
-	int	fd;
+	// int	fd;
 
 	if (!isatty(STDIN_FILENO))
 		non_interactive_mode(data);
-	if (isatty(STDIN_FILENO))
-	{
-		fd = open("/dev/stdin", O_RDWR);
-		if (fd < 0)
-			exit(1);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			(close(fd), exit(1));
-		close(fd);
-	}
+	// if (isatty(STDIN_FILENO))
+	// {
+	// 	fd = open("/dev/stdin", O_RDWR);
+	// 	if (fd < 0)
+	// 		exit(1);
+	// 	if (dup2(fd, STDOUT_FILENO) == -1)
+	// 		(close(fd), exit(1));
+	// 	close(fd);
+	// }
 }
 
 int	main(int ac, char **av, char **arg_env)
@@ -80,7 +80,8 @@ int	main(int ac, char **av, char **arg_env)
 		set_signal();
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)
-			(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
+			(clean_program(&data), ft_putstr_fd("exit\n", 1),
+				exit(single_exit_s(0, GET)));
 		if (tokenize_and_parse(&data))
 			if (init_cmdlst(&data, data.cmd))
 				executie(&data, data.cmd, false);

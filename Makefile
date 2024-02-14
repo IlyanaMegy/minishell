@@ -42,7 +42,8 @@ ERROR			=	srcs/err_handler/error_handler.c \
 LEXER			=	srcs/lexer/token.c \
 					srcs/lexer/token_utils.c \
 					srcs/lexer/token_lst.c \
-					srcs/lexer/syntax_error.c
+					srcs/lexer/syntax_error.c \
+					srcs/lexer/check_interact.c
 
 PARSING			=	srcs/parsing/get_cmd.c \
 					srcs/parsing/handle_word.c \

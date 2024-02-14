@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/09 11:09:35 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/14 15:04:18 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,9 @@ void				lstclear_token(t_token **token_lst, void (*del)(void *));
 
 // lexer/syntax_error.c
 bool				check_syntax(t_token *token);
+
+// lexer/check_interact.c
+bool				check_interact(t_token *token);
 
 //  -------------------------------------------------------------------------
 // |									PARSING								|
