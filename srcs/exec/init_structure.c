@@ -73,6 +73,7 @@ static bool	get_expanded_value(t_cmd *cmd)
 {
 	char	*joined_args;
 
+	cmd->path_err.path = NULL;
 	joined_args = ft_strsjoin(cmd->args, " ");
 	if (!joined_args)
 		return (false);

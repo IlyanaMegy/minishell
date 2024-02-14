@@ -5,14 +5,28 @@ static int	ft_waitpid(t_data *data)
 	t_cmd	*c;
 	int		err;
 
+	// t_path path;
 	c = data->cmd;
 	while (c)
 	{
+		if (c->path_err.path)
+		{
+			ft_printf("path = %s\n\n", c->path_err.path);}
 		c->path_err = get_path(c->expanded_args[0]);
 		if (c->path_err.err.no != ENO_SUCCESS)
 			err_handler(c->path_err.err.msg, c->path_err.err.cause);
+		// else
+		// {
 		if (c->path_err.path)
+		{
+			ft_printf("path = %s\n\n", c->path_err.path);
 			free(c->path_err.path);
+			c->path_err.path = NULL;
+		}
+		// }
+		// if (path.path){
+		// 	free(path.path);
+		// 	path.path = NULL;}
 		waitpid(c->pid, &err, 0);
 		c = c->next;
 	}

@@ -29,6 +29,7 @@ static bool	tokenize_and_parse(t_data *data)
 
 static void	non_interactive_mode(t_data *data)
 {
+	ft_printf("noninteractive here\n\n");
 	data->user_input = get_next_line(STDIN_FILENO);
 	if (!data->user_input)
 		(clean_program(data), exit(0));
@@ -77,10 +78,12 @@ int	main(int ac, char **av, char **arg_env)
 	set_atty_mode(&data);
 	while (1)
 	{
+		ft_printf("interactive here\n\n");
 		set_signal();
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)
-			(clean_program(&data), ft_putstr_fd("exit\n", 1), exit(1));
+			(clean_program(&data), ft_putstr_fd("exit\n", 1),
+					exit(single_exit_s(0, GET)));
 		if (tokenize_and_parse(&data))
 			if (init_cmdlst(&data, data.cmd))
 				executie(&data, data.cmd, false);
