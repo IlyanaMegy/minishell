@@ -1,5 +1,10 @@
 #include "../../inc/minishell.h"
 
+/**
+ * @note   do wait and display child's error if there is
+ * @param  data: t_data linked list
+ * @retval exit status
+*/
 static int	ft_waitpid(t_data *data)
 {
 	t_cmd	*c;
@@ -8,13 +13,13 @@ static int	ft_waitpid(t_data *data)
 	c = data->cmd;
 	while (c)
 	{
-		if (c->cmd)
+		if (c->expanded_args)
 		{
 			c->path_err = get_path(c->expanded_args[0]);
 			if (c->path_err.err.no != ENO_SUCCESS)
 				err_handler(c->path_err.err.msg, c->path_err.err.cause);
 			if (c->path_err.path)
-				free(c->path_err.path);
+				free_ptr(c->path_err.path);
 		}
 		waitpid(c->pid, &err, 0);
 		c = c->next;
@@ -22,6 +27,11 @@ static int	ft_waitpid(t_data *data)
 	return (err);
 }
 
+/**
+ * @note   simply close fds
+ * @param  fd[3]: files descriptors
+ * @retval None
+*/
 static void	ft_close_all(int fd[3])
 {
 	close(fd[0]);
@@ -29,6 +39,14 @@ static void	ft_close_all(int fd[3])
 	close(fd[2]);
 }
 
+/**
+ * @brief  
+ * @note   handle when no cmd, builtins, cmd is dot or dir
+ * @param  data: t_data linked list
+ * @param  cmd: given command
+ * @param  *status: exit status
+ * @retval None
+*/
 static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 {
 	if (!cmd->expanded_args)
@@ -53,6 +71,14 @@ static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 		get_out(data, ENO_CANT_EXEC, NULL, status);
 }
 
+/**
+ * @note   execution of child when pipes
+ * @param  data: t_data linked list
+ * @param  cmd: given command
+ * @param  *status: exit status of child process
+ * @param  fd[3]: files descriptors
+ * @retval None
+*/
 static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 {
 	char	**env;
@@ -80,6 +106,11 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 		get_out(data, single_exit_s(1, ADD), env, status);
 }
 
+/**
+ * @note   execution when pipes
+ * @param  data: t_data linked list
+ * @retval exit status
+*/
 int	exec_pipe(t_data *data)
 {
 	t_cmd	*c;

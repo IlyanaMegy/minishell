@@ -80,7 +80,7 @@ char	*strip_quotes(char *str)
 	while (str[i])
 	{
 		if ((str[i] == '"' || str[i] == '\'') && str[(i + 1)])
-			(unquote_fill_it(str, &i, res, &j));
+			unquote_fill_it(str, &i, res, &j);
 		else
 			res[j++] = str[i++];
 	}

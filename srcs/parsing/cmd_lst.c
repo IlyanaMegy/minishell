@@ -61,7 +61,11 @@ void	lstdelone_cmd(t_cmd *cmd, void (*del)(void *))
 	if (cmd->args)
 		free_tab(cmd->args);
 	if (cmd->expanded_args)
+	{
 		free_tab(cmd->expanded_args);
+		// if (cmd->path_err.path)
+			cmd->path_err.path = NULL;
+	}
 	if (cmd->io_list)
 		lstclear_io_list(&cmd->io_list, del);
 	(*del)(cmd);

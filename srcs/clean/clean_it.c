@@ -75,7 +75,7 @@ void	free_tab(char **map)
 }
 
 /**
- * @brief  
+ * @brief
  * @note   free pointer
  * @param  ptr: given pointer
  * @retval None

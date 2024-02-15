@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/15 23:04:47 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/16 00:47:18 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	non_interactive_mode(t_data *data)
 {
 	data->user_input = get_next_line(STDIN_FILENO);
 	if (!data->user_input)
-		exit(single_exit_s(0, GET));
+		(clean_program(data), exit(single_exit_s(0, GET)));
 	while (data->user_input)
 	{
 		if (tokenize_and_parse(data))
@@ -42,6 +42,7 @@ static void	non_interactive_mode(t_data *data)
 		free_data(data);
 		data->user_input = get_next_line(STDIN_FILENO);
 	}
+	clean_program(data);
 	exit(single_exit_s(0, GET));
 }
 
@@ -81,7 +82,7 @@ int	main(int ac, char **av, char **arg_env)
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)
 			(clean_program(&data), ft_putstr_fd("exit\n", 1),
-				exit(single_exit_s(0, GET)));
+					exit(single_exit_s(0, GET)));
 		if (tokenize_and_parse(&data))
 		{
 			// print_cmd(data.cmd);
