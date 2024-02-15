@@ -16,7 +16,6 @@ int			g_sig_exit;
 
 static bool	tokenize_and_parse(t_data *data)
 {
-	
 	if (data->user_input[0])
 		add_history(data->user_input);
 	else
@@ -43,7 +42,6 @@ static void	non_interactive_mode(t_data *data)
 		free_data(data);
 		data->user_input = get_next_line(STDIN_FILENO);
 	}
-	free(data->user_input);
 	clean_program(data);
 	exit(single_exit_s(0, GET));
 }
