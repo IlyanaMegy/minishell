@@ -73,7 +73,6 @@ static bool	get_expanded_value(t_cmd *cmd)
 {
 	char	*joined_args;
 
-	ft_printf("cmd = %s\n\n", cmd->args[0]);
 	joined_args = ft_strsjoin(cmd->args, " ");
 	if (!joined_args)
 		return (false);
@@ -81,7 +80,6 @@ static bool	get_expanded_value(t_cmd *cmd)
 	free(joined_args);
 	if (!cmd->expanded_args)
 		return (false);
-	ft_printf("cmd = %s\n\n", cmd->expanded_args[0]);
 	return (true);
 }
 

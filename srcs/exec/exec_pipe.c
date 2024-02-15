@@ -13,7 +13,6 @@ static int	ft_waitpid(t_data *data)
 	c = data->cmd;
 	while (c)
 	{
-		ft_printf("here waiting\n\n");
 		if (c->expanded_args)
 		{
 			c->path_err = get_path(c->expanded_args[0]);
@@ -103,7 +102,6 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 	cmd->path_err = get_path(cmd->expanded_args[0]);
 	if (cmd->path_err.err.no != ENO_SUCCESS)
 		get_out(data, single_exit_s(cmd->path_err.err.no, ADD), env, status);
-	ft_printf("cmd = %s\n\n", cmd->expanded_args[0]);
 	if (execve(cmd->path_err.path, cmd->expanded_args, env) == -1)
 		get_out(data, single_exit_s(1, ADD), env, status);
 }
