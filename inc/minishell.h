@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/14 15:04:18 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/15 17:13:03 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,5 +381,8 @@ void				set_sig_child(void);
 void				heredoc_handler(int signal);
 void				catch_sigint_exit(t_data *data);
 bool				quit_da_cmd(int fd[2], int *pid);
+
+void				print_token(t_token *token);
+void				print_cmd(t_cmd *cmd);
 
 #endif

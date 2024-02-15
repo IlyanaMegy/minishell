@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:44:39 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/28 19:45:45 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/15 17:30:24 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ bool	handle_redir(t_cmd **cmd_lst, t_token **token_lst, t_token_type type)
 		return (false);
 	last_io->type = get_io_type(type);
 	head_token = get_next_token(head_token);
+	// head_token = head_token->next->next;
 	*token_lst = head_token;
+	dprintf(2, "head_token->value: %s\n", head_token->value);
+	dprintf(2, "Fin de handle_redir\n");
 	return (true);
 }
