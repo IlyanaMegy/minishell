@@ -130,7 +130,6 @@ bool	init_cmdlst(t_data *data, t_cmd *cmd)
 		return (false);
 	if (cmd->next)
 	{
-		ft_printf("input = %s, next = %s\n\n", cmd->cmd, cmd->next->cmd);
 		if (!init_da_cmd(data, cmd))
 			return (false);
 		return (init_cmdlst(data, cmd->next));
