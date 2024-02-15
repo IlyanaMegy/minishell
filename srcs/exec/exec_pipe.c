@@ -1,38 +1,38 @@
 #include "../../inc/minishell.h"
 
+/**
+ * @note   do wait and display child's error if there is
+ * @param  data: t_data linked list
+ * @retval exit status
+*/
 static int	ft_waitpid(t_data *data)
 {
 	t_cmd	*c;
 	int		err;
 
-	// t_path path;
 	c = data->cmd;
 	while (c)
 	{
-		if (c->path_err.path)
+		ft_printf("here waiting\n\n");
+		if (c->expanded_args)
 		{
-			ft_printf("path = %s\n\n", c->path_err.path);}
-		c->path_err = get_path(c->expanded_args[0]);
-		if (c->path_err.err.no != ENO_SUCCESS)
-			err_handler(c->path_err.err.msg, c->path_err.err.cause);
-		// else
-		// {
-		if (c->path_err.path)
-		{
-			ft_printf("path = %s\n\n", c->path_err.path);
-			free(c->path_err.path);
-			c->path_err.path = NULL;
+			c->path_err = get_path(c->expanded_args[0]);
+			if (c->path_err.err.no != ENO_SUCCESS)
+				err_handler(c->path_err.err.msg, c->path_err.err.cause);
+			if (c->path_err.path)
+				free_ptr(c->path_err.path);
 		}
-		// }
-		// if (path.path){
-		// 	free(path.path);
-		// 	path.path = NULL;}
 		waitpid(c->pid, &err, 0);
 		c = c->next;
 	}
 	return (err);
 }
 
+/**
+ * @note   simply close fds
+ * @param  fd[3]: files descriptors
+ * @retval None
+*/
 static void	ft_close_all(int fd[3])
 {
 	close(fd[0]);
@@ -40,6 +40,14 @@ static void	ft_close_all(int fd[3])
 	close(fd[2]);
 }
 
+/**
+ * @brief  
+ * @note   handle when no cmd, builtins, cmd is dot or dir
+ * @param  data: t_data linked list
+ * @param  cmd: given command
+ * @param  *status: exit status
+ * @retval None
+*/
 static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 {
 	if (!cmd->expanded_args)
@@ -64,6 +72,14 @@ static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 		get_out(data, ENO_CANT_EXEC, NULL, status);
 }
 
+/**
+ * @note   execution of child when pipes
+ * @param  data: t_data linked list
+ * @param  cmd: given command
+ * @param  *status: exit status of child process
+ * @param  fd[3]: files descriptors
+ * @retval None
+*/
 static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 {
 	char	**env;
@@ -87,10 +103,16 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 	cmd->path_err = get_path(cmd->expanded_args[0]);
 	if (cmd->path_err.err.no != ENO_SUCCESS)
 		get_out(data, single_exit_s(cmd->path_err.err.no, ADD), env, status);
+	ft_printf("cmd = %s\n\n", cmd->expanded_args[0]);
 	if (execve(cmd->path_err.path, cmd->expanded_args, env) == -1)
 		get_out(data, single_exit_s(1, ADD), env, status);
 }
 
+/**
+ * @note   execution when pipes
+ * @param  data: t_data linked list
+ * @retval exit status
+*/
 int	exec_pipe(t_data *data)
 {
 	t_cmd	*c;
