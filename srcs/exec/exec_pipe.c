@@ -8,11 +8,14 @@ static int	ft_waitpid(t_data *data)
 	c = data->cmd;
 	while (c)
 	{
-		c->path_err = get_path(c->expanded_args[0]);
-		if (c->path_err.err.no != ENO_SUCCESS)
-			err_handler(c->path_err.err.msg, c->path_err.err.cause);
-		if (c->path_err.path)
-			free(c->path_err.path);
+		if (c->cmd)
+		{
+			c->path_err = get_path(c->expanded_args[0]);
+			if (c->path_err.err.no != ENO_SUCCESS)
+				err_handler(c->path_err.err.msg, c->path_err.err.cause);
+			if (c->path_err.path)
+				free(c->path_err.path);
+		}
 		waitpid(c->pid, &err, 0);
 		c = c->next;
 	}

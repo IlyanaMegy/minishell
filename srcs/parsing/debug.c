@@ -6,11 +6,21 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/07 17:34:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/15 18:53:46 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/15 22:39:30 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	print_expanded_args(char **args)
+{
+	int i = 0;
+	while (args && args[i])
+	{
+		dprintf(2, "- expanded arg %d = %s\n", i, args[i]);
+		i++;
+	}
+}
 
 void	print_cmd(t_cmd *cmd)
 {
@@ -21,12 +31,7 @@ void	print_cmd(t_cmd *cmd)
 	temp = cmd;
 	while (temp)
 	{
-		while (!temp->cmd)
-		{
-			i++;
-			temp = temp->next;
-		}
-		dprintf(2, "Commande %d: %s\n", i++, temp->cmd);
+		dprintf(2, "\nCommande %d: %s\n", i++, temp->cmd);
 		int k = 1;
 		temp_io_list = temp->io_list;
 		while (temp_io_list)
@@ -37,18 +42,13 @@ void	print_cmd(t_cmd *cmd)
 			temp_io_list = temp_io_list->next;
 		}
 		int j = 0;
-		while (temp->args[j])
+		while (temp->args && temp->args[j])
 		{
 			dprintf(2, "- arg %d = %s\n", j, temp->args[j]);
-			// dprintf(2, "- expanded_arg %d = %s\n\n", j, temp->expanded_args[j]);
 			j++;
 		}
-		if (temp->next)
-			temp = temp->next;
-		else
-			break ;
+		temp = temp->next;
 	}
-	// exit (0);
 }
 
 void	print_token(t_token *token)

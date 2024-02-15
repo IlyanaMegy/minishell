@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 15:39:39 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/09 10:31:13 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/15 21:40:49 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	get_exit_status(int status)
 	return (WEXITSTATUS(status));
 }
 
-void	swap_pipes(int fd[4])
+void	swap_pipes(int fd[3])
 {
 	dup2(fd[0], fd[2]);
 	close(fd[0]);

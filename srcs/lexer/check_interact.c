@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/14 16:39:20 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/15 21:42:00 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ static int	n_minishell(t_token *token)
 bool	check_interact(t_token *token)
 {
 	int		count;
-	t_token	*head;
 
-	head = token;
 	count = n_minishell(token);
 	if (is_minishell(token->value) && count > 1)
 		return (false);
