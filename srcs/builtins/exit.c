@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:21:14 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/19 21:39:36 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/17 17:09:41 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param  *i: index
  * @param  sign: well is a sign
  * @retval None
-*/
+ */
 void	skip_spaces_get_sign(char *number, int *i, int *sign)
 {
 	while (number[*i] && number[*i] == ' ')
@@ -38,7 +38,7 @@ void	skip_spaces_get_sign(char *number, int *i, int *sign)
  * @param  err_state: error state
  * @param  msg: error message
  * @retval None
-*/
+ */
 void	clean_exit_exit(t_data *data, int exit_status, int err_state, char *msg)
 {
 	int	exit_s;
@@ -50,11 +50,11 @@ void	clean_exit_exit(t_data *data, int exit_status, int err_state, char *msg)
 }
 
 /**
- * @note   verify is correct number, find sign, convert to int 
+ * @note   verify is correct number, find sign, convert to int
  * @param  data: t_data structure
  * @param  number: given exit_status arg
  * @retval 255 if not int number and exit, int number is good exit status
-*/
+ */
 int	calcul_exit_status(t_data *data, char *number)
 {
 	int					i;
@@ -84,7 +84,7 @@ int	calcul_exit_status(t_data *data, char *number)
  * @param  data: t_data structure
  * @param  cmd : current command
  * @retval None
-*/
+ */
 void	ft_exit(t_data *data, t_cmd *cmd)
 {
 	if (!cmd->prev && !cmd->next)
@@ -100,6 +100,8 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 		else
 			single_exit_s(calcul_exit_status(data, cmd->expanded_args[1]), ADD);
 	}
+	close(data->stdin);
+	close(data->stdout);
 	clean_program(data);
 	exit(single_exit_s(0, GET));
 }
