@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:21:14 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/17 17:09:41 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/17 21:52:33 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,6 @@ void	ft_exit(t_data *data, t_cmd *cmd)
 		else
 			single_exit_s(calcul_exit_status(data, cmd->expanded_args[1]), ADD);
 	}
-	close(data->stdin);
-	close(data->stdout);
 	clean_program(data);
 	exit(single_exit_s(0, GET));
 }

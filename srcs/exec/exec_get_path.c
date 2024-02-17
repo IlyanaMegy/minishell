@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_get_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 18:10:45 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/11 18:10:47 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/17 22:18:19 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * @param  cmd: command in question
  * @param  path: PATH in the environment
  * @retval path of cmd
-*/
+ */
 static t_path	get_env_path(char *cmd, char *path, int i)
 {
 	t_err	err;
@@ -52,7 +52,7 @@ static t_path	get_env_path(char *cmd, char *path, int i)
  * @param  file: the executable path
  * @param  cmd: is it cmd ?
  * @retval t_err error status
-*/
+ */
 t_err	check_exec(char *file, bool cmd)
 {
 	if (!*file)
@@ -72,8 +72,8 @@ t_err	check_exec(char *file, bool cmd)
  * @note   get path of this command
  * @param  cmd: command in question
  * @retval the path or NULL if error
-*/
-t_path	get_path(char *cmd)
+ */
+t_path	get_path(t_data *data, char *cmd)
 {
 	char	*content;
 	char	*copy_cmd;
@@ -89,6 +89,8 @@ t_path	get_path(char *cmd)
 		return ((t_path){check_exec(cmd, false), copy_cmd});
 	free(copy_cmd);
 	content = get_var_content_from_env("PATH");
+	close(data->stdin);
+	close(data->stdout);
 	if (content)
 		return (get_env_path(cmd, content, i));
 	return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOFILEDIR, cmd}, NULL});

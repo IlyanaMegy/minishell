@@ -6,7 +6,7 @@
 /*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:22:24 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/17 17:31:41 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/17 22:17:39 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param  cmd : current command to execute
  * @param  fork_pid : recently forked variable
  * @retval exit status
-*/
+ */
 static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 {
 	int		status;
@@ -37,7 +37,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 			get_out(data, ENO_GENERAL, NULL, &status);
 		if (check_redir(cmd) != ENO_SUCCESS)
 			get_out(data, ENO_GENERAL, env, &status);
-		path = get_path(cmd->expanded_args[0]);
+		path = get_path(data, cmd->expanded_args[0]);
 		if (path.err.no != ENO_SUCCESS)
 			(err_handler(path.err.msg, path.err.cause),
 				get_out(data, single_exit_s(path.err.no, ADD), env, &status));
@@ -53,7 +53,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
  * @param  data: t_data linked list
  * @param  cmd: current command to execute
  * @retval exit status
-*/
+ */
 int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 {
 	int	fork_pid;
@@ -87,7 +87,7 @@ int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
  * @param  data: t_data linked list
  * @param  cmd : current command to execute
  * @retval None
-*/
+ */
 void	executie(t_data *data, t_cmd *cmd, bool piped)
 {
 	if (!cmd)

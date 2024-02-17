@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/15 22:39:54 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/17 21:58:19 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ int					open_out(t_io_cmd *io_lst, int *status);
 int					open_append(t_io_cmd *io_lst, int *status);
 
 // exec/exec_get_path.c
-t_path				get_path(char *cmd);
+t_path				get_path(t_data *data, char *cmd);
 t_err				check_exec(char *file, bool cmd);
 
 // exec/exec_errors.c
