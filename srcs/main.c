@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:30:18 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/16 00:47:18 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/19 16:51:51 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,16 @@ static void	non_interactive_mode(t_data *data)
 	exit(single_exit_s(0, GET));
 }
 
-static void	set_atty_mode(t_data *data)
+static void	init_data_env(t_data *data, char **arg_env)
 {
-	// int	fd;
-
+	ft_memset(data, 0, sizeof(t_data));
+	g_sig_exit = 0;
+	data->stdin = dup(0);
+	data->stdout = dup(1);
+	get_env(arg_env);
+	single_exit_s(0, ADD);
 	if (!isatty(STDIN_FILENO))
 		non_interactive_mode(data);
-	// if (isatty(STDIN_FILENO))
-	// {
-	// 	fd = open("/dev/stdin", O_RDWR);
-	// 	if (fd < 0)
-	// 		exit(1);
-	// 	if (dup2(fd, STDOUT_FILENO) == -1)
-	// 		(close(fd), exit(1));
-	// 	close(fd);
-	// }
 }
 
 int	main(int ac, char **av, char **arg_env)
@@ -69,23 +64,16 @@ int	main(int ac, char **av, char **arg_env)
 
 	(void)ac;
 	(void)av;
-	ft_memset(&data, 0, sizeof(t_data));
-	g_sig_exit = 0;
-	data.stdin = dup(0);
-	data.stdout = dup(1);
-	get_env(arg_env);
-	single_exit_s(0, ADD);
-	set_atty_mode(&data);
+	init_data_env(&data, arg_env);
 	while (1)
 	{
 		set_signal();
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)
 			(clean_program(&data), ft_putstr_fd("exit\n", 1),
-					exit(single_exit_s(0, GET)));
+				exit(single_exit_s(0, GET)));
 		if (tokenize_and_parse(&data))
 		{
-			// print_cmd(data.cmd);
 			if (init_cmdlst(&data, data.cmd))
 				executie(&data, data.cmd, false);
 		}
