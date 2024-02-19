@@ -83,6 +83,11 @@ int	get_exit_status(int status)
 	return (WEXITSTATUS(status));
 }
 
+/**
+ * @note   swap fd[2] and fd[0] and close them
+ * @param  fd: given fds
+ * @retval None
+*/
 void	swap_pipes(int fd[3])
 {
 	dup2(fd[0], fd[2]);

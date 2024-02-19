@@ -75,7 +75,7 @@ int	add_var_to_env(char *name, char *content, int print_it)
  * @param  i: index
  * @retval 1 is err malloc, 0 is ok
  */
-int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
+static int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
 {
 	char	*shlvl;
 
@@ -105,7 +105,7 @@ int	get_var(char **tmp_name, char **tmp_content, char *arg, int i)
  * @param  pwd: is it pwd that we add ?
  * @retval exit status
 */
-int	add_if_missing(char *var_name, char *var_content, int pwd)
+static int	add_if_missing(char *var_name, char *var_content, int pwd)
 {
 	char	*name;
 	char	*content;

@@ -12,6 +12,13 @@
 
 #include "../../inc/minishell.h"
 
+void	ignore_last_heredoc(t_cmd *cmd)
+{
+	if (cmd->prev && cmd->prev->io_list
+		&& cmd->prev->io_list->type == IO_HEREDOC)
+		close(cmd->prev->io_list->here_doc);
+}
+
 /**
  * @note   execution of child
  * @param  data: t_data linked list
@@ -54,7 +61,7 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
  * @param  cmd: current command to execute
  * @retval exit status
  */
-int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
+static int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 {
 	int	fork_pid;
 
