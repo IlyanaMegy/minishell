@@ -80,6 +80,8 @@ t_path	get_path(t_data *data, char *cmd)
 	int		i;
 
 	i = -1;
+	close(data->stdin);
+	close(data->stdout);
 	copy_cmd = ft_strdup(cmd);
 	if (!copy_cmd)
 		return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
@@ -89,8 +91,6 @@ t_path	get_path(t_data *data, char *cmd)
 		return ((t_path){check_exec(cmd, false), copy_cmd});
 	free(copy_cmd);
 	content = get_var_content_from_env("PATH");
-	close(data->stdin);
-	close(data->stdout);
 	if (content)
 		return (get_env_path(cmd, content, i));
 	return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOFILEDIR, cmd}, NULL});
