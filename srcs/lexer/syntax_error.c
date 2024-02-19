@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 15:50:10 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/02/12 16:04:49 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/19 16:30:45 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,16 @@ static bool	check_sep(t_token *token_node)
 
 bool	check_syntax(t_token *token)
 {
+	t_token	*first;
+
+	first = token;
 	while (token)
 	{
 		if (!check_sep(token))
-			return (false);
+			return (single_exit_s(2, ADD), false);
 		token = token->next;
 	}
+	if (ft_strcmp(first->value, "./minishell") == 0)
+		return (single_exit_s(0, ADD), false);
 	return (true);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 16:35:11 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/17 21:58:19 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/19 16:30:09 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,9 +313,6 @@ void				lstclear_token(t_token **token_lst, void (*del)(void *));
 // lexer/syntax_error.c
 bool				check_syntax(t_token *token);
 
-// lexer/check_interact.c
-bool				check_interact(t_token *token);
-
 //  -------------------------------------------------------------------------
 // |									PARSING								|
 // -------------------------------------------------------------------------
@@ -382,6 +379,7 @@ void				heredoc_handler(int signal);
 void				catch_sigint_exit(t_data *data);
 bool				quit_da_cmd(int fd[2], int *pid);
 
+// signals/signals_debug.c
 void				print_token(t_token *token);
 void				print_cmd(t_cmd *cmd);
 void				print_expanded_args(char **args);
