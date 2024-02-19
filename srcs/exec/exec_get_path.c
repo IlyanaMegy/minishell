@@ -17,7 +17,7 @@
  * @param  cmd: command in question
  * @param  path: PATH in the environment
  * @retval path of cmd
- */
+*/
 static t_path	get_env_path(char *cmd, char *path, int i)
 {
 	t_err	err;
@@ -52,7 +52,7 @@ static t_path	get_env_path(char *cmd, char *path, int i)
  * @param  file: the executable path
  * @param  cmd: is it cmd ?
  * @retval t_err error status
- */
+*/
 t_err	check_exec(char *file, bool cmd)
 {
 	if (!*file)
@@ -72,7 +72,7 @@ t_err	check_exec(char *file, bool cmd)
  * @note   get path of this command
  * @param  cmd: command in question
  * @retval the path or NULL if error
- */
+*/
 t_path	get_path(t_data *data, char *cmd)
 {
 	char	*content;

@@ -17,7 +17,7 @@
  * @param  io_cmd: t_io_cmd linked list
  * @retval None
 */
-void	get_expander_heredoc_delim(t_io_cmd *io_cmd)
+static void	get_expander_heredoc_delim(t_io_cmd *io_cmd)
 {
 	signal(SIGINT, heredoc_handler);
 	io_cmd->expanded_value = malloc(sizeof(char *) * 2);
@@ -35,7 +35,7 @@ void	get_expander_heredoc_delim(t_io_cmd *io_cmd)
  * @param  fd[2]: files descriptors
  * @retval None
 */
-void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
+static void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 {
 	char	*line;
 	char	*quotes;
@@ -83,6 +83,8 @@ static bool	get_expanded_value(t_cmd *cmd)
 	return (true);
 }
 
+
+
 /**
  * @note   initializing t_cmd lst and handling here_docs
  * @param  data: t_data linked list
@@ -102,8 +104,8 @@ static bool	init_da_cmd(t_data *data, t_cmd *cmd)
 	{
 		if (io->type == IO_HEREDOC)
 		{
-			pipe(fd);
-			signal(SIGINT, SIG_IGN);
+			ignore_last_heredoc(cmd);
+			(pipe(fd), signal(SIGINT, SIG_IGN));
 			pid = fork();
 			if (!pid)
 				come_heredoc(data, io, fd);
