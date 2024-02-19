@@ -104,7 +104,7 @@ static bool	init_da_cmd(t_data *data, t_cmd *cmd)
 	{
 		if (io->type == IO_HEREDOC)
 		{
-			ignore_last_heredoc(cmd);
+			ignore_last_heredoc(cmd, io);
 			(pipe(fd), signal(SIGINT, SIG_IGN));
 			pid = fork();
 			if (!pid)
