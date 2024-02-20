@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 16:33:18 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/28 20:00:22 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/20 13:29:39 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	lstdelone_cmd(t_cmd *cmd, void (*del)(void *))
 	if (cmd->expanded_args)
 	{
 		free_tab(cmd->expanded_args);
-		// if (cmd->path_err.path)
-			cmd->path_err.path = NULL;
+		cmd->path_err.path = NULL;
 	}
 	if (cmd->io_list)
 		lstclear_io_list(&cmd->io_list, del);

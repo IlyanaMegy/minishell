@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 16:03:32 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/15 23:04:38 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/20 13:17:08 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ static bool	get_expanded_value(t_cmd *cmd)
 		return (false);
 	return (true);
 }
-
-
 
 /**
  * @note   initializing t_cmd lst and handling here_docs
