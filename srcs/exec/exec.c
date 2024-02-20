@@ -12,11 +12,30 @@
 
 #include "../../inc/minishell.h"
 
-void	ignore_last_heredoc(t_cmd *cmd)
+/**
+ * @note   close last heredoc's fd if current cmd is heredoc
+ * @param  cmd: given command 
+ * @retval None
+*/
+void	ignore_last_heredoc(t_cmd *cmd, t_io_cmd *io)
 {
-	if (cmd->prev && cmd->prev->io_list
-		&& cmd->prev->io_list->type == IO_HEREDOC)
-		close(cmd->prev->io_list->here_doc);
+	t_io_cmd	*io_prev;
+	t_cmd		*c;
+
+	c = cmd->prev;
+	while (c)
+	{
+		if (c->io_list && c->io_list->type == IO_HEREDOC)
+			close(c->io_list->here_doc);
+		c = c->prev;
+	}
+	io_prev = io->prev;
+	while (io_prev)
+	{
+		if (io_prev->type == IO_HEREDOC)
+			close(io_prev->here_doc);
+		io_prev = io_prev->prev;
+	}
 }
 
 /**

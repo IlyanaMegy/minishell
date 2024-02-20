@@ -241,7 +241,7 @@ int					add_var_to_env(char *name, char *content, int print_it);
 int					get_env(char **arg_env);
 
 // exec/exec.c
-void				ignore_last_heredoc(t_cmd *cmd);
+void				ignore_last_heredoc(t_cmd *cmd, t_io_cmd *io);
 void				executie(t_data *data, t_cmd *cmd, bool piped);
 
 // exec/exec_pipe.c
