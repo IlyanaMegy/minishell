@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:09:33 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/19 17:09:35 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/21 23:55:54 by ilymegy          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,9 @@ static void	exec_pipe_child(t_data *data, t_cmd *cmd, int *status, int fd[3])
 		get_out(data, ENO_GENERAL, NULL, status);
 	if (check_redir(cmd) != ENO_SUCCESS)
 		get_out(data, ENO_GENERAL, env, status);
-	
 	cmd->path_err = get_path(data, cmd->expanded_args[0]);
 	if (cmd->path_err.err.no != ENO_SUCCESS)
 		get_out(data, single_exit_s(cmd->path_err.err.no, ADD), env, status);
-	// close(data->stdin);
-	// close(data->stdout);
 	if (execve(cmd->path_err.path, cmd->expanded_args, env) == -1)
 		get_out(data, single_exit_s(1, ADD), env, status);
 }
