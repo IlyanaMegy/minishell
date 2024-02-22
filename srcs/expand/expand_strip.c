@@ -28,11 +28,11 @@ static size_t	unquoted_strlen(char *str)
 	quotes = 0;
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '"') && str[i + 1])
+		if ((str[i] == '\'' || str[i] == '"'))
 		{
 			if (!quotes)
 				quotes = str[i++];
-			else if (str[i] == quotes)
+			else if (str[i] == quotes && !str[i + 1])
 				quotes = ((i++) && 0);
 			else
 				len += (i++ || 1);
@@ -56,9 +56,13 @@ static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 	char	quotes;
 
 	quotes = str[(*i)++];
-	while (str[*i] != quotes)
-		res[(*j)++] = str[(*i)++];
-	(*i)++;
+	if (str[*i])
+	{
+		while (str[*i] && (str[*i] != quotes || (str[*i] == quotes && str[*i
+					+ 1])))
+			res[(*j)++] = str[(*i)++];
+		(*i)++;
+	}
 }
 
 /**
