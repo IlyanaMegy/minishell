@@ -41,7 +41,7 @@ static void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	char	*quotes;
 
 	get_expander_heredoc_delim(io);
-	quotes = io->expanded_value[0];
+	quotes = io->path;
 	while (*quotes && *quotes != '"' && *quotes != '\'')
 		quotes++;
 	while (1)
