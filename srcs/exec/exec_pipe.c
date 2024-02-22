@@ -25,7 +25,9 @@ static int	ft_waitpid(t_data *data)
 	c = data->cmd;
 	while (c)
 	{
-		if (c->expanded_args)
+		if (c->expanded_args && !is_builtin(c->expanded_args[0])
+			&& !cmd_is_dot(c->expanded_args[0])
+			&& !cmd_is_dir(c->expanded_args[0]))
 		{
 			c->path_err = get_path(data, c->expanded_args[0]);
 			if (c->path_err.err.no != ENO_SUCCESS)
@@ -70,6 +72,7 @@ static void	handle_weird_cases(t_data *data, t_cmd *cmd, int *status)
 	}
 	else if (is_builtin(cmd->expanded_args[0]))
 	{
+		ft_printf("builtin here\n\n");
 		if (check_redir(cmd) == ENO_SUCCESS)
 			single_exit_s(exec_builtin(data, cmd), ADD);
 		else
