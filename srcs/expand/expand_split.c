@@ -29,9 +29,9 @@ static void	skip_word(char const *s, size_t *i)
 		else
 		{
 			quotes = s[(*i)++];
-			while (s[(*i)] != quotes)
-				(*i)++;
-			(*i)++;
+			if (s[(*i)])
+				while (s[(*i)] && s[(*i)] != quotes)
+					(*i)++;
 		}
 	}
 }
@@ -89,9 +89,15 @@ static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 		{
 			quotes = s[(*i)++];
 			strs[j][k++] = quotes;
-			while (s[(*i)] != quotes)
-				strs[j][k++] = s[(*i)++];
-			strs[j][k++] = s[(*i)++];
+			if (s[(*i)])
+			{
+				while (s[(*i)] && (s[(*i)] != quotes || (s[*i] == quotes && s[*i
+							+ 1])))
+					strs[j][k++] = s[(*i)++];
+				strs[j][k++] = s[(*i)];
+				if (s[(*i)])
+					(*i)++;
+			}
 		}
 	}
 }
