@@ -108,7 +108,9 @@ char	**expand(char *str)
 	str = pre_expand(str);
 	if (!str)
 		return (NULL);
+	ft_printf("str before = %s\n\n", str);
 	str = clean_empty_strs(str);
+	ft_printf("str after = %s\n\n", str);
 	if (!str)
 		return (NULL);
 	expanded = expander_split(str);
