@@ -82,7 +82,9 @@ t_path	get_path(t_data *data, char *cmd)
 	i = -1;
 	close(data->stdin);
 	close(data->stdout);
-	copy_cmd = ft_strdup(cmd);
+	copy_cmd = NULL;
+	if (cmd[0])
+		copy_cmd = ft_strdup(cmd);
 	if (!copy_cmd)
 		return ((t_path){(t_err){ENO_NOT_FOUND, ERR_NOCMD, cmd}, NULL});
 	if (!cmd || *cmd == '\0' || !*cmd)
