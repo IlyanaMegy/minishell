@@ -28,11 +28,11 @@ static size_t	unquoted_strlen(char *str)
 	quotes = 0;
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '"'))
+		if (str[i] == '\'' || str[i] == '"')
 		{
 			if (!quotes)
 				quotes = str[i++];
-			else if (str[i] == quotes && !str[i + 1])
+			else if (str[i] == quotes)
 				quotes = ((i++) && 0);
 			else
 				len += (i++ || 1);
@@ -56,13 +56,9 @@ static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 	char	quotes;
 
 	quotes = str[(*i)++];
-	if (str[*i])
-	{
-		while (str[*i] && (str[*i] != quotes || (str[*i] == quotes && str[*i
-					+ 1])))
-			res[(*j)++] = str[(*i)++];
-		(*i)++;
-	}
+	while (str[*i] != quotes)
+		res[(*j)++] = str[(*i)++];
+	(*i)++;
 }
 
 /**
@@ -78,13 +74,16 @@ char	*strip_quotes(char *str)
 
 	i = 0;
 	j = 0;
+	str = clean_empty_strs(str);
+	if (!str)
+		return (NULL);
 	res = ft_calloc(1 + unquoted_strlen(str), sizeof(char));
 	if (!res)
-		return (NULL);
+		return (free(str), NULL);
 	while (str[i])
 	{
-		if ((str[i] == '"' || str[i] == '\'') && str[(i + 1)])
-			unquote_fill_it(str, &i, res, &j);
+		if (str[i] == '"' || str[i] == '\'')
+			(unquote_fill_it(str, &i, res, &j));
 		else
 			res[j++] = str[i++];
 	}

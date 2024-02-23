@@ -15,26 +15,19 @@
 static int	cleaned_str_len(char *str)
 {
 	int	i;
-	int	extra;
 	int	len;
 
 	i = 0;
-	extra = 0;
 	len = 0;
 	while (str[i])
 	{
 		if (str[i + 1] && ((str[i] == '"' && str[i + 1] == '"')
 				|| (str[i] == '\'' && str[i + 1] == '\'')))
-		{
-			extra = 1;
 			i += 2;
-			len++;
-		}
 		else
 			len += (i++ || 1);
 	}
-	ft_printf("len = %d\n\n", len);
-	return (len + extra);
+	return (len);
 }
 
 /**
@@ -47,9 +40,7 @@ char	*clean_empty_strs(char *str)
 	size_t	i;
 	size_t	j;
 	char	*tmp;
-	char	extra;
 
-	extra = 0;
 	if ((str[0] == '\'' && str[1] == '\'' && !str[2]) || (str[0] == '"'
 			&& str[1] == '"' && !str[2]))
 		return (str);
@@ -60,21 +51,12 @@ char	*clean_empty_strs(char *str)
 	j = 0;
 	while (str[i])
 	{
-		if (str[i + 1] && ((str[i] == '"' && str[i + 1] == '"')
-				|| (str[i] == '\'' && str[i + 1] == '\'')))
-		{
-			if (!extra)
-			{
-				tmp[j++] = str[i];
-				extra = str[i];
-			}
+		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
+				+ 1] == '\''))
 			i += 2;
-		}
 		else
 			tmp[j++] = str[i++];
 	}
-	if (extra)
-		tmp[j] = extra;
 	free(str);
 	return (tmp);
 }
