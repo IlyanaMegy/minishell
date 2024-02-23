@@ -110,7 +110,7 @@ static char	*remove_spaces_cmd(char *str)
 	i = 0;
 	count = ft_strlen(str);
 	while (str[i])
-		if (str[i++] == ' ')
+		if (str[i++] == ' ' && !str[i])
 			count--;
 	if (count == ft_strlen(str))
 		return (str);
@@ -140,9 +140,9 @@ char	**expand(char *str)
 		return (NULL);
 	i = 0;
 	j = 0;
-	ft_printf("str before cleaned = %s\n\n", str);
+	// ft_printf("str before cleaned = %s\n\n", str);
 	str = clean_empty_strs(str, i, j);
-	ft_printf("str after cleaned = %s\n\n", str);
+	// ft_printf("str after cleaned = %s\n\n", str);
 	expanded = expander_split(str);
 	free(str);
 	if (!expanded)
@@ -150,9 +150,9 @@ char	**expand(char *str)
 	i = 0;
 	while (expanded[i])
 	{
-		ft_printf("strip before = %s\n\n", expanded[i]);
+		// ft_printf("strip before = %s\n\n", expanded[i]);
 		expanded[i] = strip_quotes(expanded[i]);
-		ft_printf("strip = %s\n\n", expanded[i]);
+		// ft_printf("strip = %s\n\n", expanded[i]);
 		if (i == 0)
 			expanded[i] = remove_spaces_cmd(expanded[i]);
 		i++;

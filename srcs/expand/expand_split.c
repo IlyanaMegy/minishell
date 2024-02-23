@@ -29,9 +29,9 @@ static void	skip_word(char const *s, size_t *i)
 		else
 		{
 			quotes = s[(*i)++];
-			if (s[(*i)])
-				while (s[(*i)] && s[(*i)] != quotes)
-					(*i)++;
+			while (s[(*i)] != quotes)
+				(*i)++;
+			(*i)++;
 		}
 	}
 }
@@ -98,7 +98,6 @@ static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 					(*i)++;
 			}
 		}
-		ft_printf("strs[%d] = %s\n\n", j, strs[j]);
 	}
 }
 
@@ -115,9 +114,9 @@ static char	**fill_it(char const *s, char **strs)
 
 	i = 0;
 	j = 0;
-	while (s[i] && strs[j])
+	while (s[i]&& strs[j])
 	{
-		if (s[i] != ' ')
+		if (s[i] != ' ' )
 		{
 			gimme_that(s, strs, &i, j);
 			j++;
