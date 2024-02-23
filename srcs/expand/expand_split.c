@@ -91,7 +91,7 @@ static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 			strs[j][k++] = quotes;
 			if (s[(*i)])
 			{
-				while (s[(*i)] && (s[(*i)] != quotes ))
+				while (s[(*i)] && (s[(*i)] != quotes))
 					strs[j][k++] = s[(*i)++];
 				strs[j][k++] = s[(*i)];
 				if (s[(*i)])
@@ -114,9 +114,9 @@ static char	**fill_it(char const *s, char **strs)
 
 	i = 0;
 	j = 0;
-	while (s[i]&& strs[j])
+	while (s[i] && strs[j])
 	{
-		if (s[i] != ' ' )
+		if (s[i] != ' ')
 		{
 			gimme_that(s, strs, &i, j);
 			j++;

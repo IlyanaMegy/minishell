@@ -33,7 +33,7 @@ static int	quotes_in_quotes(int *i, char **str, int *j, char **tmp)
 			return (0);
 		}
 		(*tmp)[(*j)++] = (*str)[(*i)++];
-		while ((*str)[*i]!= q1)
+		while ((*str)[*i] != q1)
 			(*tmp)[(*j)++] = (*str)[(*i)++];
 		(*tmp)[(*j)++] = (*str)[(*i)++];
 		return (1);
@@ -68,7 +68,7 @@ char	*clean_empty_strs(char *str, int i, int j)
 		if (!quotes_in_quotes(&i, &str, &j, &tmp))
 		{
 			if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
-					+ 1] == '\''))
+						+ 1] == '\''))
 			{
 				if (i != 0 && str[i - 1] == ' ' && str[i - 2])
 					(tmp[j - 1] = '|', tmp[j++] = ' ');

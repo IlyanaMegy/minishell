@@ -61,17 +61,17 @@ static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 	(*i)++;
 }
 
-static char *remove_trash(char *str)
+static char	*remove_trash(char *str)
 {
-	int i;
-	int j;
-	char *res;
+	int		i;
+	int		j;
+	char	*res;
 
 	i = 0;
 	j = 0;
 	res = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!res)
-		return NULL;
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '|')
