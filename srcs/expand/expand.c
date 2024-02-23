@@ -100,16 +100,47 @@ static char	*pre_expand(char *str)
 	return (ret);
 }
 
+static char	*remove_spaces_cmd(char *str)
+{
+	int		i;
+	size_t		count;
+	int		j;
+	char	*res;
+
+	i = 0;
+	count = ft_strlen(str);
+	while (str[i])
+		if (str[i++] == ' ')
+			count--;
+	if (count == ft_strlen(str))
+		return (str);
+	res = ft_calloc(count + 1, sizeof(char));
+	if (!res)
+		return (free(str), NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			res[j++] = str[i++];
+		else
+			i++;
+	}
+	return (free(str), res);
+}
+
 char	**expand(char *str)
 {
 	char	**expanded;
 	size_t	i;
+	size_t j;
 
-	// ft_printf("str before pre expand= %s\n\n", str);
 	str = pre_expand(str);
-	// ft_printf("str after pre exp = %s\n\n", str);
 	if (!str)
 		return (NULL);
+	i = 0;
+	j = 0;
+	str = clean_empty_strs(str, i, j);
 	expanded = expander_split(str);
 	free(str);
 	if (!expanded)
@@ -117,9 +148,9 @@ char	**expand(char *str)
 	i = 0;
 	while (expanded[i])
 	{
-		// ft_printf("str strip before = %s\n\n", expanded[i]);
 		expanded[i] = strip_quotes(expanded[i]);
-		// ft_printf("str strip after = %s\n\n", expanded[i]);
+		if (i == 0)
+			expanded[i] = remove_spaces_cmd(expanded[i]);
 		i++;
 	}
 	return (expanded);

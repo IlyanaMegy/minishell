@@ -61,6 +61,27 @@ static void	unquote_fill_it(char *str, size_t *i, char *res, size_t *j)
 	(*i)++;
 }
 
+static char *remove_trash(char *str)
+{
+	int i;
+	int j;
+	char *res;
+
+	i = 0;
+	j = 0;
+	res = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (!res)
+		return NULL;
+	while (str[i])
+	{
+		if (str[i] == '|')
+			(res[j++] = ' ', i++);
+		else
+			res[j++] = str[i++];
+	}
+	return (free(str), res);
+}
+
 /**
  * @note   remove quotes from string
  * @param  str: given string
@@ -74,7 +95,7 @@ char	*strip_quotes(char *str)
 
 	i = 0;
 	j = 0;
-	str = clean_empty_strs(str);
+	str = remove_trash(str);
 	if (!str)
 		return (NULL);
 	res = ft_calloc(1 + unquoted_strlen(str), sizeof(char));

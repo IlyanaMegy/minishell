@@ -12,51 +12,34 @@
 
 #include "../../inc/minishell.h"
 
-static int	cleaned_str_len(char *str)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = 0;
-	while (str[i])
-	{
-		if (str[i + 1] && ((str[i] == '"' && str[i + 1] == '"')
-				|| (str[i] == '\'' && str[i + 1] == '\'')))
-			i += 2;
-		else
-			len += (i++ || 1);
-	}
-	return (len);
-}
-
 /**
  * @note   do clean empty strings or quotes from str
  * @param  str: given string
  * @retval cleaned string
 */
-char	*clean_empty_strs(char *str)
+char	*clean_empty_strs(char *str, int i, int j)
 {
-	size_t	i;
-	size_t	j;
 	char	*tmp;
 
 	if ((str[0] == '\'' && str[1] == '\'' && !str[2]) || (str[0] == '"'
 			&& str[1] == '"' && !str[2]))
 		return (str);
-	tmp = ft_calloc(cleaned_str_len(str) + 1, sizeof(char));
+	tmp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	if (!tmp)
 		return (free(str), NULL);
-	i = 0;
-	j = 0;
 	while (str[i])
 	{
 		if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
 				+ 1] == '\''))
+		{
+			if (i != 0 && str[i - 1] == ' ' && str[i - 2])
+				(tmp[j - 1] = '|', tmp[j++] = ' ');
 			i += 2;
+			if (str[i] && str[i] == ' ' && str[i + 1])
+				(tmp[j++] = ' ', tmp[j++] = '|', i++);
+		}
 		else
 			tmp[j++] = str[i++];
 	}
-	free(str);
-	return (tmp);
+	return (free(str), tmp);
 }
