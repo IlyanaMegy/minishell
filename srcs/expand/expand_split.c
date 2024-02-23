@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_split.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:11:03 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/31 12:11:05 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/23 13:15:15 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /**
  * @note   do skip word from string to increment index
- * @param  s: given string 
+ * @param  s: given string
  * @param  *i: s index
  * @retval None
 */
@@ -92,7 +92,7 @@ static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 			if (s[(*i)])
 			{
 				while (s[(*i)] && (s[(*i)] != quotes || (s[*i] == quotes && s[*i
-							+ 1])))
+								+ 1])))
 					strs[j][k++] = s[(*i)++];
 				strs[j][k++] = s[(*i)];
 				if (s[(*i)])

@@ -1,3 +1,5 @@
+test: https://github.com/solaldunckel/minishell-tester
+
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp -s --track-fds=yes ./minishell
 
 ------commandes difficiles a traiter :

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 12:51:31 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/01/31 12:51:33 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/23 13:14:28 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,7 @@ char	**expand(char *str)
 	char	**expanded;
 	size_t	i;
 
-	// ft_printf("str before pre expand= %s\n\n", str);
 	str = pre_expand(str);
-	// ft_printf("str after pre exp = %s\n\n", str);
 	if (!str)
 		return (NULL);
 	expanded = expander_split(str);
@@ -117,9 +115,7 @@ char	**expand(char *str)
 	i = 0;
 	while (expanded[i])
 	{
-		// ft_printf("str strip before = %s\n\n", expanded[i]);
 		expanded[i] = strip_quotes(expanded[i]);
-		// ft_printf("str strip after = %s\n\n", expanded[i]);
 		i++;
 	}
 	return (expanded);
