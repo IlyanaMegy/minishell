@@ -6,7 +6,7 @@
 /*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 12:21:11 by ltorkia           #+#    #+#             */
-/*   Updated: 2024/01/20 13:16:57 by ltorkia          ###   ########.fr       */
+/*   Updated: 2024/02/23 15:03:00 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,19 @@ int	ignore_spaces(char *s, int index)
 	return (-1);
 }
 
-char	*trim_end_spaces(char *s)
+char	*trim_spaces(char *s)
 {
 	int		len;
+	int		i;
 	char	*new_s;
 
-	new_s = NULL;
+	i = 0;
 	len = ft_strlen(s) - 1;
-	while (len >= 0 && ft_isspace(s[len]))
+	while (s[i] && ft_isspace(s[i]))
+		i++;
+	while (len >= i && ft_isspace(s[len]))
 		len--;
-	new_s = ft_substr(s, 0, len + 1);
+	new_s = ft_substr(s, i, len - i + 1);
 	if (!new_s)
 		return (NULL);
 	return (new_s);
