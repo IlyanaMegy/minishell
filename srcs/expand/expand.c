@@ -105,10 +105,9 @@ char	**expand(char *str)
 	char	**expanded;
 	size_t	i;
 
+	// ft_printf("str before pre expand= %s\n\n", str);
 	str = pre_expand(str);
-	if (!str)
-		return (NULL);
-	str = clean_empty_strs(str);
+	// ft_printf("str after pre exp = %s\n\n", str);
 	if (!str)
 		return (NULL);
 	expanded = expander_split(str);
@@ -118,7 +117,9 @@ char	**expand(char *str)
 	i = 0;
 	while (expanded[i])
 	{
+		// ft_printf("str strip before = %s\n\n", expanded[i]);
 		expanded[i] = strip_quotes(expanded[i]);
+		// ft_printf("str strip after = %s\n\n", expanded[i]);
 		i++;
 	}
 	return (expanded);
