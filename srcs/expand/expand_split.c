@@ -91,14 +91,14 @@ static void	gimme_that(const char *s, char **strs, size_t *i, size_t j)
 			strs[j][k++] = quotes;
 			if (s[(*i)])
 			{
-				while (s[(*i)] && (s[(*i)] != quotes || (s[*i] == quotes && s[*i
-								+ 1])))
+				while (s[(*i)] && (s[(*i)] != quotes ))
 					strs[j][k++] = s[(*i)++];
 				strs[j][k++] = s[(*i)];
 				if (s[(*i)])
 					(*i)++;
 			}
 		}
+		ft_printf("strs[%d] = %s\n\n", j, strs[j]);
 	}
 }
 
