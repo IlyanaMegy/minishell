@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ilymegy <ilyanamegy@gmail.com>             +#+  +:+       +#+        */
+/*   By: ltorkia <ltorkia@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 17:09:33 by ilymegy           #+#    #+#             */
-/*   Updated: 2024/02/21 23:55:54 by ilymegy          ###   ########.fr       */
+/*   Updated: 2024/02/22 12:54:07 by ltorkia          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	ft_close_all(int fd[3])
 }
 
 /**
- * @brief  
+ * @brief
  * @note   handle when no cmd, builtins, cmd is dot or dir
  * @param  data: t_data linked list
  * @param  cmd: given command
