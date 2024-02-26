@@ -69,8 +69,10 @@ bool	cmd_is_dot(char *cmd)
  * @param  status: given exit status
  * @retval exit status
 */
-int	close_n_exit_s(t_cmd *cmd, int status)
+int	close_n_exit_s(t_data *data, t_cmd *cmd, int status)
 {
+	close(data->stdin);
+	close(data->stdout);
 	if (cmd->io_list && cmd->io_list->here_doc)
 		close(cmd->io_list->here_doc);
 	return (get_exit_status(status));

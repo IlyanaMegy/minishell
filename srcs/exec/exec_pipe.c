@@ -145,7 +145,7 @@ int	exec_pipe(t_data *data)
 		if (!c->pid)
 			(set_sig_child(), exec_pipe_child(data, c, &status, fd));
 		swap_pipes(fd);
-		single_exit_s(close_n_exit_s(c, status), ADD);
+		single_exit_s(close_n_exit_s(data, c, status), ADD);
 		c = c->next;
 	}
 	close(fd[2]);

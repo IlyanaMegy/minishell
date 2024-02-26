@@ -65,8 +65,8 @@ int	main(int ac, char **av, char **arg_env)
 	init_data_env(&data, arg_env);
 	while (1)
 	{
-			data.stdin = dup(0);
-	data.stdout = dup(1);
+		data.stdin = dup(0);
+		data.stdout = dup(1);
 		set_signal();
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)
