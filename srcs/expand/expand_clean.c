@@ -53,13 +53,13 @@ static void	add_pipes_remove_quotes(int *i, char **str, int *j, char **tmp)
 {
 	if ((*i) != 0 && (*str)[(*i) - 1] == ' ' && (*str)[(*i) - 2])
 	{
-		(*tmp)[(*j) - 1] = '|';
+		(*tmp)[(*j) - 1] = ';';
 		(*tmp)[(*j)++] = ' ';
 	}
 	(*i) += 2;
 	if ((*str)[(*i)] && (*str)[(*i)] == ' ' && (*str)[(*i) + 1])
 	{
-		(*tmp)[(*j)++] = '|';
+		(*tmp)[(*j)++] = ';';
 		(*i)++;
 	}
 }

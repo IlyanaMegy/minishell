@@ -74,7 +74,7 @@ static char	*remove_trash(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '|')
+		if (str[i] == ';')
 		{
 			res[j++] = ' ';
 			i++;

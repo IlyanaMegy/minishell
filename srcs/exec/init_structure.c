@@ -48,7 +48,7 @@ static void	come_heredoc(t_data *data, t_io_cmd *io, int fd[2])
 	{
 		line = readline("> ");
 		catch_sigint_exit(data);
-		if (!line)
+		if (!line && print_heredoc_error())
 			break ;
 		if (ft_isdelimiter(io->expanded_value[0], line))
 			break ;

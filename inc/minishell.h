@@ -274,6 +274,7 @@ t_err				check_exec(char *file, bool cmd);
 bool				cmd_is_dir(char *cmd);
 bool				cmd_is_dot(char *cmd);
 int					close_n_exit_s(t_data *data, t_cmd *cmd, int status);
+int					print_heredoc_error(void);
 
 //  -------------------------------------------------------------------------
 // |									UTILS								|

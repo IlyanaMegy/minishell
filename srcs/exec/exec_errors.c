@@ -77,3 +77,13 @@ int	close_n_exit_s(t_data *data, t_cmd *cmd, int status)
 		close(cmd->io_list->here_doc);
 	return (get_exit_status(status));
 }
+
+int	print_heredoc_error(void)
+{
+	char	*err_hd;
+
+	err_hd = "minishell: warning: here-document delimited by";
+	ft_putstr_fd(err_hd, 2);
+	ft_putstr_fd(" end-of-file (wanted `eof')\n", 2);
+	return (1);
+}

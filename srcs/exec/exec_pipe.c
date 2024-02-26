@@ -48,9 +48,19 @@ static int	ft_waitpid(t_data *data)
 */
 static void	ft_close_all(int fd[3])
 {
+	char	buf;
+	int		i;
+
+	i = 4;
 	close(fd[0]);
 	close(fd[1]);
 	close(fd[2]);
+	while (i < 150)
+	{
+		if (read(i, &buf, 0) != -1)
+			close(i);
+		i++;
+	}
 }
 
 /**
