@@ -83,7 +83,6 @@ static int	exec_child(t_data *data, t_cmd *cmd, int fork_pid)
 static int	exec_simple_cmd(t_data *data, t_cmd *cmd, bool piped)
 {
 	int	fork_pid;
-
 	if (!cmd->expanded_args)
 	{
 		single_exit_s(check_redir(cmd), ADD);

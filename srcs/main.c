@@ -50,8 +50,6 @@ static void	init_data_env(t_data *data, char **arg_env)
 {
 	ft_memset(data, 0, sizeof(t_data));
 	g_sig_exit = 0;
-	data->stdin = dup(0);
-	data->stdout = dup(1);
 	get_env(arg_env);
 	single_exit_s(0, ADD);
 	if (!isatty(STDIN_FILENO))
@@ -67,6 +65,8 @@ int	main(int ac, char **av, char **arg_env)
 	init_data_env(&data, arg_env);
 	while (1)
 	{
+			data.stdin = dup(0);
+	data.stdout = dup(1);
 		set_signal();
 		data.user_input = readline(PROMPT);
 		if (!data.user_input)

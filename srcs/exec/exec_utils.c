@@ -24,6 +24,8 @@ void	reset_stds(t_data *data, bool piped)
 		return ;
 	dup2(data->stdin, 0);
 	dup2(data->stdout, 1);
+	close(data->stdin);
+	close(data->stdout);
 }
 
 /**
