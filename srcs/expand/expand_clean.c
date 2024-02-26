@@ -49,6 +49,21 @@ static int	if_string_empty(char *str)
 	return (0);
 }
 
+static void	add_pipes_remove_quotes(int *i, char **str, int *j, char **tmp)
+{
+	if ((*i) != 0 && (*str)[(*i) - 1] == ' ' && (*str)[(*i) - 2])
+	{
+		(*tmp)[(*j) - 1] = '|';
+		(*tmp)[(*j)++] = ' ';
+	}
+	(*i) += 2;
+	if ((*str)[(*i)] && (*str)[(*i)] == ' ' && (*str)[(*i) + 1])
+	{
+		(*tmp)[(*j)++] = '|';
+		(*i)++;
+	}
+}
+
 /**
  * @note   do clean empty strings or quotes from str
  * @param  str: given string
@@ -69,13 +84,7 @@ char	*clean_empty_strs(char *str, int i, int j)
 		{
 			if ((str[i] == '"' && str[i + 1] == '"') || (str[i] == '\'' && str[i
 						+ 1] == '\''))
-			{
-				if (i != 0 && str[i - 1] == ' ' && str[i - 2])
-					(tmp[j - 1] = '|', tmp[j++] = ' ');
-				i += 2;
-				if (str[i] && str[i] == ' ' && str[i + 1])
-					(tmp[j++] = '|', i++);
-			}
+				add_pipes_remove_quotes(&i, &str, &j, &tmp);
 			else
 				tmp[j++] = str[i++];
 		}
